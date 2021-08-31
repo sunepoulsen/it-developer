@@ -10,7 +10,7 @@ import dk.sunepoulsen.timelog.settings.Settings;
 import javafx.stage.Stage;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.slf4j.XSlf4j;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.Locale;
@@ -19,7 +19,7 @@ import java.util.ResourceBundle;
 /**
  * Created by sunepoulsen on 21/10/2016.
  */
-@XSlf4j
+@Slf4j
 public class Registry {
     //-------------------------------------------------------------------------
     //              Constructors

@@ -8,7 +8,7 @@ import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
 import liquibase.exception.LiquibaseException;
 import liquibase.resource.ClassLoaderResourceAccessor;
-import lombok.extern.slf4j.XSlf4j;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.io.IOException;
@@ -27,7 +27,7 @@ import java.util.function.Function;
  * Implements the responsibility to register a single connection to a single database
  * that can be used to retrieve operation instances to interact with the database.
  */
-@XSlf4j
+@Slf4j
 public class DatabaseStorage {
     public DatabaseStorage( String persistenceName, DatabaseStorageSettings settings ) {
         this.persistenceName = persistenceName;
@@ -142,7 +142,7 @@ public class DatabaseStorage {
             return query.executeUpdate();
         }
         catch( Exception ex ) {
-            log.catching( ex );
+            log.info( ex.getMessage(), ex );
             throw ex;
         }
         finally {

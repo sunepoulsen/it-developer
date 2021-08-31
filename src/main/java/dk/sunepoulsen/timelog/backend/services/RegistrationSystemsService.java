@@ -6,7 +6,7 @@ import dk.sunepoulsen.timelog.db.storage.DatabaseStorage;
 import dk.sunepoulsen.timelog.ui.model.registration.systems.RegistrationSystemModel;
 import dk.sunepoulsen.timelog.validation.TimeLogValidateException;
 import dk.sunepoulsen.timelog.validation.TimeLogValidation;
-import lombok.extern.slf4j.XSlf4j;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.Query;
 import java.util.Arrays;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 /**
  * Created by sunepoulsen on 12/06/2017.
  */
-@XSlf4j
+@Slf4j
 public class RegistrationSystemsService {
     private final RegistrationSystemsEvents events;
     private final DatabaseStorage database;

@@ -2,9 +2,9 @@ package dk.sunepoulsen.timelog.ui.topcomponents.navigator;
 
 import dk.sunepoulsen.timelog.ui.model.TreeNavigatorModel;
 import javafx.scene.control.TreeCell;
-import lombok.extern.slf4j.XSlf4j;
+import lombok.extern.slf4j.Slf4j;
 
-@XSlf4j
+@Slf4j
 public class TreeNavigatorTreeCell extends TreeCell<TreeNavigatorModel> {
     public TreeNavigatorTreeCell() {
     }

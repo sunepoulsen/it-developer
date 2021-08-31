@@ -11,14 +11,14 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.layout.AnchorPane;
 import lombok.Getter;
-import lombok.extern.slf4j.XSlf4j;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
 /**
  * Created by sunepoulsen on 09/05/2017.
  */
-@XSlf4j
+@Slf4j
 public class TreeNavigator extends AnchorPane {
     @FXML
     private TreeView<TreeNavigatorModel> treeView = null;

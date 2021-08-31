@@ -8,11 +8,11 @@ import javafx.scene.Node;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import lombok.Getter;
-import lombok.extern.slf4j.XSlf4j;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 
-@XSlf4j
+@Slf4j
 public class ClientPane extends AnchorPane {
     @Getter
     private SimpleObjectProperty<TreeNavigatorModel> currentPaneProperty;

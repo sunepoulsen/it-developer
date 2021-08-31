@@ -7,7 +7,7 @@ import dk.sunepoulsen.timelog.settings.model.UserStates;
 import dk.sunepoulsen.timelog.utils.os.OperatingSystem;
 import dk.sunepoulsen.timelog.utils.os.OperatingSystemFactory;
 import lombok.Data;
-import lombok.extern.slf4j.XSlf4j;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,7 +16,7 @@ import java.io.IOException;
  * Created by sunepoulsen on 14/06/2017.
  */
 @Data
-@XSlf4j
+@Slf4j
 public class Settings {
     private SettingsModel model;
     private UserStates userStates;

@@ -8,13 +8,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.SplitPane;
 import javafx.stage.WindowEvent;
-import lombok.extern.slf4j.XSlf4j;
+import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-@XSlf4j
+@Slf4j
 public class MainWindow implements Initializable {
     @FXML
     private SplitPane splitPane;

@@ -1,0 +1,65 @@
+plugins {
+    id 'java'
+    id 'groovy'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.10'
+}
+
+group 'dk.sunepoulsen.timelog'
+version "${project.property('app.version')}"
+
+repositories {
+    mavenCentral()
+}
+
+javafx {
+    version = "16"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+dependencies {
+    // Lombok
+    compileOnly "org.projectlombok:lombok:${project.property('lombok.version')}"
+    annotationProcessor "org.projectlombok:lombok:${project.property('lombok.version')}"
+
+    // JavaFX
+    implementation "org.controlsfx:controlsfx:${project.property('controlsfx.version')}"
+    implementation "commons-io:commons-io:${project.property('commons-io.version')}"
+
+    // JPA
+    implementation "org.liquibase:liquibase-core:${project.property('liquibase-core.version')}"
+    implementation "org.hibernate:hibernate-core:${project.property('hibernate-core.version')}"
+    implementation "com.h2database:h2:${project.property('h2.version')}"
+    implementation group: 'net.bytebuddy', name: 'byte-buddy', version: '1.11.6'
+    implementation group: 'net.bytebuddy', name: 'byte-buddy-agent', version: '1.11.6'
+
+    // JAX-B dependencies for JDK 9+
+    implementation "jakarta.xml.bind:jakarta.xml.bind-api:3.0.1"
+    implementation "org.glassfish.jaxb:jaxb-runtime:3.0.1"
+
+    // JSON
+    implementation "com.fasterxml.jackson.core:jackson-core:${project.property('jackson.version')}"
+    implementation "com.fasterxml.jackson.core:jackson-annotations:${project.property('jackson.version')}"
+    implementation "com.fasterxml.jackson.core:jackson-databind:${project.property('jackson.version')}"
+
+    // Validation
+    implementation "org.hibernate.validator:hibernate-validator:${project.property('hibernate-validator.version')}"
+    implementation "org.hibernate.validator:hibernate-validator-cdi:${project.property('hibernate-validator.version')}"
+    implementation "javax.validation:validation-api:${project.property('javax-validation-api.version')}"
+    implementation "org.glassfish:javax.el:3.0.0"
+    //implementation "org.glassfish:jakarta.el:${project.property('jakarta-el.version')}"
+
+    // Utilities
+    implementation "org.slf4j:log4j-over-slf4j:${project.property('log4j-over-slf4j.version')}"
+    implementation "ch.qos.logback:logback-core:${project.property('logback-core.version')}"
+    implementation "ch.qos.logback:logback-classic:${project.property('logback-classic.version')}"
+    implementation "com.google.guava:guava:${project.property('guava.version')}"
+
+    // JUnit
+    testImplementation "junit:junit:${project.property('junit.version')}"
+
+    // Spock
+    testImplementation localGroovy() // Note: using the groovy implementation shipped with gradle
+}
+
+mainClassName = 'dk.sunepoulsen.timelog.application.TimelogApplication'

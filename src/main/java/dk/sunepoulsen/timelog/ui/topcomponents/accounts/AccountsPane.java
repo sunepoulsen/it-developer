@@ -18,13 +18,13 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
-import lombok.extern.slf4j.XSlf4j;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-@XSlf4j
+@Slf4j
 public class AccountsPane extends BorderPane {
     private Registry registry;
     private BackendConnection backendConnection = null;

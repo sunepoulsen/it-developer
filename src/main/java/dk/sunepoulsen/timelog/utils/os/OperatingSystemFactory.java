@@ -23,8 +23,18 @@ public class OperatingSystemFactory {
 
     private static OperatingSystem createOperatingSystem( Properties properties ) throws IOException {
         String osName = properties.getProperty( "os.name" );
-        if( MacOS.matchOperatingSystemName( osName ) ) {
+        if( properties.containsKey( "timelog.os.name" ) ) {
+            osName = properties.getProperty( "timelog.os.name" );
+        }
+
+        if( LocalOS.matchOperatingSystemName( osName ) ) {
+            return new LocalOS();
+        }
+        else if( MacOS.matchOperatingSystemName( osName ) ) {
             return new MacOS();
+        }
+        else if( LinuxOS.matchOperatingSystemName( osName ) ) {
+            return new LinuxOS();
         }
 
         throw new IOException( "Unsupported operating system: " + osName );

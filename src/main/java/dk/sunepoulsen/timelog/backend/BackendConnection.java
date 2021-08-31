@@ -6,7 +6,7 @@ import dk.sunepoulsen.timelog.db.storage.DatabaseStorage;
 import dk.sunepoulsen.timelog.db.storage.DatabaseStorageSettings;
 import liquibase.exception.LiquibaseException;
 import lombok.Getter;
-import lombok.extern.slf4j.XSlf4j;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -29,7 +29,7 @@ import java.sql.SQLException;
  *
  *
  */
-@XSlf4j
+@Slf4j
 public class BackendConnection {
     private DatabaseStorage database;
 
