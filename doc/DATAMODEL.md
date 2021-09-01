@@ -21,8 +21,7 @@ The registration type describes:
    type will have reasons for the illnesses. The paid absence registration type will have reasons like civil 
    representative, etc.
  
-4. A registration type will also have a setting that tells if its an all day registration. If this is the case then the 
-   user can not have another registration on the same day.
+4. A registration type will also have a setting that tells if it's an all day registration.
 
 ### Entities
 
