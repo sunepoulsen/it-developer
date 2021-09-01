@@ -28,7 +28,7 @@ The registration type describes:
 
 From the requirements above we get the following entities:
 
-- registration_types
-- reasons
+- `registration_types`
+- `reasons`
 
-There will be a one-to-many relation between registration_types and reasons
+There will be a one-to-many relation between `registration_types` and `reasons`

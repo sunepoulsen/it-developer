@@ -62,4 +62,9 @@ dependencies {
     testImplementation localGroovy() // Note: using the groovy implementation shipped with gradle
 }
 
+run {
+    systemProperty "timelog.os.name", System.getProperty("timelog.os.name")
+    systemProperty "timelog.local.directory", System.getProperty("timelog.local.directory")
+}
+
 mainClassName = 'dk.sunepoulsen.timelog.application.TimelogApplication'

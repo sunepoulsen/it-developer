@@ -22,9 +22,12 @@ public class OperatingSystemFactory {
     }
 
     private static OperatingSystem createOperatingSystem( Properties properties ) throws IOException {
-        String osName = properties.getProperty( "os.name" );
+        String osName = "";
         if( properties.containsKey( "timelog.os.name" ) ) {
             osName = properties.getProperty( "timelog.os.name" );
+        }
+        if (osName.isEmpty() || osName.isBlank()) {
+            osName = properties.getProperty( "os.name" );
         }
 
         if( LocalOS.matchOperatingSystemName( osName ) ) {

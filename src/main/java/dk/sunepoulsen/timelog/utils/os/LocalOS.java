@@ -17,7 +17,7 @@ public class LocalOS implements OperatingSystem {
 
     @Override
     public File applicationDataDirectory() {
-        return new File( settings.getProperty( "cinemagarage.local.directory" ) );
+        return new File( System.getProperties().getProperty( "timelog.local.directory" ) );
     }
 
     private void loadSettings() throws IOException {
