@@ -1,4 +1,4 @@
-package dk.sunepoulsen.timelog.db.storage;
+package dk.sunepoulsen.timelog.persistence.storage;
 
 import dk.sunepoulsen.timelog.utils.os.OperatingSystem;
 import dk.sunepoulsen.timelog.utils.os.OperatingSystemFactory;
@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 @Data
-public class DatabaseStorageSettings {
+public class PersistenceStorageSettings {
     private static final String PROPERTY_PREFIX = "liquibase.datasource";
 
     private String driver;
@@ -19,8 +19,8 @@ public class DatabaseStorageSettings {
     private Boolean showSql;
     private Boolean hibernateUseJdbcMetadataDefaults;
 
-    public static DatabaseStorageSettings createInstanceFromProperties( Properties properties ) throws IOException {
-        DatabaseStorageSettings instance = new DatabaseStorageSettings();
+    public static PersistenceStorageSettings createInstanceFromProperties(Properties properties ) throws IOException {
+        PersistenceStorageSettings instance = new PersistenceStorageSettings();
 
         String url = properties.getProperty( PROPERTY_PREFIX + ".jdbc.url" );
         if( url.contains( "${os.user.app.directory}" ) ) {
@@ -39,9 +39,9 @@ public class DatabaseStorageSettings {
         return instance;
     }
 
-    public static DatabaseStorageSettings createInstanceFromPropertyResource( String resourceName ) throws IOException {
+    public static PersistenceStorageSettings createInstanceFromPropertyResource(String resourceName ) throws IOException {
         Properties props = new Properties();
-        props.load( DatabaseStorageSettings.class.getResourceAsStream( resourceName ) );
+        props.load( PersistenceStorageSettings.class.getResourceAsStream( resourceName ) );
 
         return createInstanceFromProperties( props );
     }

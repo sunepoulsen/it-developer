@@ -2,8 +2,8 @@ package dk.sunepoulsen.timelog.backend;
 
 import dk.sunepoulsen.timelog.backend.events.BackendConnectionEvents;
 import dk.sunepoulsen.timelog.backend.services.ServicesFactory;
-import dk.sunepoulsen.timelog.db.storage.DatabaseStorage;
-import dk.sunepoulsen.timelog.db.storage.DatabaseStorageSettings;
+import dk.sunepoulsen.timelog.persistence.storage.PersistenceStorage;
+import dk.sunepoulsen.timelog.persistence.storage.PersistenceStorageSettings;
 import liquibase.exception.LiquibaseException;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -31,13 +31,13 @@ import java.sql.SQLException;
  */
 @Slf4j
 public class BackendConnection {
-    private DatabaseStorage database;
+    private PersistenceStorage database;
 
     @Getter
     private BackendConnectionEvents events;
 
-    public BackendConnection( DatabaseStorageSettings databaseStorageSettings ) {
-        this.database = new DatabaseStorage( "timelog", databaseStorageSettings );
+    public BackendConnection( PersistenceStorageSettings persistenceStorageSettings) {
+        this.database = new PersistenceStorage( "timelog", persistenceStorageSettings);
         this.events = new BackendConnectionEvents();
     }
 

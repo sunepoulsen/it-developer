@@ -5,7 +5,7 @@ package dk.sunepoulsen.timelog.registry;
 
 import dk.sunepoulsen.timelog.backend.BackendConnection;
 import dk.sunepoulsen.timelog.backend.BackendConnectionException;
-import dk.sunepoulsen.timelog.db.storage.DatabaseStorageSettings;
+import dk.sunepoulsen.timelog.persistence.storage.PersistenceStorageSettings;
 import dk.sunepoulsen.timelog.settings.Settings;
 import javafx.stage.Stage;
 import lombok.Getter;
@@ -28,13 +28,13 @@ public class Registry {
     private Registry() {
         this.uiRegistry = new UIRegistry();
         this.locale = null;
-        this.databaseStorageSettings = null;
+        this.persistenceStorageSettings = null;
         this.settings = new Settings();
         this.backendConnection = null;
     }
 
     public void initialize( final Stage primaryStage ) throws IOException, BackendConnectionException {
-        this.backendConnection = new BackendConnection( DatabaseStorageSettings.createInstanceFromPropertyResource( "/application.properties" ) );
+        this.backendConnection = new BackendConnection( PersistenceStorageSettings.createInstanceFromPropertyResource( "/application.properties" ) );
         this.backendConnection.connect();
 
         this.uiRegistry.initialize( primaryStage );
@@ -91,7 +91,7 @@ public class Registry {
     @Setter
     private Locale locale;
 
-    private DatabaseStorageSettings databaseStorageSettings;
+    private PersistenceStorageSettings persistenceStorageSettings;
 
     @Getter
     @Setter

@@ -2,8 +2,8 @@ package dk.sunepoulsen.it.timelog.backend.services
 
 import dk.sunepoulsen.timelog.backend.events.RegistrationSystemsEvents
 import dk.sunepoulsen.timelog.backend.services.RegistrationSystemsService
-import dk.sunepoulsen.timelog.db.storage.DatabaseStorage
-import dk.sunepoulsen.timelog.db.storage.DatabaseStorageSettings
+import dk.sunepoulsen.timelog.persistence.storage.PersistenceStorage
+import dk.sunepoulsen.timelog.persistence.storage.PersistenceStorageSettings
 import dk.sunepoulsen.timelog.ui.model.registration.systems.RegistrationSystemModel
 import org.junit.After
 import org.junit.Before
@@ -11,29 +11,29 @@ import org.junit.BeforeClass
 import org.junit.Test
 
 class RegistrationSystemsServiceIT {
-    private DatabaseStorage databaseStorage
+    private PersistenceStorage persistenceStorage
 
     @BeforeClass
-    static void migrateDatabase() {
-        DatabaseStorage database = new DatabaseStorage( "timelog", DatabaseStorageSettings.createInstanceFromPropertyResource( "/application-test.properties" ) )
+    static void migratePersistence() {
+        PersistenceStorage database = new PersistenceStorage( "timelog", PersistenceStorageSettings.createInstanceFromPropertyResource( "/application-test.properties" ) )
         database.migrate()
     }
 
     @Before
-    void initDatabaseStorage() {
-        databaseStorage = new DatabaseStorage( "timelog", DatabaseStorageSettings.createInstanceFromPropertyResource( "/application-test.properties" ) )
-        databaseStorage.connect()
-        databaseStorage.deleteAllData()
+    void initPersistenceStorage() {
+        persistenceStorage = new PersistenceStorage( "timelog", PersistenceStorageSettings.createInstanceFromPropertyResource( "/application-test.properties" ) )
+        persistenceStorage.connect()
+        persistenceStorage.deleteAllData()
     }
 
     @After
-    void clearDatabaseStorage() {
-        databaseStorage.disconnect()
+    void clearPersistenceStorage() {
+        persistenceStorage.disconnect()
     }
 
     @Test
     void testCreateRegistrationSystem() {
-        RegistrationSystemsService service = new RegistrationSystemsService( new RegistrationSystemsEvents(), databaseStorage )
+        RegistrationSystemsService service = new RegistrationSystemsService( new RegistrationSystemsEvents(), persistenceStorage )
 
         RegistrationSystemModel model = new RegistrationSystemModel( name: "name", description: "description" )
         service.create( model )

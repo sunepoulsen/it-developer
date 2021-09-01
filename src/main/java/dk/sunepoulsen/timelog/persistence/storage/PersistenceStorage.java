@@ -1,4 +1,4 @@
-package dk.sunepoulsen.timelog.db.storage;
+package dk.sunepoulsen.timelog.persistence.storage;
 
 import liquibase.Contexts;
 import liquibase.LabelExpression;
@@ -28,8 +28,8 @@ import java.util.function.Function;
  * that can be used to retrieve operation instances to interact with the database.
  */
 @Slf4j
-public class DatabaseStorage {
-    public DatabaseStorage( String persistenceName, DatabaseStorageSettings settings ) {
+public class PersistenceStorage {
+    public PersistenceStorage(String persistenceName, PersistenceStorageSettings settings ) {
         this.persistenceName = persistenceName;
         this.settings = settings;
     }
@@ -208,6 +208,6 @@ public class DatabaseStorage {
     //-------------------------------------------------------------------------
 
     private final String persistenceName;
-    private final DatabaseStorageSettings settings;
+    private final PersistenceStorageSettings settings;
     private EntityManagerFactory emf;
 }

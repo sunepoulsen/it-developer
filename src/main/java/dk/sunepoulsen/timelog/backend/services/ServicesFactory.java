@@ -1,7 +1,7 @@
 package dk.sunepoulsen.timelog.backend.services;
 
 import dk.sunepoulsen.timelog.backend.events.BackendConnectionEvents;
-import dk.sunepoulsen.timelog.db.storage.DatabaseStorage;
+import dk.sunepoulsen.timelog.persistence.storage.PersistenceStorage;
 
 /**
  * Factory class to create service instances for an BackendConnection to access and update
@@ -9,9 +9,9 @@ import dk.sunepoulsen.timelog.db.storage.DatabaseStorage;
  */
 public class ServicesFactory {
     private final BackendConnectionEvents backendConnectionEvents;
-    private final DatabaseStorage database;
+    private final PersistenceStorage database;
 
-    public ServicesFactory( final BackendConnectionEvents backendConnectionEvents, final DatabaseStorage database ) {
+    public ServicesFactory( final BackendConnectionEvents backendConnectionEvents, final PersistenceStorage database ) {
         this.backendConnectionEvents = backendConnectionEvents;
         this.database = database;
     }

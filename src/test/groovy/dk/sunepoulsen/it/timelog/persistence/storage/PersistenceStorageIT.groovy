@@ -1,8 +1,8 @@
-package dk.sunepoulsen.it.timelog.db.storage
+package dk.sunepoulsen.it.timelog.persistence.storage
 
-import dk.sunepoulsen.timelog.db.entities.AgreementEntity
-import dk.sunepoulsen.timelog.db.storage.DatabaseStorage
-import dk.sunepoulsen.timelog.db.storage.DatabaseStorageSettings
+import dk.sunepoulsen.timelog.persistence.entities.AgreementEntity
+import dk.sunepoulsen.timelog.persistence.storage.PersistenceStorage
+import dk.sunepoulsen.timelog.persistence.storage.PersistenceStorageSettings
 import org.junit.After
 import org.junit.Before
 import org.junit.BeforeClass
@@ -14,18 +14,18 @@ import java.time.LocalDate
 /**
  * Created by sunepoulsen on 12/05/2017.
  */
-class DatabaseStorageIT {
-    private DatabaseStorage databaseStorage
+class PersistenceStorageIT {
+    private PersistenceStorage databaseStorage
 
     @BeforeClass
     static void migrateDatabase() {
-        DatabaseStorage database = new DatabaseStorage( "timelog", DatabaseStorageSettings.createInstanceFromPropertyResource( "/application-test.properties" ) )
+        PersistenceStorage database = new PersistenceStorage( "timelog", PersistenceStorageSettings.createInstanceFromPropertyResource( "/application-test.properties" ) )
         database.migrate()
     }
 
     @Before
     void initDatabaseStorage() {
-        databaseStorage = new DatabaseStorage( "timelog", DatabaseStorageSettings.createInstanceFromPropertyResource( "/application-test.properties" ) )
+        databaseStorage = new PersistenceStorage( "timelog", PersistenceStorageSettings.createInstanceFromPropertyResource( "/application-test.properties" ) )
         databaseStorage.connect()
         databaseStorage.deleteAllData()
     }

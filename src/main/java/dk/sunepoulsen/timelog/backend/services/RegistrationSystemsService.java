@@ -1,8 +1,8 @@
 package dk.sunepoulsen.timelog.backend.services;
 
 import dk.sunepoulsen.timelog.backend.events.RegistrationSystemsEvents;
-import dk.sunepoulsen.timelog.db.entities.RegistrationSystemEntity;
-import dk.sunepoulsen.timelog.db.storage.DatabaseStorage;
+import dk.sunepoulsen.timelog.persistence.entities.RegistrationSystemEntity;
+import dk.sunepoulsen.timelog.persistence.storage.PersistenceStorage;
 import dk.sunepoulsen.timelog.ui.model.registration.systems.RegistrationSystemModel;
 import dk.sunepoulsen.timelog.validation.TimeLogValidateException;
 import dk.sunepoulsen.timelog.validation.TimeLogValidation;
@@ -19,9 +19,9 @@ import java.util.stream.Collectors;
 @Slf4j
 public class RegistrationSystemsService {
     private final RegistrationSystemsEvents events;
-    private final DatabaseStorage database;
+    private final PersistenceStorage database;
 
-    public RegistrationSystemsService( final RegistrationSystemsEvents events, final DatabaseStorage database ) {
+    public RegistrationSystemsService( final RegistrationSystemsEvents events, final PersistenceStorage database ) {
         this.events = events;
         this.database = database;
     }

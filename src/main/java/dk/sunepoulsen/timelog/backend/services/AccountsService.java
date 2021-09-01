@@ -2,9 +2,9 @@ package dk.sunepoulsen.timelog.backend.services;
 
 import dk.sunepoulsen.timelog.backend.events.AccountsEvents;
 import dk.sunepoulsen.timelog.backend.events.RegistrationSystemsEvents;
-import dk.sunepoulsen.timelog.db.entities.AccountEntity;
-import dk.sunepoulsen.timelog.db.entities.RegistrationSystemEntity;
-import dk.sunepoulsen.timelog.db.storage.DatabaseStorage;
+import dk.sunepoulsen.timelog.persistence.entities.AccountEntity;
+import dk.sunepoulsen.timelog.persistence.entities.RegistrationSystemEntity;
+import dk.sunepoulsen.timelog.persistence.storage.PersistenceStorage;
 import dk.sunepoulsen.timelog.ui.model.accounts.AccountModel;
 import dk.sunepoulsen.timelog.validation.TimeLogValidateException;
 import dk.sunepoulsen.timelog.validation.TimeLogValidation;
@@ -22,10 +22,10 @@ import java.util.stream.Collectors;
 public class AccountsService {
     private final RegistrationSystemsEvents registrationSystemsEvents;
     private final AccountsEvents accountsEvents;
-    private final DatabaseStorage database;
+    private final PersistenceStorage database;
 
     public AccountsService( final AccountsEvents accountsEvents, final RegistrationSystemsEvents registrationSystemsEvents,
-                            final DatabaseStorage database ) {
+                            final PersistenceStorage database ) {
         this.accountsEvents = accountsEvents;
         this.registrationSystemsEvents = registrationSystemsEvents;
         this.database = database;
