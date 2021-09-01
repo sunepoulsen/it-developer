@@ -13,6 +13,10 @@ public class RegistrationSystemModelConverter extends StringConverter<Registrati
 
     @Override
     public String toString( RegistrationSystemModel object ) {
+        if (object == null) {
+            return "";
+        }
+
         return object.getName();
     }
 
