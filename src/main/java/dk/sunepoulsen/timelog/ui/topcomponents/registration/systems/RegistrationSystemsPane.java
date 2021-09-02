@@ -6,6 +6,7 @@ import dk.sunepoulsen.timelog.ui.dialogs.registration.systems.RegistrationSystem
 import dk.sunepoulsen.timelog.ui.model.registration.systems.RegistrationSystemModel;
 import dk.sunepoulsen.timelog.ui.tasks.backend.ExecuteBackendServiceTask;
 import dk.sunepoulsen.timelog.ui.tasks.backend.LoadBackendServiceItemsTask;
+import dk.sunepoulsen.timelog.utils.FXMLUtils;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -49,17 +50,7 @@ public class RegistrationSystemsPane extends BorderPane {
         this.backendConnection = registry.getBackendConnection();
         this.bundle = registry.getBundle( getClass() );
 
-        FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource( "registrationsystemspane.fxml" ) );
-        fxmlLoader.setRoot( this );
-        fxmlLoader.setController( this );
-        fxmlLoader.setResources( bundle );
-
-        try {
-            fxmlLoader.load();
-        }
-        catch( IOException exception ) {
-            throw new RuntimeException( exception );
-        }
+        FXMLUtils.initFxml(this.bundle, this);
     }
 
     @FXML

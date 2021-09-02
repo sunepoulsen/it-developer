@@ -6,6 +6,7 @@ import dk.sunepoulsen.timelog.ui.model.accounts.AccountModel;
 import dk.sunepoulsen.timelog.ui.model.registration.systems.RegistrationSystemModel;
 import dk.sunepoulsen.timelog.ui.model.registration.systems.RegistrationSystemModelConverter;
 import dk.sunepoulsen.timelog.utils.ControlUtils;
+import dk.sunepoulsen.timelog.utils.FXMLUtils;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -49,17 +50,7 @@ public class AccountDialog extends GridPane implements Initializable {
         this.registry = Registry.getDefault();
         this.model = model;
 
-        FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource( getClass().getSimpleName().toLowerCase() + ".fxml" ) );
-        fxmlLoader.setRoot( this );
-        fxmlLoader.setController( this );
-        fxmlLoader.setResources( registry.getBundle( getClass() ) );
-
-        try {
-            fxmlLoader.load();
-        }
-        catch( IOException exception ) {
-            throw new RuntimeException( exception );
-        }
+        FXMLUtils.initFxml(this.registry, this);
     }
 
     @Override
