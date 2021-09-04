@@ -6,6 +6,7 @@
         <class>dk.sunepoulsen.timelog.persistence.entities.AgreementEntity</class>
         <class>dk.sunepoulsen.timelog.persistence.entities.HolidayEntity</class>
         <class>dk.sunepoulsen.timelog.persistence.entities.RegistrationSystemEntity</class>
+        <class>dk.sunepoulsen.timelog.persistence.entities.RegistrationTypeEntity</class>
         <class>dk.sunepoulsen.timelog.persistence.entities.TimeLogEntity</class>
     </persistence-unit>
 </persistence>

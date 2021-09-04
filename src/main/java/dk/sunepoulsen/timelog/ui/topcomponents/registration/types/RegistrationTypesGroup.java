@@ -2,8 +2,11 @@ package dk.sunepoulsen.timelog.ui.topcomponents.registration.types;
 
 import dk.sunepoulsen.timelog.backend.BackendConnection;
 import dk.sunepoulsen.timelog.registry.Registry;
+import dk.sunepoulsen.timelog.ui.dialogs.registration.systems.RegistrationSystemDialog;
 import dk.sunepoulsen.timelog.ui.dialogs.registration.types.RegistrationTypeDialog;
+import dk.sunepoulsen.timelog.ui.model.registration.systems.RegistrationSystemModel;
 import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationTypeModel;
+import dk.sunepoulsen.timelog.ui.tasks.backend.ExecuteBackendServiceTask;
 import dk.sunepoulsen.timelog.ui.tasks.backend.LoadBackendServiceItemsTask;
 import dk.sunepoulsen.timelog.utils.AlertUtils;
 import dk.sunepoulsen.timelog.utils.FXMLUtils;
@@ -11,7 +14,9 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableView;
@@ -22,6 +27,7 @@ import javafx.scene.layout.Region;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collections;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Slf4j
@@ -58,10 +64,6 @@ public class RegistrationTypesGroup extends BorderPane {
     public void initialize() {
         log.info( "Initializing {} custom control", getClass().getSimpleName() );
 
-        // backendConnection.getEvents().getRegistrationSystems().getCreatedEvent().addListener( v -> reload() );
-        // backendConnection.getEvents().getRegistrationSystems().getUpdatedEvent().addListener( v -> reload() );
-        // backendConnection.getEvents().getRegistrationSystems().getDeletedEvent().addListener( v -> reload() );
-
         viewer.getSelectionModel().setSelectionMode( SelectionMode.MULTIPLE );
         viewer.getSelectionModel().getSelectedItems().addListener( this::updateButtonsState );
 
@@ -77,7 +79,7 @@ public class RegistrationTypesGroup extends BorderPane {
 
     private void reload() {
         LoadBackendServiceItemsTask<RegistrationTypeModel> task = new LoadBackendServiceItemsTask<>( backendConnection,
-            connection -> Collections.EMPTY_LIST
+            connection -> connection.servicesFactory().newRegistrationTypesService().findAll()
         );
 
         progressIndicator.progressProperty().bind( task.progressProperty() );
@@ -87,14 +89,14 @@ public class RegistrationTypesGroup extends BorderPane {
         task.setOnSucceeded( event -> {
             ObservableList<RegistrationTypeModel> movies = task.getValue();
 
-            log.info( "Viewing {} registration systems", movies.size() );
+            log.info( "Viewing {} registration types", movies.size() );
             viewer.setItems( movies );
 
             editButton.setDisable( true );
             deleteButton.setDisable( true );
         } );
 
-        log.info( "Loading registration systems" );
+        log.info( "Loading registration types" );
         registry.getUiRegistry().getTaskExecutorService().submit( task );
     }
 
@@ -125,18 +127,45 @@ public class RegistrationTypesGroup extends BorderPane {
 
     @FXML
     private void showDialogAndCreateRegistrationType() {
-        new RegistrationTypeDialog().showAndWait().ifPresent(registrationTypeModel ->
-            AlertUtils.notImplementedYet()
-        );
+        new RegistrationTypeDialog().showAndWait().ifPresent(registrationTypeModel -> {
+            ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
+                connection.servicesFactory().newRegistrationTypesService().create( registrationTypeModel )
+            );
+            task.setOnSucceeded(event -> reload());
+            registry.getUiRegistry().getTaskExecutorService().submit( task );
+        } );
     }
 
     @FXML
     private void showDialogAndUpdateRegistrationType() {
-        AlertUtils.notImplementedYet();
+        if( viewer.getSelectionModel().getSelectedItem() == null ) {
+            return;
+        }
+
+        new RegistrationTypeDialog( viewer.getSelectionModel().getSelectedItem() ).showAndWait()
+            .ifPresent( registrationSystemModel -> {
+                ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
+                    connection.servicesFactory().newRegistrationTypesService().update( registrationSystemModel )
+                );
+                task.setOnSucceeded(event -> reload());
+                registry.getUiRegistry().getTaskExecutorService().submit( task );
+            } );
     }
 
     @FXML
     private void confirmAndDeleteRegistrationType() {
-        AlertUtils.notImplementedYet();
+        Alert alert = new Alert( Alert.AlertType.CONFIRMATION, bundle.getString( "alert.deletion.content.text" ) );
+        alert.setHeaderText( bundle.getString( "alert.deletion.header.text" ) );
+        alert.setTitle( bundle.getString( "alert.deletion.title.text" ) );
+
+        alert.showAndWait()
+            .filter( response -> response == ButtonType.OK )
+            .ifPresent( response -> {
+                ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
+                    connection.servicesFactory().newRegistrationTypesService().delete( viewer.getSelectionModel().getSelectedItems() )
+                );
+                task.setOnSucceeded(event -> reload());
+                registry.getUiRegistry().getTaskExecutorService().submit( task );
+            } );
     }
 }
