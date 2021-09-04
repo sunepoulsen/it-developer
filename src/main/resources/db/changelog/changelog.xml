@@ -4,11 +4,5 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
 
-    <include file="holidays.xml" relativeToChangelogFile="true" />
-
-    <include file="agreements.xml" relativeToChangelogFile="true" />
-    <include file="registrationsystems.xml" relativeToChangelogFile="true" />
     <include file="registration_types.xml" relativeToChangelogFile="true" />
-    <include file="accounts.xml" relativeToChangelogFile="true" />
-    <include file="timelogs.xml" relativeToChangelogFile="true" />
 </databaseChangeLog>

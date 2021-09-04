@@ -30,11 +30,6 @@ public class RegistrationTypeModel {
     private String purpose;
 
     /**
-     * List of reasons that is associated with this registration type.
-     */
-    private List<RegistrationReasonModel> reasons;
-
-    /**
      * Set if a registration of this type is an all day event.
      */
     private boolean allDay;

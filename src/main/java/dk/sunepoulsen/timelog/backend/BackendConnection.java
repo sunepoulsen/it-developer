@@ -1,11 +1,9 @@
 package dk.sunepoulsen.timelog.backend;
 
-import dk.sunepoulsen.timelog.backend.events.BackendConnectionEvents;
 import dk.sunepoulsen.timelog.backend.services.ServicesFactory;
 import dk.sunepoulsen.timelog.persistence.storage.PersistenceStorage;
 import dk.sunepoulsen.timelog.persistence.storage.PersistenceStorageSettings;
 import liquibase.exception.LiquibaseException;
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -33,12 +31,8 @@ import java.sql.SQLException;
 public class BackendConnection {
     private PersistenceStorage database;
 
-    @Getter
-    private BackendConnectionEvents events;
-
     public BackendConnection( PersistenceStorageSettings persistenceStorageSettings) {
         this.database = new PersistenceStorage( "timelog", persistenceStorageSettings);
-        this.events = new BackendConnectionEvents();
     }
 
     public void connect() throws BackendConnectionException {
@@ -60,6 +54,6 @@ public class BackendConnection {
     }
 
     public ServicesFactory servicesFactory() {
-        return new ServicesFactory( this.events, this.database );
+        return new ServicesFactory( this.database );
     }
 }

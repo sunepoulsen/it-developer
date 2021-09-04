@@ -2,16 +2,11 @@ package dk.sunepoulsen.timelog.ui.topcomponents.registration.types;
 
 import dk.sunepoulsen.timelog.backend.BackendConnection;
 import dk.sunepoulsen.timelog.registry.Registry;
-import dk.sunepoulsen.timelog.ui.dialogs.registration.systems.RegistrationSystemDialog;
 import dk.sunepoulsen.timelog.ui.dialogs.registration.types.RegistrationTypeDialog;
-import dk.sunepoulsen.timelog.ui.model.TreeNavigatorModel;
-import dk.sunepoulsen.timelog.ui.model.registration.systems.RegistrationSystemModel;
 import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationTypeModel;
 import dk.sunepoulsen.timelog.ui.tasks.backend.ExecuteBackendServiceTask;
 import dk.sunepoulsen.timelog.ui.tasks.backend.LoadBackendServiceItemsTask;
-import dk.sunepoulsen.timelog.utils.AlertUtils;
 import dk.sunepoulsen.timelog.utils.FXMLUtils;
-import javafx.beans.Observable;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -30,8 +25,6 @@ import javafx.scene.layout.Region;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Collections;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 @Slf4j

@@ -5,12 +5,8 @@ import dk.sunepoulsen.timelog.ui.dialogs.DialogHelper;
 import dk.sunepoulsen.timelog.ui.dialogs.DialogImplementor;
 import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationTypeModel;
 import dk.sunepoulsen.timelog.utils.FXMLUtils;
-import javafx.application.Platform;
-import javafx.beans.Observable;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -66,7 +62,6 @@ public class RegistrationTypeDialog extends GridPane implements Initializable, D
         result.setName(nameField.getText());
         result.setDescription(descriptionField.getText());
         result.setPurpose(purposeField.getText());
-        result.setReasons(model.getReasons());
         result.setAllDay(allDayField.isSelected());
 
         return result;
