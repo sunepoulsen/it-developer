@@ -6,6 +6,8 @@ import dk.sunepoulsen.timelog.ui.dialogs.DialogImplementor;
 import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationTypeModel;
 import dk.sunepoulsen.timelog.utils.FXMLUtils;
 import javafx.application.Platform;
+import javafx.beans.Observable;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ButtonType;
@@ -19,7 +21,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class RegistrationTypeDialog extends GridPane implements Initializable, DialogImplementor<RegistrationTypeModel> {
-    private RegistrationTypeModel model;
+    private final RegistrationTypeModel model;
 
     @FXML
     private TextField nameField = null;
@@ -46,30 +48,19 @@ public class RegistrationTypeDialog extends GridPane implements Initializable, D
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        dialogHelper = new DialogHelper<>();
-        dialogHelper.initialize(this, resources);
+        dialogHelper = new DialogHelper<>(this);
+        dialogHelper.initialize(resources);
 
-        toControls();
-
-        nameField.textProperty().addListener( ( observable, oldValue, newValue ) -> dialogHelper.disableButtons(toModel()) );
-        nameField.focusedProperty().addListener( ( observable, oldValue, newValue ) -> dialogHelper.disableButtons(toModel()) );
+        nameField.textProperty().addListener(dialogHelper::disableButtons);
+        nameField.focusedProperty().addListener(dialogHelper::disableButtons);
     }
 
     public Optional<RegistrationTypeModel> showAndWait() {
-        Platform.runLater( () -> nameField.requestFocus() );
-        return dialogHelper.showAndWait();
+        return dialogHelper.showAndWait(nameField);
     }
 
     @Override
-    public RegistrationTypeModel convertControls(ButtonType buttonType) {
-        if( !buttonType.equals( ButtonType.OK ) ) {
-            return null;
-        }
-
-        return toModel();
-    }
-
-    private RegistrationTypeModel toModel() {
+    public RegistrationTypeModel toModel() {
         RegistrationTypeModel result = new RegistrationTypeModel();
         result.setId(model.getId());
         result.setName(nameField.getText());
@@ -81,7 +72,8 @@ public class RegistrationTypeDialog extends GridPane implements Initializable, D
         return result;
     }
 
-    private void toControls() {
+    @Override
+    public void toControls() {
         nameField.setText(model.getName());
         descriptionField.setText(model.getDescription());
         purposeField.setText(model.getPurpose());
