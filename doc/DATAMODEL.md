@@ -1,6 +1,6 @@
 # Data Model
 
-The Data Model describes how the database are organized and its entity types
+The Data Model describes how the database are organized and its entity types.
 
 ## Registration Types
 
@@ -28,6 +28,6 @@ The registration type describes:
 From the requirements above we get the following entities:
 
 - `registration_types`
-- `reasons`
+- `registration_reasons`
 
-There will be a one-to-many relation between `registration_types` and `reasons`
+There will be a one-to-many relation between `registration_types` and `registration_reasons`.
