@@ -43,6 +43,11 @@
             <column name="description" type="varchar(8192)" />
             <column name="purpose" type="varchar(8192)" />
         </createTable>
+
+        <addForeignKeyConstraint constraintName="fk_registration_reasons_registration_type_id"
+                                 baseTableName="registration_reasons" baseColumnNames="registration_type_id"
+                                 referencedTableName="registration_types" referencedColumnNames="registration_type_id"
+        />
     </changeSet>
 
 </databaseChangeLog>
