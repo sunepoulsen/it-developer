@@ -2,15 +2,24 @@ package dk.sunepoulsen.timelog.ui.topcomponents.registration.types;
 
 import dk.sunepoulsen.timelog.backend.BackendConnection;
 import dk.sunepoulsen.timelog.registry.Registry;
+import dk.sunepoulsen.timelog.ui.dialogs.registration.types.RegistrationReasonDialog;
+import dk.sunepoulsen.timelog.ui.dialogs.registration.types.RegistrationTypeDialog;
+import dk.sunepoulsen.timelog.ui.model.TreeNavigatorModel;
 import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationReasonModel;
+import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationTypeModel;
+import dk.sunepoulsen.timelog.ui.tasks.backend.ExecuteBackendServiceTask;
 import dk.sunepoulsen.timelog.ui.tasks.backend.LoadBackendServiceItemsTask;
 import dk.sunepoulsen.timelog.utils.AlertUtils;
 import dk.sunepoulsen.timelog.utils.FXMLUtils;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TableView;
@@ -18,6 +27,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collections;
@@ -44,11 +54,14 @@ public class RegistrationReasonsGroup extends BorderPane {
     @FXML
     private Button deleteButton = null;
 
+    @Getter
+    private SimpleObjectProperty<RegistrationTypeModel> currentRegistrationTypeProperty;
 
     public RegistrationReasonsGroup() {
         this.registry = Registry.getDefault();
         this.backendConnection = registry.getBackendConnection();
         this.bundle = registry.getBundle( getClass() );
+        this.currentRegistrationTypeProperty = new SimpleObjectProperty<>();
 
         FXMLUtils.initFxml(this.bundle, this);
     }
@@ -57,12 +70,9 @@ public class RegistrationReasonsGroup extends BorderPane {
     public void initialize() {
         log.info( "Initializing {} custom control", getClass().getSimpleName() );
 
-        // backendConnection.getEvents().getRegistrationSystems().getCreatedEvent().addListener( v -> reload() );
-        // backendConnection.getEvents().getRegistrationSystems().getUpdatedEvent().addListener( v -> reload() );
-        // backendConnection.getEvents().getRegistrationSystems().getDeletedEvent().addListener( v -> reload() );
-
         viewer.getSelectionModel().setSelectionMode( SelectionMode.MULTIPLE );
         viewer.getSelectionModel().getSelectedItems().addListener( this::updateButtonsState );
+        currentRegistrationTypeProperty.addListener( ( observable, oldValue, newValue ) -> reload() );
 
         reload();
     }
@@ -75,8 +85,13 @@ public class RegistrationReasonsGroup extends BorderPane {
     }
 
     private void reload() {
+        if (currentRegistrationTypeProperty.getValue() == null) {
+            viewer.setItems(FXCollections.emptyObservableList());
+            return;
+        }
+
         LoadBackendServiceItemsTask<RegistrationReasonModel> task = new LoadBackendServiceItemsTask<>( backendConnection,
-            connection -> Collections.EMPTY_LIST
+            connection -> connection.servicesFactory().newRegistrationReasonsService().findAll(currentRegistrationTypeProperty.getValue().getId())
         );
 
         progressIndicator.progressProperty().bind( task.progressProperty() );
@@ -86,14 +101,14 @@ public class RegistrationReasonsGroup extends BorderPane {
         task.setOnSucceeded( event -> {
             ObservableList<RegistrationReasonModel> reasons = task.getValue();
 
-            log.info( "Viewing {} registration systems", reasons.size() );
+            log.info( "Viewing {} registration reasons", reasons.size() );
             viewer.setItems( reasons );
 
             editButton.setDisable( true );
             deleteButton.setDisable( true );
         } );
 
-        log.info( "Loading registration systems" );
+        log.info( "Loading registration reasons" );
         registry.getUiRegistry().getTaskExecutorService().submit( task );
     }
 
@@ -124,16 +139,45 @@ public class RegistrationReasonsGroup extends BorderPane {
 
     @FXML
     private void showDialogAndCreateRegistrationSystem() {
-        AlertUtils.notImplementedYet();
+        new RegistrationReasonDialog(currentRegistrationTypeProperty.getValue().getId()).showAndWait().ifPresent(registrationReasonModel -> {
+            ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
+                connection.servicesFactory().newRegistrationReasonsService().create( registrationReasonModel )
+            );
+            task.setOnSucceeded(event -> reload());
+            registry.getUiRegistry().getTaskExecutorService().submit( task );
+        } );
     }
 
     @FXML
     private void showDialogAndUpdateRegistrationSystem() {
-        AlertUtils.notImplementedYet();
+        if( viewer.getSelectionModel().getSelectedItem() == null ) {
+            return;
+        }
+
+        new RegistrationReasonDialog( viewer.getSelectionModel().getSelectedItem() ).showAndWait()
+            .ifPresent( registrationReasonModel -> {
+                ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
+                    connection.servicesFactory().newRegistrationReasonsService().update( registrationReasonModel )
+                );
+                task.setOnSucceeded(event -> reload());
+                registry.getUiRegistry().getTaskExecutorService().submit( task );
+            } );
     }
 
     @FXML
     private void confirmAndDeleteRegistrationSystem() {
-        AlertUtils.notImplementedYet();
+        Alert alert = new Alert( Alert.AlertType.CONFIRMATION, bundle.getString( "alert.deletion.content.text" ) );
+        alert.setHeaderText( bundle.getString( "alert.deletion.header.text" ) );
+        alert.setTitle( bundle.getString( "alert.deletion.title.text" ) );
+
+        alert.showAndWait()
+            .filter( response -> response == ButtonType.OK )
+            .ifPresent( response -> {
+                ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
+                    connection.servicesFactory().newRegistrationReasonsService().delete( viewer.getSelectionModel().getSelectedItems() )
+                );
+                task.setOnSucceeded(event -> reload());
+                registry.getUiRegistry().getTaskExecutorService().submit( task );
+            } );
     }
 }

@@ -35,4 +35,7 @@ public class RegistrationTypeEntity {
 
     @Column( name = "all_day" )
     private Boolean allDay;
+
+    @OneToMany( cascade = ALL, fetch = FetchType.LAZY, mappedBy = "registrationType" )
+    private Set<RegistrationReasonEntity> reasons;
 }

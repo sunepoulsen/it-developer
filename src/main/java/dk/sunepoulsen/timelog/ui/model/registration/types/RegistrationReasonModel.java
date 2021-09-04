@@ -10,6 +10,8 @@ public class RegistrationReasonModel {
      */
     private Long id;
 
+    private Long registrationTypeId;
+
     @NotNull
     private String name;
 

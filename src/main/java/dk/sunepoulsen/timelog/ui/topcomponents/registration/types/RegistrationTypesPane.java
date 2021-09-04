@@ -23,5 +23,6 @@ public class RegistrationTypesPane extends BorderPane implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        registrationReasons.getCurrentRegistrationTypeProperty().bind( registrationTypes.getSelectedRegistrationTypeProperty() );
     }
 }

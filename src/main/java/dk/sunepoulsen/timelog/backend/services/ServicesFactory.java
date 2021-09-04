@@ -27,4 +27,8 @@ public class ServicesFactory {
     public RegistrationTypesService newRegistrationTypesService() {
         return new RegistrationTypesService( this.database );
     }
+
+    public RegistrationReasonsService newRegistrationReasonsService() {
+        return new RegistrationReasonsService( this.database );
+    }
 }

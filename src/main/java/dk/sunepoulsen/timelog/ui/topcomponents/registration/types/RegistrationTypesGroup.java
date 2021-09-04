@@ -4,12 +4,15 @@ import dk.sunepoulsen.timelog.backend.BackendConnection;
 import dk.sunepoulsen.timelog.registry.Registry;
 import dk.sunepoulsen.timelog.ui.dialogs.registration.systems.RegistrationSystemDialog;
 import dk.sunepoulsen.timelog.ui.dialogs.registration.types.RegistrationTypeDialog;
+import dk.sunepoulsen.timelog.ui.model.TreeNavigatorModel;
 import dk.sunepoulsen.timelog.ui.model.registration.systems.RegistrationSystemModel;
 import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationTypeModel;
 import dk.sunepoulsen.timelog.ui.tasks.backend.ExecuteBackendServiceTask;
 import dk.sunepoulsen.timelog.ui.tasks.backend.LoadBackendServiceItemsTask;
 import dk.sunepoulsen.timelog.utils.AlertUtils;
 import dk.sunepoulsen.timelog.utils.FXMLUtils;
+import javafx.beans.Observable;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -24,6 +27,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Collections;
@@ -51,6 +55,8 @@ public class RegistrationTypesGroup extends BorderPane {
     @FXML
     private Button deleteButton = null;
 
+    @Getter
+    private SimpleObjectProperty<RegistrationTypeModel> selectedRegistrationTypeProperty;
 
     public RegistrationTypesGroup() {
         this.registry = Registry.getDefault();
@@ -64,10 +70,22 @@ public class RegistrationTypesGroup extends BorderPane {
     public void initialize() {
         log.info( "Initializing {} custom control", getClass().getSimpleName() );
 
+        selectedRegistrationTypeProperty = new SimpleObjectProperty<>();
         viewer.getSelectionModel().setSelectionMode( SelectionMode.MULTIPLE );
         viewer.getSelectionModel().getSelectedItems().addListener( this::updateButtonsState );
+        viewer.getSelectionModel().getSelectedItems().addListener( this::updateSelectedRegistrationType );
 
         reload();
+    }
+
+    private void updateSelectedRegistrationType(ListChangeListener.Change<? extends RegistrationTypeModel> listener) {
+        ObservableList<? extends RegistrationTypeModel> list = listener.getList();
+        if (list.size() != 1) {
+            selectedRegistrationTypeProperty.setValue(null);
+        }
+        else {
+            selectedRegistrationTypeProperty.setValue(list.get(0));
+        }
     }
 
     private void updateButtonsState( ListChangeListener.Change<? extends RegistrationTypeModel> listener ) {
