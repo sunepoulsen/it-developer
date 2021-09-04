@@ -3,6 +3,7 @@ package dk.sunepoulsen.timelog.ui.dialogs.registration.systems;
 import dk.sunepoulsen.timelog.registry.Registry;
 import dk.sunepoulsen.timelog.ui.model.registration.systems.RegistrationSystemModel;
 import dk.sunepoulsen.timelog.utils.ControlUtils;
+import dk.sunepoulsen.timelog.utils.FXMLUtils;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -44,17 +45,7 @@ public class RegistrationSystemDialog extends GridPane implements Initializable 
         this.registry = Registry.getDefault();
         this.model = model;
 
-        FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource( "registrationsystemdialog.fxml" ) );
-        fxmlLoader.setRoot( this );
-        fxmlLoader.setController( this );
-        fxmlLoader.setResources( registry.getBundle( getClass() ) );
-
-        try {
-            fxmlLoader.load();
-        }
-        catch( IOException exception ) {
-            throw new RuntimeException( exception );
-        }
+        FXMLUtils.initFxml(this.registry, this);
     }
 
     @Override

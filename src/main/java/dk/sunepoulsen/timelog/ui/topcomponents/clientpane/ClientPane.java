@@ -1,6 +1,7 @@
 package dk.sunepoulsen.timelog.ui.topcomponents.clientpane;
 
 import dk.sunepoulsen.timelog.ui.model.TreeNavigatorModel;
+import dk.sunepoulsen.timelog.utils.FXMLUtils;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,16 +24,7 @@ public class ClientPane extends AnchorPane {
     public ClientPane() {
         this.currentPaneProperty = new SimpleObjectProperty<>();
 
-        FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource( "clientpane.fxml" ) );
-        fxmlLoader.setRoot( this );
-        fxmlLoader.setController( this );
-
-        try {
-            fxmlLoader.load();
-        }
-        catch( IOException exception ) {
-            throw new RuntimeException( exception );
-        }
+        FXMLUtils.initFxmlWithNoBundle(this);
     }
 
     @FXML

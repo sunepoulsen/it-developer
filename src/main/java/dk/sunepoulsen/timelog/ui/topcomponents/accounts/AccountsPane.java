@@ -6,6 +6,7 @@ import dk.sunepoulsen.timelog.ui.dialogs.accounts.AccountDialog;
 import dk.sunepoulsen.timelog.ui.model.accounts.AccountModel;
 import dk.sunepoulsen.timelog.ui.tasks.backend.ExecuteBackendServiceTask;
 import dk.sunepoulsen.timelog.ui.tasks.backend.LoadBackendServiceItemsTask;
+import dk.sunepoulsen.timelog.utils.FXMLUtils;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -53,17 +54,7 @@ public class AccountsPane extends BorderPane {
         this.backendConnection = registry.getBackendConnection();
         this.bundle = registry.getBundle( getClass() );
 
-        FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource( "accountspane.fxml" ) );
-        fxmlLoader.setRoot( this );
-        fxmlLoader.setController( this );
-        fxmlLoader.setResources( registry.getBundle( getClass() ) );
-
-        try {
-            fxmlLoader.load();
-        }
-        catch( IOException exception ) {
-            throw new RuntimeException( exception );
-        }
+        FXMLUtils.initFxml(this.bundle, this);
     }
 
     @FXML

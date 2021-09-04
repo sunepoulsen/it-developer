@@ -1,6 +1,7 @@
 package dk.sunepoulsen.timelog.ui.topcomponents.navigator;
 
 import dk.sunepoulsen.timelog.ui.model.TreeNavigatorModel;
+import dk.sunepoulsen.timelog.utils.FXMLUtils;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -27,16 +28,7 @@ public class TreeNavigator extends AnchorPane {
     private SimpleObjectProperty<TreeNavigatorModel> selectedProperty;
 
     public TreeNavigator() {
-        FXMLLoader fxmlLoader = new FXMLLoader( getClass().getResource( "treenavigator.fxml" ) );
-        fxmlLoader.setRoot( this );
-        fxmlLoader.setController( this );
-
-        try {
-            fxmlLoader.load();
-        }
-        catch( IOException exception ) {
-            throw new RuntimeException( exception );
-        }
+        FXMLUtils.initFxmlWithNoBundle(this);
     }
 
     @FXML

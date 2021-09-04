@@ -23,4 +23,12 @@ public class ServicesFactory {
     public RegistrationSystemsService newRegistrationSystemsService() {
         return new RegistrationSystemsService( this.backendConnectionEvents.getRegistrationSystems(), this.database );
     }
+
+    public RegistrationTypesService newRegistrationTypesService() {
+        return new RegistrationTypesService( this.database );
+    }
+
+    public RegistrationReasonsService newRegistrationReasonsService() {
+        return new RegistrationReasonsService( this.database );
+    }
 }
