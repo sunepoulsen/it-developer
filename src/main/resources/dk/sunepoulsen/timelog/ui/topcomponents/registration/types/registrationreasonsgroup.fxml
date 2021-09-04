@@ -40,7 +40,7 @@
             </padding>
 
             <buttons>
-                <Button text="%add.button.title" ButtonBar.buttonData="RIGHT" onAction="#addButtonClicked">
+                <Button fx:id="addButton" text="%add.button.title" ButtonBar.buttonData="RIGHT" onAction="#addButtonClicked">
                     <graphic>
                         <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                             <image>

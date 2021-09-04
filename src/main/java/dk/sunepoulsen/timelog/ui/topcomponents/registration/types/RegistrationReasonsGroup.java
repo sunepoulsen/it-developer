@@ -30,6 +30,7 @@ import javafx.scene.layout.Region;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.ResourceBundle;
 
@@ -47,6 +48,9 @@ public class RegistrationReasonsGroup extends BorderPane {
 
     @FXML
     private ProgressIndicator progressIndicator = null;
+
+    @FXML
+    private Button addButton = null;
 
     @FXML
     private Button editButton = null;
@@ -72,8 +76,12 @@ public class RegistrationReasonsGroup extends BorderPane {
 
         viewer.getSelectionModel().setSelectionMode( SelectionMode.MULTIPLE );
         viewer.getSelectionModel().getSelectedItems().addListener( this::updateButtonsState );
-        currentRegistrationTypeProperty.addListener( ( observable, oldValue, newValue ) -> reload() );
+        currentRegistrationTypeProperty.addListener( ( observable, oldValue, newValue ) -> {
+            addButton.disableProperty().setValue(newValue == null);
+            reload();
+        });
 
+        addButton.disableProperty().setValue(true);
         reload();
     }
 
@@ -85,13 +93,14 @@ public class RegistrationReasonsGroup extends BorderPane {
     }
 
     private void reload() {
-        if (currentRegistrationTypeProperty.getValue() == null) {
-            viewer.setItems(FXCollections.emptyObservableList());
-            return;
-        }
-
         LoadBackendServiceItemsTask<RegistrationReasonModel> task = new LoadBackendServiceItemsTask<>( backendConnection,
-            connection -> connection.servicesFactory().newRegistrationReasonsService().findAll(currentRegistrationTypeProperty.getValue().getId())
+            connection -> {
+                if (currentRegistrationTypeProperty.getValue() != null) {
+                    return connection.servicesFactory().newRegistrationReasonsService().findAll(currentRegistrationTypeProperty.getValue().getId());
+                }
+
+                return Collections.emptyList();
+            }
         );
 
         progressIndicator.progressProperty().bind( task.progressProperty() );
