@@ -14,7 +14,7 @@ import static javax.persistence.CascadeType.ALL;
     @NamedQuery( name = "findAllRegistrationReasons", query = "SELECT r FROM RegistrationReasonEntity r WHERE r.registrationType.id = :registration_type_id" ),
     @NamedQuery( name = "deleteRegistrationReasons", query = "DELETE FROM RegistrationReasonEntity r WHERE r.id IN :ids" )
 })
-public class RegistrationReasonEntity {
+public class RegistrationReasonEntity implements AbstractEntity {
     /**
      * Primary key.
      */

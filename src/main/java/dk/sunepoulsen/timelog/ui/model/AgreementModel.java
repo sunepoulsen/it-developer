@@ -12,7 +12,7 @@ import java.time.LocalDate;
 import java.util.Map;
 
 @Data
-public class AgreementModel {
+public class AgreementModel implements AbstractModel {
     /**
      * Unique identifier of the agreement.
      */

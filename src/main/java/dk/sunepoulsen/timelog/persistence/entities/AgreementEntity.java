@@ -15,7 +15,7 @@ import static javax.persistence.CascadeType.ALL;
     @NamedQuery( name = "findAllAgreements", query = "SELECT r FROM AgreementEntity r" ),
     @NamedQuery( name = "deleteAgreements", query = "DELETE FROM AgreementEntity r WHERE r.id IN :ids" )
 })
-public class AgreementEntity {
+public class AgreementEntity implements AbstractEntity {
     /**
      * Primary key.
      */

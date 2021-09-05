@@ -21,7 +21,7 @@ public class ServicesFactory {
         return new RegistrationTypesService( this.database );
     }
 
-    public RegistrationReasonsService newRegistrationReasonsService() {
-        return new RegistrationReasonsService( this.database );
+    public RegistrationReasonsService newRegistrationReasonsService(Long registrationTypeId) {
+        return new RegistrationReasonsService( this.database, registrationTypeId );
     }
 }

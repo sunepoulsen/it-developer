@@ -96,7 +96,7 @@ public class RegistrationReasonsGroup extends BorderPane {
         LoadBackendServiceItemsTask<RegistrationReasonModel> task = new LoadBackendServiceItemsTask<>( backendConnection,
             connection -> {
                 if (currentRegistrationTypeProperty.getValue() != null) {
-                    return connection.servicesFactory().newRegistrationReasonsService().findAll(currentRegistrationTypeProperty.getValue().getId());
+                    return connection.servicesFactory().newRegistrationReasonsService(currentRegistrationTypeProperty.getValue().getId()).findAll();
                 }
 
                 return Collections.emptyList();
@@ -150,7 +150,7 @@ public class RegistrationReasonsGroup extends BorderPane {
     private void showDialogAndCreateRegistrationSystem() {
         new RegistrationReasonDialog(currentRegistrationTypeProperty.getValue().getId()).showAndWait().ifPresent(registrationReasonModel -> {
             ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
-                connection.servicesFactory().newRegistrationReasonsService().create( registrationReasonModel )
+                connection.servicesFactory().newRegistrationReasonsService(currentRegistrationTypeProperty.getValue().getId()).create( registrationReasonModel )
             );
             task.setOnSucceeded(event -> reload());
             registry.getUiRegistry().getTaskExecutorService().submit( task );
@@ -166,7 +166,7 @@ public class RegistrationReasonsGroup extends BorderPane {
         new RegistrationReasonDialog( viewer.getSelectionModel().getSelectedItem() ).showAndWait()
             .ifPresent( registrationReasonModel -> {
                 ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
-                    connection.servicesFactory().newRegistrationReasonsService().update( registrationReasonModel )
+                    connection.servicesFactory().newRegistrationReasonsService(currentRegistrationTypeProperty.getValue().getId()).update( registrationReasonModel )
                 );
                 task.setOnSucceeded(event -> reload());
                 registry.getUiRegistry().getTaskExecutorService().submit( task );
@@ -183,7 +183,7 @@ public class RegistrationReasonsGroup extends BorderPane {
             .filter( response -> response == ButtonType.OK )
             .ifPresent( response -> {
                 ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
-                    connection.servicesFactory().newRegistrationReasonsService().delete( viewer.getSelectionModel().getSelectedItems() )
+                    connection.servicesFactory().newRegistrationReasonsService(currentRegistrationTypeProperty.getValue().getId()).delete( viewer.getSelectionModel().getSelectedItems() )
                 );
                 task.setOnSucceeded(event -> reload());
                 registry.getUiRegistry().getTaskExecutorService().submit( task );

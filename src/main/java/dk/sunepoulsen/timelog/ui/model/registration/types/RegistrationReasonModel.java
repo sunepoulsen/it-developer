@@ -1,10 +1,11 @@
 package dk.sunepoulsen.timelog.ui.model.registration.types;
 
+import dk.sunepoulsen.timelog.ui.model.AbstractModel;
 import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class RegistrationReasonModel {
+public class RegistrationReasonModel implements AbstractModel {
     /**
      * Unique identifier of the registration reason.
      */
