@@ -1,5 +1,6 @@
 package dk.sunepoulsen.timelog.ui.model.registration.types;
 
+import dk.sunepoulsen.timelog.ui.model.AbstractModel;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -8,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
-public class RegistrationTypeModel {
+public class RegistrationTypeModel implements AbstractModel {
     /**
      * Unique identifier of the registration type.
      */

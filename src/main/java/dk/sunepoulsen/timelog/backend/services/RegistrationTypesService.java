@@ -15,65 +15,13 @@ import java.util.stream.Collectors;
  * Created by sunepoulsen on 12/06/2017.
  */
 @Slf4j
-public class RegistrationTypesService {
-    private final PersistenceStorage database;
-
+public class RegistrationTypesService extends AbstractPersistenceService<RegistrationTypeModel, RegistrationTypeEntity> {
     public RegistrationTypesService(final PersistenceStorage database ) {
-        this.database = database;
+        super(database, RegistrationTypeEntity.class, "findAllRegistrationTypes", "deleteRegistrationTypes");
     }
 
-    public RegistrationTypeModel create(RegistrationTypeModel registrationType ) throws TimeLogValidateException {
-        TimeLogValidation.validateValue( registrationType );
-
-        database.transactional( em -> {
-            RegistrationTypeEntity entity = convertModel( new RegistrationTypeEntity(), registrationType );
-            em.persist( entity );
-
-            registrationType.setId( entity.getId() );
-        } );
-
-        return registrationType;
-    }
-
-    public RegistrationTypeModel update( RegistrationTypeModel registrationSystem ) throws TimeLogValidateException {
-        TimeLogValidation.validateValue( registrationSystem );
-
-        database.transactional( em -> {
-            RegistrationTypeEntity entity = em.find( RegistrationTypeEntity.class, registrationSystem.getId() );
-            entity = convertModel( entity, registrationSystem );
-            em.persist( entity );
-
-            registrationSystem.setId( entity.getId() );
-        } );
-
-        return registrationSystem;
-    }
-
-    public void delete( List<RegistrationTypeModel> registrationTypes) {
-        database.transactional( em -> {
-            Query q = em.createNamedQuery( "deleteRegistrationTypes" );
-            q.setParameter( "ids", registrationTypes.stream().map( RegistrationTypeModel::getId ).collect( Collectors.toList() ) );
-
-            log.info( "Deleted {} registration systems", q.executeUpdate() );
-        } );
-    }
-
-    public RegistrationTypeModel find( Long id ) {
-        return database.untransactionalFunction( em -> {
-            RegistrationTypeEntity entity = em.find( RegistrationTypeEntity.class, id );
-            return convertEntity( entity );
-        } );
-    }
-
-    public List<RegistrationTypeModel> findAll() {
-        List<RegistrationTypeEntity> entities = database.query( em ->  em.createNamedQuery( "findAllRegistrationTypes", RegistrationTypeEntity.class ) );
-
-        return entities.stream()
-                .map( RegistrationTypesService::convertEntity )
-                .collect( Collectors.toList() );
-    }
-
-    static RegistrationTypeEntity convertModel( RegistrationTypeEntity entity, RegistrationTypeModel model ) {
+    @Override
+    protected RegistrationTypeEntity convertModel( RegistrationTypeEntity entity, RegistrationTypeModel model ) {
         entity.setId( model.getId() );
         entity.setName( model.getName() );
         entity.setDescription( model.getDescription() );
@@ -83,7 +31,8 @@ public class RegistrationTypesService {
         return entity;
     }
 
-    static RegistrationTypeModel convertEntity( RegistrationTypeEntity entity ) {
+    @Override
+    protected RegistrationTypeModel convertEntity( RegistrationTypeEntity entity ) {
         RegistrationTypeModel model = new RegistrationTypeModel();
 
         model.setId( entity.getId() );

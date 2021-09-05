@@ -14,7 +14,7 @@ import static javax.persistence.CascadeType.ALL;
     @NamedQuery( name = "findAllRegistrationTypes", query = "SELECT r FROM RegistrationTypeEntity r" ),
     @NamedQuery( name = "deleteRegistrationTypes", query = "DELETE FROM RegistrationTypeEntity r WHERE r.id IN :ids" )
 })
-public class RegistrationTypeEntity {
+public class RegistrationTypeEntity implements AbstractEntity {
     /**
      * Primary key.
      */

@@ -2,6 +2,7 @@ package dk.sunepoulsen.timelog.ui.topcomponents.navigator;
 
 import dk.sunepoulsen.timelog.ui.model.NodeNavigationModel;
 import dk.sunepoulsen.timelog.ui.model.TreeNavigatorModel;
+import dk.sunepoulsen.timelog.ui.topcomponents.AgreementsPane;
 import dk.sunepoulsen.timelog.ui.topcomponents.registration.types.RegistrationTypesPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
@@ -14,6 +15,7 @@ public class RootNode extends TreeItem<TreeNavigatorModel> {
         super();
 
         TreeItem<TreeNavigatorModel> adminItem = createParentItem("Admin");
+        createAndAddChildItem(adminItem, new NodeNavigationModel( "Agreements", new AgreementsPane() ));
         createAndAddChildItem(adminItem, new NodeNavigationModel( "Registration Types", new RegistrationTypesPane() ));
         addRootItem(adminItem);
     }
