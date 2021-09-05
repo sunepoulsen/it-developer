@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="1" author="stp">
+        <createSequence cycle="false"
+                        incrementBy="50"
+                        sequenceName="agreement_id_seq"
+                        startValue="1"/>
+
+        <createTable tableName="agreements">
+            <column name="agreement_id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="start_date" type="date" />
+            <column name="end_date" type="date" />
+            <column name="monday_norm" type="double" />
+            <column name="tuesday_norm" type="double" />
+            <column name="wednesday_norm" type="double" />
+            <column name="thursday_norm" type="double" />
+            <column name="friday_norm" type="double" />
+            <column name="saturday_norm" type="double" />
+            <column name="sunday_norm" type="double" />
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

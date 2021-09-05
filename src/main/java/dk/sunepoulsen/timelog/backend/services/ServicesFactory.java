@@ -13,6 +13,10 @@ public class ServicesFactory {
         this.database = database;
     }
 
+    public AgreementsService newAgreementsService() {
+        return new AgreementsService( this.database );
+    }
+
     public RegistrationTypesService newRegistrationTypesService() {
         return new RegistrationTypesService( this.database );
     }
