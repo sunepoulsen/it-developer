@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<fx:root type="javafx.scene.layout.BorderPane" xmlns:fx="http://javafx.com/fxml">
+    <center>
+        <StackPane AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                   AnchorPane.bottomAnchor="0.0">
+            <children>
+                <TableView fx:id="viewer" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0"
+                               AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0" onMouseClicked="#viewerRowClicked">
+                    <columns>
+                        <TableColumn text="%table.column.account-number.title" visible="true" prefWidth="150">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="accountNumber"/>
+                            </cellValueFactory>
+                        </TableColumn>
+
+                        <TableColumn text="%table.column.description.title" visible="true" prefWidth="600">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="description"/>
+                            </cellValueFactory>
+                        </TableColumn>
+                    </columns>
+                </TableView>
+
+                <Region fx:id="veil" style="-fx-background-color: rgba(0, 0, 0, 0.4)" visible="false" />
+                <ProgressIndicator fx:id="progressIndicator" maxWidth="150" maxHeight="150" visible="false" />
+            </children>
+        </StackPane>
+    </center>
+
+    <bottom>
+        <ButtonBar>
+            <padding>
+                <Insets top="10.0" />
+            </padding>
+
+            <buttons>
+                <Button text="%add.button.title" ButtonBar.buttonData="RIGHT" onAction="#addButtonClicked">
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@/images/add.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Button fx:id="editButton" text="%edit.button.title" ButtonBar.buttonData="RIGHT" onAction="#editButtonClicked">
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@/images/edit.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Button fx:id="deleteButton" text="%delete.button.title" ButtonBar.buttonData="RIGHT" onAction="#deleteButtonClicked">
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@/images/delete.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </buttons>
+        </ButtonBar>
+    </bottom>
+
+</fx:root>

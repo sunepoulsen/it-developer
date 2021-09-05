@@ -20,8 +20,8 @@ public class AgreementEntity implements AbstractEntity {
      * Primary key.
      */
     @Id
-    @SequenceGenerator( name = "registration_type_id_seq_generator", sequenceName = "registration_type_id_seq", allocationSize = 1 )
-    @GeneratedValue( strategy = GenerationType.SEQUENCE, generator = "registration_type_id_seq_generator" )
+    @SequenceGenerator( name = "agreement_id_seq_generator", sequenceName = "agreement_id_seq_seq", allocationSize = 1 )
+    @GeneratedValue( strategy = GenerationType.SEQUENCE, generator = "agreement_id_seq_seq_generator" )
     @Column( name = "agreement_id" )
     private Long id;
 

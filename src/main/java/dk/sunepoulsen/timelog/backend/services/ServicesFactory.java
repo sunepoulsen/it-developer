@@ -17,11 +17,15 @@ public class ServicesFactory {
         return new AgreementsService( this.database );
     }
 
-    public RegistrationTypesService newRegistrationTypesService() {
-        return new RegistrationTypesService( this.database );
+    public ProjectAccountsService newProjectAccountsService() {
+        return new ProjectAccountsService( this.database );
     }
 
     public RegistrationReasonsService newRegistrationReasonsService(Long registrationTypeId) {
         return new RegistrationReasonsService( this.database, registrationTypeId );
+    }
+
+    public RegistrationTypesService newRegistrationTypesService() {
+        return new RegistrationTypesService( this.database );
     }
 }

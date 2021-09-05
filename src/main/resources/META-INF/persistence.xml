@@ -3,6 +3,7 @@
              version="2.0" xmlns="http://java.sun.com/xml/ns/persistence">
     <persistence-unit name="timelog" transaction-type="RESOURCE_LOCAL">
         <class>dk.sunepoulsen.timelog.persistence.entities.AgreementEntity</class>
+        <class>dk.sunepoulsen.timelog.persistence.entities.ProjectAccountEntity</class>
         <class>dk.sunepoulsen.timelog.persistence.entities.RegistrationTypeEntity</class>
         <class>dk.sunepoulsen.timelog.persistence.entities.RegistrationReasonEntity</class>
     </persistence-unit>
