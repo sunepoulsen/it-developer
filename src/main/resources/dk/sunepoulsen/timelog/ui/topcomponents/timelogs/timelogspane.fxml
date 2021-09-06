@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<fx:root type="javafx.scene.layout.BorderPane" xmlns:fx="http://javafx.com/fxml">
+    <top>
+        <HBox>
+            <children>
+                <Region HBox.hgrow="ALWAYS" />
+                <Label text="Week:" prefHeight="24.0"/>
+                <Region prefWidth="10.0" />
+                <Button>
+                    <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@/images/previous.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Region prefWidth="10.0" />
+                <TextField prefHeight="24.0" prefWidth="80.0"/>
+                <Region prefWidth="10.0" />
+                <Button>
+                    <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@/images/next.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </children>
+        </HBox>
+    </top>
+    <center>
+        <StackPane AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                   AnchorPane.bottomAnchor="0.0">
+            <padding>
+                <Insets top="10.0" />
+            </padding>
+
+            <children>
+                <TreeTableView fx:id="viewer" showRoot="false" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0"
+                               AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0" onMouseClicked="#viewerRowClicked">
+                    <columns>
+                        <TreeTableColumn text="%table.column.day-or-registration-type.title" visible="true" prefWidth="300">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="displayText"/>
+                            </cellValueFactory>
+                        </TreeTableColumn>
+                        <TreeTableColumn text="%table.column.start-time.title" visible="true" prefWidth="100">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="startTime"/>
+                            </cellValueFactory>
+                        </TreeTableColumn>
+                        <TreeTableColumn text="%table.column.end-time.title" visible="true" prefWidth="100">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="endTime"/>
+                            </cellValueFactory>
+                        </TreeTableColumn>
+                        <TreeTableColumn text="%table.column.project-accounts.title" visible="true" prefWidth="600">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="projectAccounts"/>
+                            </cellValueFactory>
+                        </TreeTableColumn>
+                        <TreeTableColumn text="%table.column.work-time.title" visible="true" prefWidth="100">
+                            <cellValueFactory>
+                                <PropertyValueFactory property="workTime"/>
+                            </cellValueFactory>
+                        </TreeTableColumn>
+                    </columns>
+                </TreeTableView>
+
+                <Region fx:id="veil" style="-fx-background-color: rgba(0, 0, 0, 0.4)" visible="false" />
+                <ProgressIndicator fx:id="progressIndicator" maxWidth="150" maxHeight="150" visible="false" />
+            </children>
+        </StackPane>
+    </center>
+
+    <bottom>
+        <ButtonBar>
+            <padding>
+                <Insets top="10.0" />
+            </padding>
+
+            <buttons>
+                <Button text="%add.button.title" ButtonBar.buttonData="RIGHT" onAction="#addButtonClicked">
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@/images/add.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Button fx:id="editButton" text="%edit.button.title" ButtonBar.buttonData="RIGHT" onAction="#editButtonClicked">
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@/images/edit.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Button fx:id="deleteButton" text="%delete.button.title" ButtonBar.buttonData="RIGHT" onAction="#deleteButtonClicked">
+                    <graphic>
+                        <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@/images/delete.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+            </buttons>
+        </ButtonBar>
+    </bottom>
+
+</fx:root>
