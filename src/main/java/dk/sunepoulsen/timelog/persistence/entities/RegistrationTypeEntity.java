@@ -38,4 +38,8 @@ public class RegistrationTypeEntity implements AbstractEntity {
 
     @OneToMany( cascade = ALL, fetch = FetchType.LAZY, mappedBy = "registrationType" )
     private Set<RegistrationReasonEntity> reasons;
+
+    @OneToMany( cascade = ALL, fetch = FetchType.LAZY, mappedBy = "registrationType" )
+    private Set<TimeLogEntity> timeLogs;
+
 }

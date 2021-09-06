@@ -6,5 +6,6 @@
         <class>dk.sunepoulsen.timelog.persistence.entities.ProjectAccountEntity</class>
         <class>dk.sunepoulsen.timelog.persistence.entities.RegistrationTypeEntity</class>
         <class>dk.sunepoulsen.timelog.persistence.entities.RegistrationReasonEntity</class>
+        <class>dk.sunepoulsen.timelog.persistence.entities.TimeLogEntity</class>
     </persistence-unit>
 </persistence>

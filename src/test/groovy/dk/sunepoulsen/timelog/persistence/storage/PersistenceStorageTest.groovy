@@ -1,15 +1,15 @@
-package dk.sunepoulsen.it.timelog.persistence.storage
+package dk.sunepoulsen.timelog.persistence.storage
 
-import dk.sunepoulsen.timelog.persistence.storage.PersistenceStorage
-import dk.sunepoulsen.timelog.persistence.storage.PersistenceStorageSettings
+import dk.sunepoulsen.timelog.persistence.entities.AgreementEntity
 import org.junit.After
 import org.junit.Before
 import org.junit.BeforeClass
+import org.junit.Test
 
 /**
  * Created by sunepoulsen on 12/05/2017.
  */
-class PersistenceStorageIT {
+class PersistenceStorageTest {
     private PersistenceStorage databaseStorage
 
     @BeforeClass
@@ -28,5 +28,12 @@ class PersistenceStorageIT {
     @After
     void clearDatabaseStorage() {
         databaseStorage.disconnect()
+    }
+
+    @Test
+    void "Find all agreements in new database"() {
+        assert databaseStorage.query { em ->
+                em.createNamedQuery('findAllAgreements', AgreementEntity)
+            }.empty
     }
 }
