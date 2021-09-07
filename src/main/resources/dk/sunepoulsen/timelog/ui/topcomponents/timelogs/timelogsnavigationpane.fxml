@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<fx:root type="javafx.scene.layout.AnchorPane" xmlns:fx="http://javafx.com/fxml">
+    <HBox AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
+        <children>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="%label.week" prefHeight="24.0"/>
+            <Region prefWidth="10.0"/>
+            <Button onAction="#previousButtonClicked">
+                <graphic>
+                    <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@/images/previous.png"/>
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+            <Region prefWidth="10.0"/>
+            <TextField fx:id="periodField" prefHeight="24.0" prefWidth="80.0"/>
+            <Region prefWidth="10.0"/>
+            <Button onAction="#nextButtonClicked">
+                <graphic>
+                    <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@/images/next.png"/>
+                        </image>
+                    </ImageView>
+                </graphic>
+            </Button>
+        </children>
+    </HBox>
+</fx:root>
