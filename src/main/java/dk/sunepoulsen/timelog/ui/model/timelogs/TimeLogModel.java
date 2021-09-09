@@ -1,17 +1,17 @@
 package dk.sunepoulsen.timelog.ui.model.timelogs;
 
-import dk.sunepoulsen.timelog.ui.model.ProjectAccountModel;
+import dk.sunepoulsen.timelog.ui.model.AbstractModel;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.List;
 
 @Data
-public abstract class TimeLogModel {
-    String displayText;
-    LocalTime startTime;
-    LocalTime endTime;
-
-    public abstract List<ProjectAccountModel> projectAccounts();
-    public abstract Double workedTime();
+public class TimeLogModel implements AbstractModel {
+    private Long id;
+    private LocalDate date;
+    private LocalTime startTime;
+    private LocalTime endTime;
+    private Long registrationTypeId;
+    private Long registrationReasonId;
 }

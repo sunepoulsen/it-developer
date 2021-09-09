@@ -28,4 +28,8 @@ public class ServicesFactory {
     public RegistrationTypesService newRegistrationTypesService() {
         return new RegistrationTypesService( this.database );
     }
+
+    public TimeLogsService newTimeLogsService() {
+        return new TimeLogsService( this.database );
+    }
 }

@@ -13,8 +13,9 @@ import static javax.persistence.CascadeType.ALL;
 @Entity
 @Table( name = "timelogs" )
 @NamedQueries( {
-    @NamedQuery( name = "findAllTimeLogs", query = "SELECT r FROM TimeLogEntity r" ),
-    @NamedQuery( name = "deleteTimeLogs", query = "DELETE FROM TimeLogEntity r WHERE r.id IN :ids" )
+    @NamedQuery( name = "findAllTimeLogs", query = "SELECT t FROM TimeLogEntity t" ),
+    @NamedQuery( name = "findByDates", query = "SELECT t FROM TimeLogEntity t WHERE t.date >= :from AND t.date < :to" ),
+    @NamedQuery( name = "deleteTimeLogs", query = "DELETE FROM TimeLogEntity t WHERE t.id IN :ids" )
 })
 public class TimeLogEntity implements AbstractEntity {
     /**
