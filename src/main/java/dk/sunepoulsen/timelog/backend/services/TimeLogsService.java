@@ -33,22 +33,22 @@ public class TimeLogsService extends AbstractPersistenceService<TimeLogModel, Ti
     }
 
     @Override
-    protected TimeLogEntity convertModel( TimeLogEntity entity, TimeLogModel model ) {
+    TimeLogEntity convertModel( TimeLogEntity entity, TimeLogModel model ) {
         entity.setId( model.getId() );
         entity.setDate( model.getDate() );
         entity.setStartTime( model.getStartTime() );
         entity.setEndTime( model.getEndTime() );
 
-        if (model.getRegistrationTypeId() != null) {
+        if (model.getRegistrationType() != null) {
             RegistrationTypeEntity registrationTypeEntity = new RegistrationTypeEntity();
-            registrationTypeEntity.setId(model.getRegistrationTypeId());
+            registrationTypeEntity.setId(model.getRegistrationType().getId());
 
             entity.setRegistrationType(registrationTypeEntity);
         }
 
-        if (model.getRegistrationReasonId() != null) {
+        if (model.getRegistrationReason() != null) {
             RegistrationReasonEntity registrationReasonEntity = new RegistrationReasonEntity();
-            registrationReasonEntity.setId(model.getRegistrationReasonId());
+            registrationReasonEntity.setId(model.getRegistrationReason().getId());
 
             entity.setRegistrationReason(registrationReasonEntity);
         }
@@ -57,7 +57,7 @@ public class TimeLogsService extends AbstractPersistenceService<TimeLogModel, Ti
     }
 
     @Override
-    protected TimeLogModel convertEntity( TimeLogEntity entity ) {
+    TimeLogModel convertEntity( TimeLogEntity entity ) {
         TimeLogModel model = new TimeLogModel();
 
         model.setId( entity.getId() );
@@ -66,10 +66,10 @@ public class TimeLogsService extends AbstractPersistenceService<TimeLogModel, Ti
         model.setEndTime( entity.getEndTime() );
 
         if (entity.getRegistrationType() != null) {
-            model.setRegistrationTypeId(entity.getRegistrationType().getId());
+            model.setRegistrationType(new RegistrationTypesService(database).convertEntity(entity.getRegistrationType()));
         }
         if (entity.getRegistrationReason() != null) {
-            model.setRegistrationReasonId(entity.getRegistrationReason().getId());
+            model.setRegistrationReason(new RegistrationReasonsService(database, entity.getRegistrationType().getId()).convertEntity(entity.getRegistrationReason()));
         }
 
         return model;

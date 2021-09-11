@@ -1,6 +1,8 @@
 package dk.sunepoulsen.timelog.ui.model.timelogs;
 
 import dk.sunepoulsen.timelog.ui.model.AbstractModel;
+import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationReasonModel;
+import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationTypeModel;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -12,6 +14,6 @@ public class TimeLogModel implements AbstractModel {
     private LocalDate date;
     private LocalTime startTime;
     private LocalTime endTime;
-    private Long registrationTypeId;
-    private Long registrationReasonId;
+    private RegistrationTypeModel registrationType;
+    private RegistrationReasonModel registrationReason;
 }

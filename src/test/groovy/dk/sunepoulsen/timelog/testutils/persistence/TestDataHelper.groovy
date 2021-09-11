@@ -35,16 +35,16 @@ class TestDataHelper {
         ))
     }
 
-    TimeLogModel createTimeLog(LocalDate date, LocalTime startTime, LocalTime endTime, Long registrationTypeId) {
+    TimeLogModel createTimeLog(LocalDate date, LocalTime startTime, LocalTime endTime, RegistrationTypeModel registrationType) {
         return new TimeLogsService(persistenceStorage).create(new TimeLogModel(
             date: date,
             startTime: startTime,
             endTime: endTime,
-            registrationTypeId: registrationTypeId
+            registrationType: registrationType
         ))
     }
 
-    TimeLogModel createTimeLog(LocalDate date, Long registrationTypeId) {
-        return createTimeLog( date, TimeUtils.randomEntryTime(), TimeUtils.randomLeaveTime(), registrationTypeId )
+    TimeLogModel createTimeLog(LocalDate date, RegistrationTypeModel registrationType) {
+        return createTimeLog( date, TimeUtils.randomEntryTime(), TimeUtils.randomLeaveTime(), registrationType )
     }
 }
