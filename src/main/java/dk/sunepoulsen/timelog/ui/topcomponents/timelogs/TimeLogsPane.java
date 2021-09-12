@@ -2,7 +2,10 @@ package dk.sunepoulsen.timelog.ui.topcomponents.timelogs;
 
 import dk.sunepoulsen.timelog.backend.BackendConnection;
 import dk.sunepoulsen.timelog.registry.Registry;
-import dk.sunepoulsen.timelog.ui.model.timelogs.TimeLogModel;
+import dk.sunepoulsen.timelog.ui.control.cell.TreeTableValueFactory;
+import dk.sunepoulsen.timelog.ui.model.timelogs.TimeRegistration;
+import dk.sunepoulsen.timelog.ui.model.timelogs.WeekModel;
+import dk.sunepoulsen.timelog.ui.tasks.backend.LoadWeekRegistrationsTask;
 import dk.sunepoulsen.timelog.utils.AlertUtils;
 import dk.sunepoulsen.timelog.utils.FXMLUtils;
 import javafx.collections.ListChangeListener;
@@ -14,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
+import javafx.scene.control.TreeTableColumn;
 import javafx.scene.control.TreeTableView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -21,6 +25,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalTime;
 import java.util.ResourceBundle;
 
 @Slf4j
@@ -30,7 +35,25 @@ public class TimeLogsPane extends BorderPane {
     private ResourceBundle bundle;
 
     @FXML
-    private TreeTableView<TimeLogModel> viewer;
+    private TreeTableView<TimeRegistration> viewer;
+
+    @FXML
+    private TreeTableColumn<TimeRegistration, String> typeNameTableColumn;
+
+    @FXML
+    private TreeTableColumn<TimeRegistration, String> reasonTableColumn;
+
+    @FXML
+    private TreeTableColumn<TimeRegistration, LocalTime> startTimeTableColumn;
+
+    @FXML
+    private TreeTableColumn<TimeRegistration, LocalTime> endTimeTableColumn;
+
+    @FXML
+    private TreeTableColumn<TimeRegistration, Double> workedHoursTableColumn;
+
+    @FXML
+    private TreeTableColumn<TimeRegistration, Double> flexTableColumn;
 
     @FXML
     private Region veil = null;
@@ -59,17 +82,47 @@ public class TimeLogsPane extends BorderPane {
         viewer.getSelectionModel().setSelectionMode( SelectionMode.MULTIPLE );
         viewer.getSelectionModel().getSelectedItems().addListener( this::updateButtonsState );
 
+        typeNameTableColumn.setCellValueFactory(new TreeTableValueFactory<>(TimeRegistration::typeName));
+        reasonTableColumn.setCellValueFactory(new TreeTableValueFactory<>(TimeRegistration::reason));
+        startTimeTableColumn.setCellValueFactory(new TreeTableValueFactory<>(TimeRegistration::startTime));
+        endTimeTableColumn.setCellValueFactory(new TreeTableValueFactory<>(TimeRegistration::endTime));
+        workedHoursTableColumn.setCellValueFactory(new TreeTableValueFactory<>(TimeRegistration::workedHours));
+        flexTableColumn.setCellValueFactory(new TreeTableValueFactory<>(TimeRegistration::flex));
+
         reload();
     }
 
-    private void updateButtonsState( ListChangeListener.Change<? extends TreeItem<TimeLogModel>> listener ) {
-        ObservableList<? extends TreeItem<TimeLogModel>> list = listener.getList();
+    private void updateButtonsState( ListChangeListener.Change<? extends TreeItem<TimeRegistration>> listener ) {
+        ObservableList<? extends TreeItem<TimeRegistration>> list = listener.getList();
 
         editButton.disableProperty().setValue( list.size() != 1 );
         deleteButton.disableProperty().setValue( list.isEmpty() );
     }
 
     private void reload() {
+        LoadWeekRegistrationsTask task = new LoadWeekRegistrationsTask( backendConnection, WeekModel.now(), registry.getLocale() );
+
+        progressIndicator.progressProperty().bind( task.progressProperty() );
+        veil.visibleProperty().bind( task.runningProperty() );
+        progressIndicator.visibleProperty().bind( task.runningProperty() );
+
+        task.setOnSucceeded( event -> {
+            ObservableList<TimeRegistration> timeRegistrations = task.getValue();
+
+            TreeItem<TimeRegistration> rootItem = new TreeItem<>();
+            timeRegistrations.forEach(timeRegistration -> rootItem.getChildren().add(
+                new TimeRegistrationTreeItem(timeRegistration)
+            ));
+
+            log.info( "Viewing {} time registrations", timeRegistrations.size() );
+            viewer.setRoot( rootItem );
+
+            editButton.setDisable( true );
+            deleteButton.setDisable( true );
+        } );
+
+        log.info( "Loading agreements" );
+        registry.getUiRegistry().getTaskExecutorService().submit( task );
     }
 
     @FXML
