@@ -53,6 +53,7 @@ dependencies {
     implementation "ch.qos.logback:logback-core:${project.property('logback-core.version')}"
     implementation "ch.qos.logback:logback-classic:${project.property('logback-classic.version')}"
     implementation "com.google.guava:guava:${project.property('guava.version')}"
+    implementation "org.perf4j:perf4j:${project.property('perf4j.version')}"
 
     // JUnit
     testImplementation "junit:junit:${project.property('junit.version')}"

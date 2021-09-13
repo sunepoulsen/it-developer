@@ -24,6 +24,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import lombok.extern.slf4j.Slf4j;
+import org.perf4j.StopWatch;
+import org.perf4j.log4j.Log4JStopWatch;
 
 import java.time.LocalTime;
 import java.util.ResourceBundle;
@@ -105,8 +107,11 @@ public class TimeLogsPane extends BorderPane {
     }
 
     private void reload(WeekModel weekModel) {
+        StopWatch watch = new Log4JStopWatch("TimeLogs.load");
+
         if (weekModel == null) {
             viewer.setRoot(new TreeItem<>());
+            watch.stop("TimeLogs.load.none");
             return;
         }
 
@@ -129,6 +134,8 @@ public class TimeLogsPane extends BorderPane {
 
             editButton.setDisable( true );
             deleteButton.setDisable( true );
+
+            watch.stop("TimeLogs.load.task");
         } );
 
         log.info( "Loading agreements" );
