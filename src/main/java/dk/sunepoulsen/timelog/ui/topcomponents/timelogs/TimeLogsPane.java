@@ -35,6 +35,9 @@ public class TimeLogsPane extends BorderPane {
     private ResourceBundle bundle;
 
     @FXML
+    private TimeLogsNavigationPane navigationPane;
+
+    @FXML
     private TreeTableView<TimeRegistration> viewer;
 
     @FXML
@@ -79,6 +82,8 @@ public class TimeLogsPane extends BorderPane {
     public void initialize() {
         log.info( "Initializing {} custom control", getClass().getSimpleName() );
 
+        navigationPane.getSelectedProperty().addListener((observable, oldValue, newValue) -> reload(newValue));
+
         viewer.getSelectionModel().setSelectionMode( SelectionMode.MULTIPLE );
         viewer.getSelectionModel().getSelectedItems().addListener( this::updateButtonsState );
 
@@ -89,7 +94,7 @@ public class TimeLogsPane extends BorderPane {
         workedHoursTableColumn.setCellValueFactory(new TreeTableValueFactory<>(TimeRegistration::workedHours));
         flexTableColumn.setCellValueFactory(new TreeTableValueFactory<>(TimeRegistration::flex));
 
-        reload();
+        reload(navigationPane.getSelectedProperty().getValue());
     }
 
     private void updateButtonsState( ListChangeListener.Change<? extends TreeItem<TimeRegistration>> listener ) {
@@ -99,8 +104,13 @@ public class TimeLogsPane extends BorderPane {
         deleteButton.disableProperty().setValue( list.isEmpty() );
     }
 
-    private void reload() {
-        LoadWeekRegistrationsTask task = new LoadWeekRegistrationsTask( backendConnection, WeekModel.now(), registry.getLocale() );
+    private void reload(WeekModel weekModel) {
+        if (weekModel == null) {
+            viewer.setRoot(new TreeItem<>());
+            return;
+        }
+
+        LoadWeekRegistrationsTask task = new LoadWeekRegistrationsTask( backendConnection, weekModel, registry.getLocale() );
 
         progressIndicator.progressProperty().bind( task.progressProperty() );
         veil.visibleProperty().bind( task.runningProperty() );
