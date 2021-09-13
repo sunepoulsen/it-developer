@@ -1,15 +1,12 @@
 package dk.sunepoulsen.timelog.backend.services;
 
 import dk.sunepoulsen.timelog.persistence.entities.AgreementEntity;
-import dk.sunepoulsen.timelog.persistence.entities.RegistrationTypeEntity;
 import dk.sunepoulsen.timelog.persistence.storage.PersistenceStorage;
 import dk.sunepoulsen.timelog.ui.model.AgreementModel;
-import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationTypeModel;
-import dk.sunepoulsen.timelog.validation.TimeLogValidateException;
-import dk.sunepoulsen.timelog.validation.TimeLogValidation;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +17,17 @@ import java.util.stream.Collectors;
 public class AgreementsService extends AbstractPersistenceService<AgreementModel, AgreementEntity>{
     public AgreementsService(final PersistenceStorage database ) {
         super(database, AgreementEntity.class, "findAllAgreements", "deleteAgreements");
+    }
+
+    public List<AgreementModel> findByDate(LocalDate date) {
+        return database.query( em -> {
+            TypedQuery<AgreementEntity> q = em.createNamedQuery( "findAgreementsByDate", AgreementEntity.class );
+            q.setParameter("date", date);
+
+            return q;
+        } ).stream()
+            .map( this::convertEntity )
+            .collect( Collectors.toList() );
     }
 
     @Override
