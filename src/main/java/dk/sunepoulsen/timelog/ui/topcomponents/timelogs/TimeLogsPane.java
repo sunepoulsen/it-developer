@@ -3,6 +3,7 @@ package dk.sunepoulsen.timelog.ui.topcomponents.timelogs;
 import dk.sunepoulsen.timelog.backend.BackendConnection;
 import dk.sunepoulsen.timelog.registry.Registry;
 import dk.sunepoulsen.timelog.ui.control.cell.TreeTableValueFactory;
+import dk.sunepoulsen.timelog.ui.dialogs.TimeLogDialog;
 import dk.sunepoulsen.timelog.ui.model.timelogs.TimeRegistration;
 import dk.sunepoulsen.timelog.ui.model.timelogs.WeekModel;
 import dk.sunepoulsen.timelog.ui.tasks.backend.LoadWeekRegistrationsTask;
@@ -169,7 +170,7 @@ public class TimeLogsPane extends BorderPane {
 
     @FXML
     private void showDialogAndCreateAgreement() {
-        AlertUtils.notImplementedYet();
+        new TimeLogDialog().showAndWait().ifPresent(timeLogModel -> AlertUtils.notImplementedYet() );
     }
 
     @FXML
