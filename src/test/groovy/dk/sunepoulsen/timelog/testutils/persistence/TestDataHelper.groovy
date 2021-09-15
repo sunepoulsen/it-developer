@@ -1,10 +1,10 @@
 package dk.sunepoulsen.timelog.testutils.persistence
 
-import dk.sunepoulsen.timelog.backend.services.AgreementsService
-import dk.sunepoulsen.timelog.backend.services.RegistrationTypesService
-import dk.sunepoulsen.timelog.backend.services.TimeLogsService
+import dk.sunepoulsen.timelog.backend.services.*
 import dk.sunepoulsen.timelog.persistence.storage.PersistenceStorage
 import dk.sunepoulsen.timelog.ui.model.AgreementModel
+import dk.sunepoulsen.timelog.ui.model.ProjectAccountModel
+import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationReasonModel
 import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationTypeModel
 import dk.sunepoulsen.timelog.ui.model.timelogs.TimeLogModel
 
@@ -20,11 +20,11 @@ class TestDataHelper {
 
     void deleteAllData() {
         persistenceStorage.transactional( em -> {
-            em.createQuery( "DELETE FROM TimeLogEntity entity" ).executeUpdate();
-            em.createQuery( "DELETE FROM RegistrationReasonEntity entity" ).executeUpdate();
-            em.createQuery( "DELETE FROM RegistrationTypeEntity entity" ).executeUpdate();
-            em.createQuery( "DELETE FROM ProjectAccountEntity entity" ).executeUpdate();
-            em.createQuery( "DELETE FROM AgreementEntity entity" ).executeUpdate();
+            em.createQuery( "DELETE FROM TimeLogEntity entity" ).executeUpdate()
+            em.createQuery( "DELETE FROM RegistrationReasonEntity entity" ).executeUpdate()
+            em.createQuery( "DELETE FROM RegistrationTypeEntity entity" ).executeUpdate()
+            em.createQuery( "DELETE FROM ProjectAccountEntity entity" ).executeUpdate()
+            em.createQuery( "DELETE FROM AgreementEntity entity" ).executeUpdate()
         } )
     }
 
@@ -51,6 +51,23 @@ class TestDataHelper {
             description: "description of ${name}",
             purpose: "purpose of ${name}",
             allDay: allDay
+        ))
+    }
+
+    RegistrationReasonModel createRegistrationReason(RegistrationTypeModel registrationType, String name) {
+        return new RegistrationReasonsService(persistenceStorage, registrationType.getId()).create(new RegistrationReasonModel(
+            registrationTypeId: registrationType.id,
+            name: name,
+            description: "description of ${name}",
+            purpose: "purpose of ${name}"
+        ))
+    }
+
+    ProjectAccountModel createProjectAccount(String accountNumber) {
+        return new ProjectAccountsService(persistenceStorage).create(new ProjectAccountModel(
+            accountNumber: accountNumber,
+            description: "description of ${accountNumber}",
+            purpose: "purpose of ${accountNumber}"
         ))
     }
 
