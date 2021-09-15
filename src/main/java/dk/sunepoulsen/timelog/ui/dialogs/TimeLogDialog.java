@@ -3,6 +3,8 @@ package dk.sunepoulsen.timelog.ui.dialogs;
 import dk.sunepoulsen.timelog.backend.BackendConnection;
 import dk.sunepoulsen.timelog.registry.Registry;
 import dk.sunepoulsen.timelog.settings.model.SettingsModel;
+import dk.sunepoulsen.timelog.ui.converters.RegistrationReasonConverter;
+import dk.sunepoulsen.timelog.ui.converters.RegistrationTypeConverter;
 import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationReasonModel;
 import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationTypeModel;
 import dk.sunepoulsen.timelog.ui.model.timelogs.TimeLogModel;
@@ -16,14 +18,18 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import org.perf4j.StopWatch;
+import org.perf4j.log4j.Log4JStopWatch;
 
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
 
 public class TimeLogDialog extends GridPane implements Initializable, DialogImplementor<TimeLogModel> {
     private final SettingsModel settings;
     private final BackendConnection backendConnection;
+    private final ExecutorService executorService;
 
     private final TimeLogModel model;
 
@@ -51,7 +57,9 @@ public class TimeLogDialog extends GridPane implements Initializable, DialogImpl
     public TimeLogDialog(TimeLogModel model) {
         this.settings = Registry.getDefault().getSettings().getModel();
         this.backendConnection = Registry.getDefault().getBackendConnection();
+        this.executorService = Registry.getDefault().getUiRegistry().getTaskExecutorService();
         this.model = model;
+
         FXMLUtils.initFxml(Registry.getDefault(), this);
     }
 
@@ -61,24 +69,44 @@ public class TimeLogDialog extends GridPane implements Initializable, DialogImpl
         dialogHelper.initialize(resources);
 
         dateField.setConverter(settings.getCalendar().shortDateConverter());
-
         dateField.focusedProperty().addListener(dialogHelper::disableButtons);
+
         startTimeField.focusedProperty().addListener(dialogHelper::disableButtons);
         endTimeField.focusedProperty().addListener(dialogHelper::disableButtons);
+        registrationTypeField.focusedProperty().addListener(dialogHelper::disableButtons);
+        registrationReasonField.focusedProperty().addListener(dialogHelper::disableButtons);
+
         registrationTypeField.getSelectionModel().selectedItemProperty().addListener(this::reloadRegistrationReasons);
+        initializeRegistrationTypes();
+    }
 
-
+    private void initializeRegistrationTypes() {
+        StopWatch watch = new Log4JStopWatch("registration.types.load");
         LoadBackendServiceItemsTask<RegistrationTypeModel> task = new LoadBackendServiceItemsTask<>( backendConnection,
             connection -> connection.servicesFactory().newRegistrationTypesService().findAll()
         );
-        task.setOnSucceeded( event -> registrationTypeField.setItems(task.getValue()));
+        task.setOnSucceeded( event -> {
+            registrationTypeField.setConverter(new RegistrationTypeConverter(task.getValue()));
+            registrationTypeField.setItems(task.getValue());
+
+            watch.stop();
+        });
+        this.executorService.submit(task);
     }
 
     private void reloadRegistrationReasons(ObservableValue<? extends RegistrationTypeModel> observable, RegistrationTypeModel oldValue, RegistrationTypeModel newValue) {
+        StopWatch watch = new Log4JStopWatch("registration.reasons.load");
+
         LoadBackendServiceItemsTask<RegistrationReasonModel> task = new LoadBackendServiceItemsTask<>( backendConnection,
             connection -> connection.servicesFactory().newRegistrationReasonsService(registrationTypeField.getValue().getId()).findAll()
         );
-        task.setOnSucceeded( event -> registrationReasonField.setItems(task.getValue()));
+        task.setOnSucceeded( event -> {
+            registrationReasonField.setConverter(new RegistrationReasonConverter(task.getValue()));
+            registrationReasonField.setItems(task.getValue());
+
+            watch.stop();
+        });
+        this.executorService.submit(task);
     }
 
     public Optional<TimeLogModel> showAndWait() {

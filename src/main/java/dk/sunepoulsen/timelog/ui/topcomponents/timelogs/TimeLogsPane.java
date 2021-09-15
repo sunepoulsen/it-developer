@@ -6,6 +6,7 @@ import dk.sunepoulsen.timelog.ui.control.cell.TreeTableValueFactory;
 import dk.sunepoulsen.timelog.ui.dialogs.TimeLogDialog;
 import dk.sunepoulsen.timelog.ui.model.timelogs.TimeRegistration;
 import dk.sunepoulsen.timelog.ui.model.timelogs.WeekModel;
+import dk.sunepoulsen.timelog.ui.tasks.backend.ExecuteBackendServiceTask;
 import dk.sunepoulsen.timelog.ui.tasks.backend.LoadWeekRegistrationsTask;
 import dk.sunepoulsen.timelog.utils.AlertUtils;
 import dk.sunepoulsen.timelog.utils.FXMLUtils;
@@ -108,11 +109,11 @@ public class TimeLogsPane extends BorderPane {
     }
 
     private void reload(WeekModel weekModel) {
-        StopWatch watch = new Log4JStopWatch("TimeLogs.load");
+        StopWatch watch = new Log4JStopWatch();
 
         if (weekModel == null) {
             viewer.setRoot(new TreeItem<>());
-            watch.stop("TimeLogs.load.none");
+            watch.stop("timelogs.load.none");
             return;
         }
 
@@ -136,7 +137,7 @@ public class TimeLogsPane extends BorderPane {
             editButton.setDisable( true );
             deleteButton.setDisable( true );
 
-            watch.stop("TimeLogs.load.task");
+            watch.stop("timelogs.load.task");
         } );
 
         log.info( "Loading agreements" );
@@ -170,7 +171,13 @@ public class TimeLogsPane extends BorderPane {
 
     @FXML
     private void showDialogAndCreateAgreement() {
-        new TimeLogDialog().showAndWait().ifPresent(timeLogModel -> AlertUtils.notImplementedYet() );
+        new TimeLogDialog().showAndWait().ifPresent(timeLogModel -> {
+            ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
+                connection.servicesFactory().newTimeLogsService().create( timeLogModel )
+            );
+            task.setOnSucceeded(event -> reload(navigationPane.getSelectedProperty().getValue()));
+            registry.getUiRegistry().getTaskExecutorService().submit( task );
+        } );
     }
 
     @FXML
