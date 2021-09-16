@@ -2,19 +2,28 @@ package dk.sunepoulsen.timelog.persistence.entities;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Set;
-
-import static javax.persistence.CascadeType.ALL;
 
 @Data
 @Entity
 @Table( name = "timelogs" )
 @NamedQueries( {
-    @NamedQuery( name = "findAllTimeLogs", query = "SELECT t FROM TimeLogEntity t" ),
-    @NamedQuery( name = "findByDates", query = "SELECT t FROM TimeLogEntity t WHERE t.date >= :from AND t.date < :to" ),
+    @NamedQuery( name = "findAllTimeLogs", query = "SELECT t FROM TimeLogEntity t ORDER BY t.date" ),
+    @NamedQuery( name = "findByDates", query = "SELECT t FROM TimeLogEntity t WHERE t.date >= :from AND t.date <= :to ORDER BY t.date, t.startTime ASC" ),
     @NamedQuery( name = "deleteTimeLogs", query = "DELETE FROM TimeLogEntity t WHERE t.id IN :ids" )
 })
 public class TimeLogEntity implements AbstractEntity {

@@ -5,6 +5,8 @@ import dk.sunepoulsen.timelog.ui.model.timelogs.TimeRegistration;
 import javafx.scene.control.TreeItem;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class TimeRegistrationTreeItem extends LoadableTreeItem<TimeRegistration> {
@@ -14,7 +16,13 @@ public class TimeRegistrationTreeItem extends LoadableTreeItem<TimeRegistration>
 
     @Override
     protected Collection<? extends TreeItem<TimeRegistration>> loadChildren() {
-        return getValue().children().stream()
+        List<TimeRegistration> children = getValue().children();
+
+        if (children == null) {
+            return Collections.emptyList();
+        }
+
+        return children.stream()
             .map(TimeRegistrationTreeItem::new)
             .collect(Collectors.toList());
     }

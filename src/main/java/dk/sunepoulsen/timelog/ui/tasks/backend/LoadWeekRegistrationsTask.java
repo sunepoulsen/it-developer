@@ -4,6 +4,7 @@ import dk.sunepoulsen.timelog.backend.BackendConnection;
 import dk.sunepoulsen.timelog.ui.model.AgreementModel;
 import dk.sunepoulsen.timelog.ui.model.timelogs.DayRegistration;
 import dk.sunepoulsen.timelog.ui.model.timelogs.TimeLogModel;
+import dk.sunepoulsen.timelog.ui.model.timelogs.TimeLogRegistration;
 import dk.sunepoulsen.timelog.ui.model.timelogs.TimeRegistration;
 import dk.sunepoulsen.timelog.ui.model.timelogs.WeekModel;
 import javafx.collections.FXCollections;
@@ -20,6 +21,7 @@ import java.util.Optional;
 public class LoadWeekRegistrationsTask extends BackendConnectionTask<ObservableList<TimeRegistration>> {
     private final WeekModel weekModel;
     private final Locale locale;
+    private AgreementModel cachedAgreement = null;
 
     public LoadWeekRegistrationsTask(BackendConnection connection, WeekModel weekModel, Locale locale) {
         super( connection );
@@ -33,6 +35,19 @@ public class LoadWeekRegistrationsTask extends BackendConnectionTask<ObservableL
 
         try {
             List<TimeRegistration> result = createDayRegistrations();
+
+            List<TimeLogModel> timelogs = loadTimeLogs();
+            timelogs.forEach(timeLogModel -> {
+                    Optional<DayRegistration> dayRegistration = findDayRegistration(result, timeLogModel.getDate());
+
+                    if (dayRegistration.isPresent()) {
+                        dayRegistration.get().getRegistrations().add(new TimeLogRegistration(timeLogModel));
+                    }
+                    else {
+                        log.info("Unable to find DayRegistration for date {}. This timelog will be ignored. TimeLog: {}", timeLogModel.getDate(), timeLogModel);
+                    }
+                }
+            );
 
             log.info("Loaded week registrations for week {}.{} -> OK", weekModel.weekNumber(), weekModel.year());
             return FXCollections.observableList(result);
@@ -58,6 +73,13 @@ public class LoadWeekRegistrationsTask extends BackendConnectionTask<ObservableL
         }
 
         return list;
+    }
+
+    private Optional<DayRegistration> findDayRegistration(List<TimeRegistration> timeRegistrations, LocalDate date) {
+        return timeRegistrations.stream()
+            .map(DayRegistration.class::cast)
+            .filter(dayRegistration -> dayRegistration.getDate().isEqual(date))
+            .findFirst();
     }
 
     private Double workingNorm(LocalDate date) {
@@ -95,7 +117,20 @@ public class LoadWeekRegistrationsTask extends BackendConnectionTask<ObservableL
     }
 
     private Optional<AgreementModel> findAgreement(LocalDate date) {
+        // Check if we can reuse the cached agreement that we used the last time.
+        if (cachedAgreement != null &&
+            // cachedAgreement.getStartDate() <= date
+            (cachedAgreement.getStartDate().isEqual(date) || cachedAgreement.getStartDate().isBefore(date)) &&
+            // cachedAgreement.getEndDate() == null | date <= cachedAgreement.getEndDate()
+            (cachedAgreement.getEndDate() == null || cachedAgreement.getEndDate().isEqual(date) || cachedAgreement.getEndDate().isAfter(date)))
+        {
+            return Optional.of(cachedAgreement);
+        }
+
         log.info("Lookup agreement");
-        return connection.servicesFactory().newAgreementsService().findByDate(date).stream().findFirst();
+        Optional<AgreementModel> result = connection.servicesFactory().newAgreementsService().findByDate(date).stream().findFirst();
+        cachedAgreement = result.orElse(null);
+
+        return result;
     }
 }

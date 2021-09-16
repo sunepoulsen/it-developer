@@ -10,6 +10,10 @@ import java.util.List;
 public class TimeLogRegistration implements TimeRegistration {
     private TimeLogModel model;
 
+    public TimeLogRegistration(TimeLogModel model) {
+        this.model = model;
+    }
+
     @Override
     public Long getId() {
         return model.getId();
