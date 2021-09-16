@@ -40,6 +40,10 @@ public class DialogHelper<T> {
     }
 
     public <R> void disableButtons(ObservableValue<? extends R> observable, R oldValue, R newValue) {
+        disableButtons();
+    }
+
+    public void disableButtons() {
         okButton.setDisable(!new TimeLogValidation<T>().validate(implementor.toModel()).isEmpty());
     }
 

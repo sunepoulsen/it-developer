@@ -1,6 +1,7 @@
 package dk.sunepoulsen.timelog.ui.model.timelogs;
 
 import lombok.Data;
+import lombok.Getter;
 
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
@@ -8,6 +9,7 @@ import java.util.List;
 
 @Data
 public class TimeLogRegistration implements TimeRegistration {
+    @Getter
     private TimeLogModel model;
 
     public TimeLogRegistration(TimeLogModel model) {

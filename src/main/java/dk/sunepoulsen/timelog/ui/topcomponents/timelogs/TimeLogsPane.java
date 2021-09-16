@@ -5,6 +5,8 @@ import dk.sunepoulsen.timelog.registry.Registry;
 import dk.sunepoulsen.timelog.ui.control.cell.DoubleTreeTableCell;
 import dk.sunepoulsen.timelog.ui.control.cell.TreeTableValueFactory;
 import dk.sunepoulsen.timelog.ui.dialogs.TimeLogDialog;
+import dk.sunepoulsen.timelog.ui.model.timelogs.TimeLogModel;
+import dk.sunepoulsen.timelog.ui.model.timelogs.TimeLogRegistration;
 import dk.sunepoulsen.timelog.ui.model.timelogs.TimeRegistration;
 import dk.sunepoulsen.timelog.ui.model.timelogs.WeekModel;
 import dk.sunepoulsen.timelog.ui.tasks.backend.ExecuteBackendServiceTask;
@@ -31,6 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.perf4j.StopWatch;
 import org.perf4j.log4j.Log4JStopWatch;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ResourceBundle;
 
@@ -180,7 +183,11 @@ public class TimeLogsPane extends BorderPane {
 
     @FXML
     private void showDialogAndCreateAgreement() {
-        new TimeLogDialog().showAndWait().ifPresent(timeLogModel -> {
+        TimeLogModel model = new TimeLogModel();
+        model.setDate(LocalDate.now());
+        model.setStartTime(LocalTime.now());
+
+        new TimeLogDialog(model).showAndWait().ifPresent(timeLogModel -> {
             ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
                 connection.servicesFactory().newTimeLogsService().create( timeLogModel )
             );
@@ -195,7 +202,18 @@ public class TimeLogsPane extends BorderPane {
             return;
         }
 
-        AlertUtils.notImplementedYet();
+        if (!(viewer.getSelectionModel().getSelectedItem().getValue() instanceof TimeLogRegistration)) {
+            return;
+        }
+
+        TimeLogModel model = ((TimeLogRegistration)viewer.getSelectionModel().getSelectedItem().getValue()).getModel();
+        new TimeLogDialog(model).showAndWait().ifPresent(timeLogModel -> {
+            ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
+                connection.servicesFactory().newTimeLogsService().update( timeLogModel )
+            );
+            task.setOnSucceeded(event -> reload(navigationPane.getSelectedProperty().getValue()));
+            registry.getUiRegistry().getTaskExecutorService().submit( task );
+        } );
     }
 
     @FXML

@@ -78,6 +78,8 @@ public class TimeLogDialog extends GridPane implements Initializable, DialogImpl
 
         registrationTypeField.getSelectionModel().selectedItemProperty().addListener(this::reloadRegistrationReasons);
         initializeRegistrationTypes();
+
+        dialogHelper.disableButtons();
     }
 
     private void initializeRegistrationTypes() {
@@ -88,6 +90,7 @@ public class TimeLogDialog extends GridPane implements Initializable, DialogImpl
         task.setOnSucceeded( event -> {
             registrationTypeField.setConverter(new RegistrationTypeConverter(task.getValue()));
             registrationTypeField.setItems(task.getValue());
+            registrationTypeField.setValue(model.getRegistrationType());
 
             watch.stop();
         });
@@ -103,6 +106,7 @@ public class TimeLogDialog extends GridPane implements Initializable, DialogImpl
         task.setOnSucceeded( event -> {
             registrationReasonField.setConverter(new RegistrationReasonConverter(task.getValue()));
             registrationReasonField.setItems(task.getValue());
+            registrationReasonField.setValue(model.getRegistrationReason());
 
             watch.stop();
         });
@@ -131,7 +135,5 @@ public class TimeLogDialog extends GridPane implements Initializable, DialogImpl
         dateField.setValue(model.getDate());
         ControlUtils.setLocalTime(startTimeField, model.getStartTime(), settings.getCalendar().shortTimeFormatter());
         ControlUtils.setLocalTime(endTimeField, model.getEndTime(), settings.getCalendar().shortTimeFormatter());
-        registrationTypeField.setValue(model.getRegistrationType());
-        registrationReasonField.setValue(model.getRegistrationReason());
     }
 }
