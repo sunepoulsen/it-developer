@@ -2,6 +2,7 @@ package dk.sunepoulsen.timelog.ui.topcomponents.timelogs;
 
 import dk.sunepoulsen.timelog.backend.BackendConnection;
 import dk.sunepoulsen.timelog.registry.Registry;
+import dk.sunepoulsen.timelog.ui.control.cell.DoubleTreeTableCell;
 import dk.sunepoulsen.timelog.ui.control.cell.TreeTableValueFactory;
 import dk.sunepoulsen.timelog.ui.dialogs.TimeLogDialog;
 import dk.sunepoulsen.timelog.ui.model.timelogs.TimeRegistration;
@@ -25,6 +26,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
 import lombok.extern.slf4j.Slf4j;
 import org.perf4j.StopWatch;
 import org.perf4j.log4j.Log4JStopWatch;
@@ -96,7 +98,14 @@ public class TimeLogsPane extends BorderPane {
         startTimeTableColumn.setCellValueFactory(new TreeTableValueFactory<>(TimeRegistration::startTime));
         endTimeTableColumn.setCellValueFactory(new TreeTableValueFactory<>(TimeRegistration::endTime));
         workedHoursTableColumn.setCellValueFactory(new TreeTableValueFactory<>(TimeRegistration::workedHours));
+        workedHoursTableColumn.setCellFactory(param -> {
+            DoubleTreeTableCell<TimeRegistration> cell = new DoubleTreeTableCell<>(Registry.getDefault().getLocale());
+            cell.setPositiveColor(Color.BLACK);
+
+            return cell;
+        });
         flexTableColumn.setCellValueFactory(new TreeTableValueFactory<>(TimeRegistration::flex));
+        flexTableColumn.setCellFactory(param -> new DoubleTreeTableCell<>(Registry.getDefault().getLocale()));
 
         reload(navigationPane.getSelectedProperty().getValue());
     }
