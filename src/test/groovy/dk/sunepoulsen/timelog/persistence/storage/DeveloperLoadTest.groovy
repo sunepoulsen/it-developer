@@ -21,13 +21,13 @@ class DeveloperLoadTest {
 
     @BeforeClass
     static void migrateDatabase() {
-        PersistenceStorage database = new PersistenceStorage( "timelog", PersistenceStorageSettings.createInstanceFromPropertyResource( "/application-local.properties" ) )
+        PersistenceStorage database = new PersistenceStorage("timelog", PersistenceStorageSettings.createInstanceFromPropertyResource("/application-local.properties"))
         database.migrate()
     }
 
     @Before
     void initDatabaseStorage() {
-        persistenceStorage = new PersistenceStorage( "timelog", PersistenceStorageSettings.createInstanceFromPropertyResource( "/application-local.properties" ) )
+        persistenceStorage = new PersistenceStorage("timelog", PersistenceStorageSettings.createInstanceFromPropertyResource("/application-local.properties"))
         persistenceStorage.connect()
 
         testDataHelper = new TestDataHelper(persistenceStorage)
@@ -54,14 +54,38 @@ class DeveloperLoadTest {
     }
 
     private void createRegistrationTypes() {
-        RegistrationTypeModel workType = testDataHelper.createRegistrationType('ARB', false)
+        RegistrationTypeModel workType = testDataHelper.createRegistrationType('ARB', 'Arbejdet tid', false)
+        testDataHelper.createRegistrationReason(workType, 'Project work')
         testDataHelper.createRegistrationReason(workType, 'Project meetings')
         testDataHelper.createRegistrationReason(workType, 'Refinement')
         testDataHelper.createRegistrationReason(workType, 'Internal meetings')
 
-        testDataHelper.createRegistrationType('BEV', true)
-        testDataHelper.createRegistrationType('SYG', true)
-        testDataHelper.createRegistrationType('FER', true)
+        testDataHelper.createRegistrationType('ASP', 'Afspadsering', true)
+        testDataHelper.createRegistrationType('ATN', 'ATN', true)
+        testDataHelper.createRegistrationType('BEV', 'Bevilget frihed', true)
+        testDataHelper.createRegistrationType('BSY', 'Barns første sygedag', true)
+        testDataHelper.createRegistrationType('FER', 'Ferie', true)
+        testDataHelper.createRegistrationType('FERF', 'Flerårsaftale', true)
+        testDataHelper.createRegistrationType('FERU', 'Ferie uden løn', true)
+        testDataHelper.createRegistrationType('FLXA', 'Fleksfri-afviklingsaftale', true)
+        testDataHelper.createRegistrationType('FRIL', 'Frihed med løntræk', true)
+        testDataHelper.createRegistrationType('KUR', 'Kursus', true)
+        testDataHelper.createRegistrationType('ODAG', '0-dag', true)
+        testDataHelper.createRegistrationType('OMS', 'Omsorgsdage', true)
+        testDataHelper.createRegistrationType('SFD', 'Særlig feriedage', true)
+        testDataHelper.createRegistrationType('SYG', 'Sygdom', true)
+        testDataHelper.createRegistrationType('TJFR', 'Beordret', true)
+        testDataHelper.createRegistrationType('XSYG', 'Sygdom - rapp. af tidsadm', true)
+        testDataHelper.createRegistrationType('ZADO', 'Adoptionsorlov', true)
+        testDataHelper.createRegistrationType('ZASO', 'Arbejdsskade overenskomst', true)
+        testDataHelper.createRegistrationType('ZAST', 'Arbejdsskade tjenestemænd', true)
+        testDataHelper.createRegistrationType('ZBAR', 'Barselsorlov', true)
+        testDataHelper.createRegistrationType('ZFOR', 'Forældreorlov', true)
+        testDataHelper.createRegistrationType('ZFR1', 'Hospitalsindlæg. af barn', true)
+        testDataHelper.createRegistrationType('ZFR2', 'Pasning af nær slægtning', true)
+        testDataHelper.createRegistrationType('ZFR3', 'Fritstilling/Tjen.frihed', true)
+        testDataHelper.createRegistrationType('ZFR4', 'Særlige hændelser', true)
+        testDataHelper.createRegistrationType('ZFR5', 'Hovedopgave/Afhandling', true)
     }
 
     private void createProjectAccounts() {
