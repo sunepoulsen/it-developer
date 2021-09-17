@@ -11,7 +11,6 @@ import dk.sunepoulsen.timelog.ui.model.timelogs.TimeRegistration;
 import dk.sunepoulsen.timelog.ui.model.timelogs.WeekModel;
 import dk.sunepoulsen.timelog.ui.tasks.backend.ExecuteBackendServiceTask;
 import dk.sunepoulsen.timelog.ui.tasks.backend.LoadWeekRegistrationsTask;
-import dk.sunepoulsen.timelog.utils.AlertUtils;
 import dk.sunepoulsen.timelog.utils.FXMLUtils;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -19,6 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
@@ -35,7 +35,10 @@ import org.perf4j.log4j.Log4JStopWatch;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class TimeLogsPane extends BorderPane {
@@ -82,19 +85,19 @@ public class TimeLogsPane extends BorderPane {
     public TimeLogsPane() {
         this.registry = Registry.getDefault();
         this.backendConnection = registry.getBackendConnection();
-        this.bundle = registry.getBundle( getClass() );
+        this.bundle = registry.getBundle(getClass());
 
         FXMLUtils.initFxml(this.bundle, this);
     }
 
     @FXML
     public void initialize() {
-        log.info( "Initializing {} custom control", getClass().getSimpleName() );
+        log.info("Initializing {} custom control", getClass().getSimpleName());
 
         navigationPane.getSelectedProperty().addListener((observable, oldValue, newValue) -> reload(newValue));
 
-        viewer.getSelectionModel().setSelectionMode( SelectionMode.MULTIPLE );
-        viewer.getSelectionModel().getSelectedItems().addListener( this::updateButtonsState );
+        viewer.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        viewer.getSelectionModel().getSelectedItems().addListener(this::updateButtonsState);
 
         typeNameTableColumn.setCellValueFactory(new TreeTableValueFactory<>(TimeRegistration::typeName));
         reasonTableColumn.setCellValueFactory(new TreeTableValueFactory<>(TimeRegistration::reason));
@@ -113,11 +116,17 @@ public class TimeLogsPane extends BorderPane {
         reload(navigationPane.getSelectedProperty().getValue());
     }
 
-    private void updateButtonsState( ListChangeListener.Change<? extends TreeItem<TimeRegistration>> listener ) {
+    private void updateButtonsState(ListChangeListener.Change<? extends TreeItem<TimeRegistration>> listener) {
         ObservableList<? extends TreeItem<TimeRegistration>> list = listener.getList();
 
-        editButton.disableProperty().setValue( list.size() != 1 );
-        deleteButton.disableProperty().setValue( list.isEmpty() );
+        editButton.disableProperty().setValue(list.size() != 1 || !(list.get(0).getValue() instanceof TimeLogRegistration));
+
+        Optional<TimeRegistration> foundTimeLogRegistration = list.stream()
+            .map(TreeItem::getValue)
+            .filter(TimeLogRegistration.class::isInstance)
+            .findFirst();
+
+        deleteButton.disableProperty().setValue(!foundTimeLogRegistration.isPresent());
     }
 
     private void reload(WeekModel weekModel) {
@@ -129,13 +138,13 @@ public class TimeLogsPane extends BorderPane {
             return;
         }
 
-        LoadWeekRegistrationsTask task = new LoadWeekRegistrationsTask( backendConnection, weekModel, registry.getLocale() );
+        LoadWeekRegistrationsTask task = new LoadWeekRegistrationsTask(backendConnection, weekModel, registry.getLocale());
 
-        progressIndicator.progressProperty().bind( task.progressProperty() );
-        veil.visibleProperty().bind( task.runningProperty() );
-        progressIndicator.visibleProperty().bind( task.runningProperty() );
+        progressIndicator.progressProperty().bind(task.progressProperty());
+        veil.visibleProperty().bind(task.runningProperty());
+        progressIndicator.visibleProperty().bind(task.runningProperty());
 
-        task.setOnSucceeded( event -> {
+        task.setOnSucceeded(event -> {
             ObservableList<TimeRegistration> timeRegistrations = task.getValue();
 
             TreeItem<TimeRegistration> rootItem = new TreeItem<>();
@@ -143,41 +152,40 @@ public class TimeLogsPane extends BorderPane {
                 new TimeRegistrationTreeItem(timeRegistration)
             ));
 
-            log.info( "Viewing {} time registrations", timeRegistrations.size() );
-            viewer.setRoot( rootItem );
+            log.info("Viewing {} time registrations", timeRegistrations.size());
+            viewer.setRoot(rootItem);
 
-            editButton.setDisable( true );
-            deleteButton.setDisable( true );
+            editButton.setDisable(true);
+            deleteButton.setDisable(true);
 
             watch.stop("timelogs.load.task");
-        } );
+        });
 
-        log.info( "Loading agreements" );
-        registry.getUiRegistry().getTaskExecutorService().submit( task );
+        log.info("Loading agreements");
+        registry.getUiRegistry().getTaskExecutorService().submit(task);
     }
 
     @FXML
-    private void viewerRowClicked( final MouseEvent mouseEvent ) {
-        if( mouseEvent.getEventType().equals( MouseEvent.MOUSE_CLICKED ) &&
+    private void viewerRowClicked(final MouseEvent mouseEvent) {
+        if (mouseEvent.getEventType().equals(MouseEvent.MOUSE_CLICKED) &&
             mouseEvent.getButton() == MouseButton.PRIMARY &&
-            mouseEvent.getClickCount() == 2 )
-        {
+            mouseEvent.getClickCount() == 2) {
             showDialogAndUpdateAgreement();
         }
     }
 
     @FXML
-    private void addButtonClicked( final ActionEvent event ) {
+    private void addButtonClicked(final ActionEvent event) {
         showDialogAndCreateAgreement();
     }
 
     @FXML
-    private void editButtonClicked( final ActionEvent event ) {
+    private void editButtonClicked(final ActionEvent event) {
         showDialogAndUpdateAgreement();
     }
 
     @FXML
-    private void deleteButtonClicked( final ActionEvent event ) {
+    private void deleteButtonClicked(final ActionEvent event) {
         confirmAndDeleteAgreement();
     }
 
@@ -188,17 +196,17 @@ public class TimeLogsPane extends BorderPane {
         model.setStartTime(LocalTime.now());
 
         new TimeLogDialog(model).showAndWait().ifPresent(timeLogModel -> {
-            ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
-                connection.servicesFactory().newTimeLogsService().create( timeLogModel )
+            ExecuteBackendServiceTask task = new ExecuteBackendServiceTask(backendConnection, connection ->
+                connection.servicesFactory().newTimeLogsService().create(timeLogModel)
             );
             task.setOnSucceeded(event -> reload(navigationPane.getSelectedProperty().getValue()));
-            registry.getUiRegistry().getTaskExecutorService().submit( task );
-        } );
+            registry.getUiRegistry().getTaskExecutorService().submit(task);
+        });
     }
 
     @FXML
     private void showDialogAndUpdateAgreement() {
-        if( viewer.getSelectionModel().getSelectedItem() == null ) {
+        if (viewer.getSelectionModel().getSelectedItem() == null) {
             return;
         }
 
@@ -206,22 +214,37 @@ public class TimeLogsPane extends BorderPane {
             return;
         }
 
-        TimeLogModel model = ((TimeLogRegistration)viewer.getSelectionModel().getSelectedItem().getValue()).getModel();
+        TimeLogModel model = ((TimeLogRegistration) viewer.getSelectionModel().getSelectedItem().getValue()).getModel();
         new TimeLogDialog(model).showAndWait().ifPresent(timeLogModel -> {
-            ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
-                connection.servicesFactory().newTimeLogsService().update( timeLogModel )
+            ExecuteBackendServiceTask task = new ExecuteBackendServiceTask(backendConnection, connection ->
+                connection.servicesFactory().newTimeLogsService().update(timeLogModel)
             );
             task.setOnSucceeded(event -> reload(navigationPane.getSelectedProperty().getValue()));
-            registry.getUiRegistry().getTaskExecutorService().submit( task );
-        } );
+            registry.getUiRegistry().getTaskExecutorService().submit(task);
+        });
     }
 
     @FXML
     private void confirmAndDeleteAgreement() {
-        Alert alert = new Alert( Alert.AlertType.CONFIRMATION, bundle.getString( "alert.deletion.content.text" ) );
-        alert.setHeaderText( bundle.getString( "alert.deletion.header.text" ) );
-        alert.setTitle( bundle.getString( "alert.deletion.title.text" ) );
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, bundle.getString("alert.deletion.content.text"));
+        alert.setHeaderText(bundle.getString("alert.deletion.header.text"));
+        alert.setTitle(bundle.getString("alert.deletion.title.text"));
 
-        AlertUtils.notImplementedYet();
+        List<TimeLogModel> models = viewer.getSelectionModel().getSelectedItems().stream()
+            .map(TreeItem::getValue)
+            .filter(TimeLogRegistration.class::isInstance)
+            .map(TimeLogRegistration.class::cast)
+            .map(TimeLogRegistration::getModel)
+            .collect(Collectors.toList());
+
+        alert.showAndWait()
+            .filter(response -> response == ButtonType.OK)
+            .ifPresent(response -> {
+                ExecuteBackendServiceTask task = new ExecuteBackendServiceTask(backendConnection, connection ->
+                    connection.servicesFactory().newTimeLogsService().delete(models)
+                );
+                task.setOnSucceeded(event -> reload(navigationPane.getSelectedProperty().getValue()));
+                registry.getUiRegistry().getTaskExecutorService().submit(task);
+            });
     }
 }
