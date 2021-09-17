@@ -1,4 +1,4 @@
-package dk.sunepoulsen.timelog.ui.topcomponents.timelogs;
+package dk.sunepoulsen.timelog.ui.control;
 
 import dk.sunepoulsen.timelog.registry.Registry;
 import dk.sunepoulsen.timelog.ui.model.timelogs.WeekModel;
@@ -12,7 +12,7 @@ import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class TimeLogsNavigationPane extends AnchorPane {
+public class WeekNavigationPane extends AnchorPane {
     private WeekModel weekModel;
 
     @Getter
@@ -21,7 +21,7 @@ public class TimeLogsNavigationPane extends AnchorPane {
     @FXML
     private TextField periodField;
 
-    public TimeLogsNavigationPane() {
+    public WeekNavigationPane() {
         this.selectedProperty = new SimpleObjectProperty<>();
 
         FXMLUtils.initFxml(Registry.getDefault().getBundle(getClass()), this);

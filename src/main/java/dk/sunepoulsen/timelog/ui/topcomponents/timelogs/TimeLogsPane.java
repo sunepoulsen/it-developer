@@ -2,6 +2,7 @@ package dk.sunepoulsen.timelog.ui.topcomponents.timelogs;
 
 import dk.sunepoulsen.timelog.backend.BackendConnection;
 import dk.sunepoulsen.timelog.registry.Registry;
+import dk.sunepoulsen.timelog.ui.control.WeekNavigationPane;
 import dk.sunepoulsen.timelog.ui.control.cell.DoubleTreeTableCell;
 import dk.sunepoulsen.timelog.ui.control.cell.TreeTableValueFactory;
 import dk.sunepoulsen.timelog.ui.dialogs.TimeLogDialog;
@@ -48,7 +49,7 @@ public class TimeLogsPane extends BorderPane {
     private ResourceBundle bundle;
 
     @FXML
-    private TimeLogsNavigationPane navigationPane;
+    private WeekNavigationPane navigationPane;
 
     @FXML
     private TreeTableView<TimeRegistration> viewer;
