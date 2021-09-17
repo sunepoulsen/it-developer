@@ -5,6 +5,7 @@ import dk.sunepoulsen.timelog.registry.Registry;
 import dk.sunepoulsen.timelog.ui.control.cell.DoubleTreeTableCell;
 import dk.sunepoulsen.timelog.ui.control.cell.TreeTableValueFactory;
 import dk.sunepoulsen.timelog.ui.dialogs.TimeLogDialog;
+import dk.sunepoulsen.timelog.ui.model.timelogs.DayRegistration;
 import dk.sunepoulsen.timelog.ui.model.timelogs.TimeLogModel;
 import dk.sunepoulsen.timelog.ui.model.timelogs.TimeLogRegistration;
 import dk.sunepoulsen.timelog.ui.model.timelogs.TimeRegistration;
@@ -169,8 +170,11 @@ public class TimeLogsPane extends BorderPane {
     private void viewerRowClicked(final MouseEvent mouseEvent) {
         if (mouseEvent.getEventType().equals(MouseEvent.MOUSE_CLICKED) &&
             mouseEvent.getButton() == MouseButton.PRIMARY &&
-            mouseEvent.getClickCount() == 2) {
-            showDialogAndUpdateAgreement();
+            mouseEvent.getClickCount() == 2)
+        {
+            if (viewer.getSelectionModel().getSelectedItem().getValue() instanceof TimeLogRegistration) {
+                showDialogAndUpdateAgreement();
+            }
         }
     }
 
@@ -191,11 +195,7 @@ public class TimeLogsPane extends BorderPane {
 
     @FXML
     private void showDialogAndCreateAgreement() {
-        TimeLogModel model = new TimeLogModel();
-        model.setDate(LocalDate.now());
-        model.setStartTime(LocalTime.now());
-
-        new TimeLogDialog(model).showAndWait().ifPresent(timeLogModel -> {
+        new TimeLogDialog(createModelForCreateTimeLog()).showAndWait().ifPresent(timeLogModel -> {
             ExecuteBackendServiceTask task = new ExecuteBackendServiceTask(backendConnection, connection ->
                 connection.servicesFactory().newTimeLogsService().create(timeLogModel)
             );
@@ -246,5 +246,24 @@ public class TimeLogsPane extends BorderPane {
                 task.setOnSucceeded(event -> reload(navigationPane.getSelectedProperty().getValue()));
                 registry.getUiRegistry().getTaskExecutorService().submit(task);
             });
+    }
+
+    private TimeLogModel createModelForCreateTimeLog() {
+        TimeLogModel model = new TimeLogModel();
+
+        TreeItem<TimeRegistration> timeRegistration = viewer.getSelectionModel().getSelectedItem();
+        if (timeRegistration == null) {
+            model.setDate(LocalDate.now());
+        }
+        else if (timeRegistration.getValue() instanceof DayRegistration dayRegistration) {
+            model.setDate(dayRegistration.getDate());
+        } else if (timeRegistration.getValue() instanceof TimeLogRegistration timeLogRegistration) {
+            model.setDate(timeLogRegistration.getModel().getDate());
+            model.setRegistrationType(timeLogRegistration.getModel().getRegistrationType());
+            model.setRegistrationReason(timeLogRegistration.getModel().getRegistrationReason());
+        }
+        model.setStartTime(LocalTime.now());
+
+        return model;
     }
 }
