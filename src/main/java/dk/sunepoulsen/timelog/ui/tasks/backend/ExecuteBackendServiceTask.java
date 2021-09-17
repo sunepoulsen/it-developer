@@ -11,8 +11,8 @@ import java.util.function.Consumer;
 public class ExecuteBackendServiceTask extends BackendConnectionTask<Void> {
     private Consumer<BackendConnection> executor;
 
-    public ExecuteBackendServiceTask( BackendConnection connection, Consumer<BackendConnection> executor ) {
-        super( connection );
+    public ExecuteBackendServiceTask( BackendConnection connection, String performanceTag, Consumer<BackendConnection> executor ) {
+        super( connection, performanceTag );
         this.executor = executor;
     }
 

@@ -3,11 +3,9 @@ package dk.sunepoulsen.timelog.ui.topcomponents;
 import dk.sunepoulsen.timelog.backend.BackendConnection;
 import dk.sunepoulsen.timelog.registry.Registry;
 import dk.sunepoulsen.timelog.ui.dialogs.AgreementDialog;
-import dk.sunepoulsen.timelog.ui.dialogs.registration.types.RegistrationTypeDialog;
 import dk.sunepoulsen.timelog.ui.model.AgreementModel;
 import dk.sunepoulsen.timelog.ui.tasks.backend.ExecuteBackendServiceTask;
 import dk.sunepoulsen.timelog.ui.tasks.backend.LoadBackendServiceItemsTask;
-import dk.sunepoulsen.timelog.utils.AlertUtils;
 import dk.sunepoulsen.timelog.utils.FXMLUtils;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -25,7 +23,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Collections;
 import java.util.ResourceBundle;
 
 @Slf4j
@@ -75,7 +72,7 @@ public class AgreementsPane extends BorderPane {
     }
 
     private void reload() {
-        LoadBackendServiceItemsTask<AgreementModel> task = new LoadBackendServiceItemsTask<>( backendConnection,
+        LoadBackendServiceItemsTask<AgreementModel> task = new LoadBackendServiceItemsTask<>( backendConnection, AgreementModel.PERFORMANCE_LOAD_TAG,
             connection -> connection.servicesFactory().newAgreementsService().findAll()
         );
 
@@ -125,7 +122,7 @@ public class AgreementsPane extends BorderPane {
     @FXML
     private void showDialogAndCreateAgreement() {
         new AgreementDialog().showAndWait().ifPresent(agreementModel -> {
-            ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
+            ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, AgreementModel.PERFORMANCE_SAVE_TAG, connection ->
                 connection.servicesFactory().newAgreementsService().create( agreementModel )
             );
             task.setOnSucceeded(event -> reload());
@@ -141,7 +138,7 @@ public class AgreementsPane extends BorderPane {
 
         new AgreementDialog( viewer.getSelectionModel().getSelectedItem() ).showAndWait()
             .ifPresent( agreementModel -> {
-                ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
+                ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, AgreementModel.PERFORMANCE_SAVE_TAG, connection ->
                     connection.servicesFactory().newAgreementsService().update( agreementModel )
                 );
                 task.setOnSucceeded(event -> reload());
@@ -158,7 +155,7 @@ public class AgreementsPane extends BorderPane {
         alert.showAndWait()
             .filter( response -> response == ButtonType.OK )
             .ifPresent( response -> {
-                ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
+                ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, AgreementModel.PERFORMANCE_DELETE_TAG, connection ->
                     connection.servicesFactory().newAgreementsService().delete( viewer.getSelectionModel().getSelectedItems() )
                 );
                 task.setOnSucceeded(event -> reload());

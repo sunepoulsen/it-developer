@@ -2,13 +2,10 @@ package dk.sunepoulsen.timelog.ui.topcomponents;
 
 import dk.sunepoulsen.timelog.backend.BackendConnection;
 import dk.sunepoulsen.timelog.registry.Registry;
-import dk.sunepoulsen.timelog.ui.dialogs.AgreementDialog;
 import dk.sunepoulsen.timelog.ui.dialogs.ProjectAccountDialog;
-import dk.sunepoulsen.timelog.ui.model.AgreementModel;
 import dk.sunepoulsen.timelog.ui.model.ProjectAccountModel;
 import dk.sunepoulsen.timelog.ui.tasks.backend.ExecuteBackendServiceTask;
 import dk.sunepoulsen.timelog.ui.tasks.backend.LoadBackendServiceItemsTask;
-import dk.sunepoulsen.timelog.utils.AlertUtils;
 import dk.sunepoulsen.timelog.utils.FXMLUtils;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -75,7 +72,7 @@ public class ProjectAccountsPane extends BorderPane {
     }
 
     private void reload() {
-        LoadBackendServiceItemsTask<ProjectAccountModel> task = new LoadBackendServiceItemsTask<>( backendConnection,
+        LoadBackendServiceItemsTask<ProjectAccountModel> task = new LoadBackendServiceItemsTask<>( backendConnection, ProjectAccountModel.PERFORMANCE_LOAD_TAG,
             connection -> connection.servicesFactory().newProjectAccountsService().findAll()
         );
 
@@ -125,7 +122,7 @@ public class ProjectAccountsPane extends BorderPane {
     @FXML
     private void showDialogAndCreateAgreement() {
         new ProjectAccountDialog().showAndWait().ifPresent(projectAccountModel -> {
-            ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
+            ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, ProjectAccountModel.PERFORMANCE_SAVE_TAG, connection ->
                 connection.servicesFactory().newProjectAccountsService().create( projectAccountModel )
             );
             task.setOnSucceeded(event -> reload());
@@ -141,7 +138,7 @@ public class ProjectAccountsPane extends BorderPane {
 
         new ProjectAccountDialog( viewer.getSelectionModel().getSelectedItem() ).showAndWait()
             .ifPresent( projectAccountModel -> {
-                ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
+                ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, ProjectAccountModel.PERFORMANCE_SAVE_TAG, connection ->
                     connection.servicesFactory().newProjectAccountsService().update( projectAccountModel )
                 );
                 task.setOnSucceeded(event -> reload());
@@ -158,7 +155,7 @@ public class ProjectAccountsPane extends BorderPane {
         alert.showAndWait()
             .filter( response -> response == ButtonType.OK )
             .ifPresent( response -> {
-                ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
+                ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, ProjectAccountModel.PERFORMANCE_DELETE_TAG, connection ->
                     connection.servicesFactory().newProjectAccountsService().delete( viewer.getSelectionModel().getSelectedItems() )
                 );
                 task.setOnSucceeded(event -> reload());

@@ -18,8 +18,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import org.perf4j.StopWatch;
-import org.perf4j.log4j.Log4JStopWatch;
 
 import java.net.URL;
 import java.util.Optional;
@@ -83,32 +81,25 @@ public class TimeLogDialog extends GridPane implements Initializable, DialogImpl
     }
 
     private void initializeRegistrationTypes() {
-        StopWatch watch = new Log4JStopWatch("registration.types.load");
-        LoadBackendServiceItemsTask<RegistrationTypeModel> task = new LoadBackendServiceItemsTask<>( backendConnection,
+        LoadBackendServiceItemsTask<RegistrationTypeModel> task = new LoadBackendServiceItemsTask<>( backendConnection, RegistrationTypeModel.PERFORMANCE_LOAD_TAG,
             connection -> connection.servicesFactory().newRegistrationTypesService().findAll()
         );
         task.setOnSucceeded( event -> {
             registrationTypeField.setConverter(new RegistrationTypeConverter(task.getValue()));
             registrationTypeField.setItems(task.getValue());
             registrationTypeField.setValue(model.getRegistrationType());
-
-            watch.stop();
         });
         this.executorService.submit(task);
     }
 
     private void reloadRegistrationReasons(ObservableValue<? extends RegistrationTypeModel> observable, RegistrationTypeModel oldValue, RegistrationTypeModel newValue) {
-        StopWatch watch = new Log4JStopWatch("registration.reasons.load");
-
-        LoadBackendServiceItemsTask<RegistrationReasonModel> task = new LoadBackendServiceItemsTask<>( backendConnection,
+        LoadBackendServiceItemsTask<RegistrationReasonModel> task = new LoadBackendServiceItemsTask<>( backendConnection, RegistrationReasonModel.PERFORMANCE_LOAD_TAG,
             connection -> connection.servicesFactory().newRegistrationReasonsService(registrationTypeField.getValue().getId()).findAll()
         );
         task.setOnSucceeded( event -> {
             registrationReasonField.setConverter(new RegistrationReasonConverter(task.getValue()));
             registrationReasonField.setItems(task.getValue());
             registrationReasonField.setValue(model.getRegistrationReason());
-
-            watch.stop();
         });
         this.executorService.submit(task);
     }

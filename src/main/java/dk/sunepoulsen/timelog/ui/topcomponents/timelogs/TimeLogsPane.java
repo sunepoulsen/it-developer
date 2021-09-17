@@ -32,8 +32,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 import lombok.extern.slf4j.Slf4j;
-import org.perf4j.StopWatch;
-import org.perf4j.log4j.Log4JStopWatch;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -132,11 +130,8 @@ public class TimeLogsPane extends BorderPane {
     }
 
     private void reload(WeekModel weekModel) {
-        StopWatch watch = new Log4JStopWatch();
-
         if (weekModel == null) {
             viewer.setRoot(new TreeItem<>());
-            watch.stop("timelogs.load.none");
             return;
         }
 
@@ -159,8 +154,6 @@ public class TimeLogsPane extends BorderPane {
 
             editButton.setDisable(true);
             deleteButton.setDisable(true);
-
-            watch.stop("timelogs.load.task");
         });
 
         log.info("Loading agreements");
@@ -197,7 +190,7 @@ public class TimeLogsPane extends BorderPane {
     @FXML
     private void showDialogAndCreateAgreement() {
         new TimeLogDialog(createModelForCreateTimeLog()).showAndWait().ifPresent(timeLogModel -> {
-            ExecuteBackendServiceTask task = new ExecuteBackendServiceTask(backendConnection, connection ->
+            ExecuteBackendServiceTask task = new ExecuteBackendServiceTask(backendConnection, TimeLogModel.PERFORMANCE_SAVE_TAG, connection ->
                 connection.servicesFactory().newTimeLogsService().create(timeLogModel)
             );
             task.setOnSucceeded(event -> reload(navigationPane.getSelectedProperty().getValue()));
@@ -217,7 +210,7 @@ public class TimeLogsPane extends BorderPane {
 
         TimeLogModel model = ((TimeLogRegistration) viewer.getSelectionModel().getSelectedItem().getValue()).getModel();
         new TimeLogDialog(model).showAndWait().ifPresent(timeLogModel -> {
-            ExecuteBackendServiceTask task = new ExecuteBackendServiceTask(backendConnection, connection ->
+            ExecuteBackendServiceTask task = new ExecuteBackendServiceTask(backendConnection, TimeLogModel.PERFORMANCE_SAVE_TAG, connection ->
                 connection.servicesFactory().newTimeLogsService().update(timeLogModel)
             );
             task.setOnSucceeded(event -> reload(navigationPane.getSelectedProperty().getValue()));
@@ -241,7 +234,7 @@ public class TimeLogsPane extends BorderPane {
         alert.showAndWait()
             .filter(response -> response == ButtonType.OK)
             .ifPresent(response -> {
-                ExecuteBackendServiceTask task = new ExecuteBackendServiceTask(backendConnection, connection ->
+                ExecuteBackendServiceTask task = new ExecuteBackendServiceTask(backendConnection, TimeLogModel.PERFORMANCE_DELETE_TAG, connection ->
                     connection.servicesFactory().newTimeLogsService().delete(models)
                 );
                 task.setOnSucceeded(event -> reload(navigationPane.getSelectedProperty().getValue()));

@@ -2,10 +2,15 @@ package dk.sunepoulsen.timelog.ui.model.registration.types;
 
 import dk.sunepoulsen.timelog.ui.model.AbstractModel;
 import lombok.Data;
+
 import javax.validation.constraints.NotNull;
 
 @Data
 public class RegistrationReasonModel implements AbstractModel {
+    public static final String PERFORMANCE_LOAD_TAG = "registration.reasons.load.task";
+    public static final String PERFORMANCE_SAVE_TAG = "registration.reasons.save.task";
+    public static final String PERFORMANCE_DELETE_TAG = "registration.reasons.delete.task";
+
     /**
      * Unique identifier of the registration reason.
      */

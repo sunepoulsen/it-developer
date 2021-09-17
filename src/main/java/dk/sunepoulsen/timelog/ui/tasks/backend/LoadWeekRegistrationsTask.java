@@ -24,7 +24,7 @@ public class LoadWeekRegistrationsTask extends BackendConnectionTask<ObservableL
     private AgreementModel cachedAgreement = null;
 
     public LoadWeekRegistrationsTask(BackendConnection connection, WeekModel weekModel, Locale locale) {
-        super( connection );
+        super( connection, "week.load.task" );
         this.weekModel = weekModel;
         this.locale = locale;
     }

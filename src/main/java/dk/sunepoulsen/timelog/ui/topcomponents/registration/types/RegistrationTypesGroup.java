@@ -89,7 +89,7 @@ public class RegistrationTypesGroup extends BorderPane {
     }
 
     private void reload() {
-        LoadBackendServiceItemsTask<RegistrationTypeModel> task = new LoadBackendServiceItemsTask<>( backendConnection,
+        LoadBackendServiceItemsTask<RegistrationTypeModel> task = new LoadBackendServiceItemsTask<>( backendConnection, RegistrationTypeModel.PERFORMANCE_LOAD_TAG,
             connection -> connection.servicesFactory().newRegistrationTypesService().findAll()
         );
 
@@ -139,7 +139,7 @@ public class RegistrationTypesGroup extends BorderPane {
     @FXML
     private void showDialogAndCreateRegistrationType() {
         new RegistrationTypeDialog().showAndWait().ifPresent(registrationTypeModel -> {
-            ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
+            ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, RegistrationTypeModel.PERFORMANCE_SAVE_TAG, connection ->
                 connection.servicesFactory().newRegistrationTypesService().create( registrationTypeModel )
             );
             task.setOnSucceeded(event -> reload());
@@ -155,7 +155,7 @@ public class RegistrationTypesGroup extends BorderPane {
 
         new RegistrationTypeDialog( viewer.getSelectionModel().getSelectedItem() ).showAndWait()
             .ifPresent( registrationSystemModel -> {
-                ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
+                ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, RegistrationTypeModel.PERFORMANCE_SAVE_TAG, connection ->
                     connection.servicesFactory().newRegistrationTypesService().update( registrationSystemModel )
                 );
                 task.setOnSucceeded(event -> reload());
@@ -172,7 +172,7 @@ public class RegistrationTypesGroup extends BorderPane {
         alert.showAndWait()
             .filter( response -> response == ButtonType.OK )
             .ifPresent( response -> {
-                ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
+                ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, RegistrationTypeModel.PERFORMANCE_DELETE_TAG, connection ->
                     connection.servicesFactory().newRegistrationTypesService().delete( viewer.getSelectionModel().getSelectedItems() )
                 );
                 task.setOnSucceeded(event -> reload());

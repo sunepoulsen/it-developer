@@ -14,8 +14,8 @@ import java.util.function.Function;
 public class LoadBackendServiceItemsTask<T> extends BackendConnectionTask<ObservableList<T>> {
     private Function<BackendConnection, Collection<? extends T>> collector;
 
-    public LoadBackendServiceItemsTask( BackendConnection connection, Function<BackendConnection, Collection<? extends T>> collector ) {
-        super( connection );
+    public LoadBackendServiceItemsTask( BackendConnection connection, String performanceTag, Function<BackendConnection, Collection<? extends T>> collector ) {
+        super( connection, performanceTag );
         this.collector = collector;
     }
 

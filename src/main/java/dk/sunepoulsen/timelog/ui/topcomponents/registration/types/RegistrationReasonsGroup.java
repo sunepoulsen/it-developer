@@ -3,16 +3,12 @@ package dk.sunepoulsen.timelog.ui.topcomponents.registration.types;
 import dk.sunepoulsen.timelog.backend.BackendConnection;
 import dk.sunepoulsen.timelog.registry.Registry;
 import dk.sunepoulsen.timelog.ui.dialogs.registration.types.RegistrationReasonDialog;
-import dk.sunepoulsen.timelog.ui.dialogs.registration.types.RegistrationTypeDialog;
-import dk.sunepoulsen.timelog.ui.model.TreeNavigatorModel;
 import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationReasonModel;
 import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationTypeModel;
 import dk.sunepoulsen.timelog.ui.tasks.backend.ExecuteBackendServiceTask;
 import dk.sunepoulsen.timelog.ui.tasks.backend.LoadBackendServiceItemsTask;
-import dk.sunepoulsen.timelog.utils.AlertUtils;
 import dk.sunepoulsen.timelog.utils.FXMLUtils;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,7 +26,6 @@ import javafx.scene.layout.Region;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.ResourceBundle;
 
@@ -93,7 +88,7 @@ public class RegistrationReasonsGroup extends BorderPane {
     }
 
     private void reload() {
-        LoadBackendServiceItemsTask<RegistrationReasonModel> task = new LoadBackendServiceItemsTask<>( backendConnection,
+        LoadBackendServiceItemsTask<RegistrationReasonModel> task = new LoadBackendServiceItemsTask<>( backendConnection, RegistrationReasonModel.PERFORMANCE_LOAD_TAG,
             connection -> {
                 if (currentRegistrationTypeProperty.getValue() != null) {
                     return connection.servicesFactory().newRegistrationReasonsService(currentRegistrationTypeProperty.getValue().getId()).findAll();
@@ -149,7 +144,7 @@ public class RegistrationReasonsGroup extends BorderPane {
     @FXML
     private void showDialogAndCreateRegistrationSystem() {
         new RegistrationReasonDialog(currentRegistrationTypeProperty.getValue().getId()).showAndWait().ifPresent(registrationReasonModel -> {
-            ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
+            ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, RegistrationReasonModel.PERFORMANCE_SAVE_TAG, connection ->
                 connection.servicesFactory().newRegistrationReasonsService(currentRegistrationTypeProperty.getValue().getId()).create( registrationReasonModel )
             );
             task.setOnSucceeded(event -> reload());
@@ -165,7 +160,7 @@ public class RegistrationReasonsGroup extends BorderPane {
 
         new RegistrationReasonDialog( viewer.getSelectionModel().getSelectedItem() ).showAndWait()
             .ifPresent( registrationReasonModel -> {
-                ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
+                ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, RegistrationReasonModel.PERFORMANCE_SAVE_TAG, connection ->
                     connection.servicesFactory().newRegistrationReasonsService(currentRegistrationTypeProperty.getValue().getId()).update( registrationReasonModel )
                 );
                 task.setOnSucceeded(event -> reload());
@@ -182,7 +177,7 @@ public class RegistrationReasonsGroup extends BorderPane {
         alert.showAndWait()
             .filter( response -> response == ButtonType.OK )
             .ifPresent( response -> {
-                ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, connection ->
+                ExecuteBackendServiceTask task = new ExecuteBackendServiceTask( backendConnection, RegistrationReasonModel.PERFORMANCE_DELETE_TAG, connection ->
                     connection.servicesFactory().newRegistrationReasonsService(currentRegistrationTypeProperty.getValue().getId()).delete( viewer.getSelectionModel().getSelectedItems() )
                 );
                 task.setOnSucceeded(event -> reload());

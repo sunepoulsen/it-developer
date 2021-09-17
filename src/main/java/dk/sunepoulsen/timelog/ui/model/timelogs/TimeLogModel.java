@@ -13,6 +13,10 @@ import java.time.LocalTime;
 @Data
 @ValidTimeInterval(properties = {"startTime", "endTime"})
 public class TimeLogModel implements AbstractModel {
+    public static final String PERFORMANCE_LOAD_TAG = "timelog.load.task";
+    public static final String PERFORMANCE_SAVE_TAG = "timelog.save.task";
+    public static final String PERFORMANCE_DELETE_TAG = "timelog.delete.task";
+
     private Long id;
 
     @NotNull
