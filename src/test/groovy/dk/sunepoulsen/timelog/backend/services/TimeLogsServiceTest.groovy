@@ -1,13 +1,13 @@
 package dk.sunepoulsen.timelog.backend.services
 
-import dk.sunepoulsen.timelog.persistence.storage.PersistenceStorage;
+import dk.sunepoulsen.timelog.persistence.storage.PersistenceStorage
 import dk.sunepoulsen.timelog.persistence.storage.PersistenceStorageSettings
 import dk.sunepoulsen.timelog.testutils.persistence.TestDataHelper
 import dk.sunepoulsen.timelog.testutils.persistence.TimeUtils
 import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationTypeModel
-import dk.sunepoulsen.timelog.ui.model.timelogs.TimeLogModel;
-import org.junit.After;
-import org.junit.Before;
+import dk.sunepoulsen.timelog.ui.model.timelogs.TimeLogModel
+import org.junit.After
+import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 
@@ -63,7 +63,7 @@ class TimeLogsServiceTest {
         testDataHelper.createTimeLog(TimeUtils.tomorrow(), registrationType )
 
         // When: Find the timelogs from today
-        List<TimeLogModel> results = new TimeLogsService(databaseStorage).findByDates(LocalDate.now(), LocalDate.now().plusDays(1))
+        List<TimeLogModel> results = new TimeLogsService(databaseStorage).findByDates(LocalDate.now(), LocalDate.now())
 
         // Then
         assert results.size() == 1
