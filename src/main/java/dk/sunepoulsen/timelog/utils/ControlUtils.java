@@ -6,6 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Locale;
 
 /**
@@ -36,6 +39,33 @@ public class ControlUtils {
         }
 
         return getText( control.editorProperty().getValue() );
+    }
+
+    public static void setLocalTime(TextField control, LocalTime localTime, DateTimeFormatter formatter) {
+        if (localTime == null) {
+            control.setText("");
+            return;
+        }
+
+        control.setText(localTime.format(formatter));
+    }
+
+    public static LocalTime getLocalTime(TextField control, DateTimeFormatter formatter) {
+        String text = null;
+
+        try {
+            text = getText(control);
+            if (text.isEmpty() || text.isBlank()) {
+                return null;
+            }
+
+            return LocalTime.parse(text, formatter);
+        }
+        catch(DateTimeParseException ex) {
+            log.info("Unable to parse text '{}' as LocalTime. Using null value for LocalTime. Error: {}", text, ex.getMessage());
+            log.debug("{}", ex.getMessage(), ex);
+            return null;
+        }
     }
 
     public static Double getDouble( TextField control ) {

@@ -30,12 +30,12 @@ dependencies {
     implementation "org.liquibase:liquibase-core:${project.property('liquibase-core.version')}"
     implementation "org.hibernate:hibernate-core:${project.property('hibernate-core.version')}"
     implementation "com.h2database:h2:${project.property('h2.version')}"
-    implementation group: 'net.bytebuddy', name: 'byte-buddy', version: '1.11.6'
-    implementation group: 'net.bytebuddy', name: 'byte-buddy-agent', version: '1.11.6'
+    implementation "net.bytebuddy:byte-buddy:${project.property('byte-buddy.version')}"
+    implementation "net.bytebuddy:byte-buddy-agent:${project.property('byte-buddy.version')}"
 
     // JAX-B dependencies for JDK 9+
-    implementation "jakarta.xml.bind:jakarta.xml.bind-api:3.0.1"
-    implementation "org.glassfish.jaxb:jaxb-runtime:3.0.1"
+    implementation "jakarta.xml.bind:jakarta.xml.bind-api:${project.property('jakarta-xml-bind-api.version')}"
+    implementation "org.glassfish.jaxb:jaxb-runtime:${project.property('jaxb-runtime.version')}"
 
     // JSON
     implementation "com.fasterxml.jackson.core:jackson-core:${project.property('jackson.version')}"
@@ -47,18 +47,18 @@ dependencies {
     implementation "org.hibernate.validator:hibernate-validator-cdi:${project.property('hibernate-validator.version')}"
     implementation "javax.validation:validation-api:${project.property('javax-validation-api.version')}"
     implementation "org.glassfish:javax.el:3.0.0"
-    //implementation "org.glassfish:jakarta.el:${project.property('jakarta-el.version')}"
 
     // Utilities
     implementation "org.slf4j:log4j-over-slf4j:${project.property('log4j-over-slf4j.version')}"
     implementation "ch.qos.logback:logback-core:${project.property('logback-core.version')}"
     implementation "ch.qos.logback:logback-classic:${project.property('logback-classic.version')}"
     implementation "com.google.guava:guava:${project.property('guava.version')}"
+    implementation "org.perf4j:perf4j:${project.property('perf4j.version')}"
 
     // JUnit
     testImplementation "junit:junit:${project.property('junit.version')}"
 
-    // Spock
+    // Groovy
     testImplementation localGroovy() // Note: using the groovy implementation shipped with gradle
 }
 

@@ -21,7 +21,7 @@ public class RegistrationTypesService extends AbstractPersistenceService<Registr
     }
 
     @Override
-    protected RegistrationTypeEntity convertModel( RegistrationTypeEntity entity, RegistrationTypeModel model ) {
+    RegistrationTypeEntity convertModel( RegistrationTypeEntity entity, RegistrationTypeModel model ) {
         entity.setId( model.getId() );
         entity.setName( model.getName() );
         entity.setDescription( model.getDescription() );
@@ -32,7 +32,7 @@ public class RegistrationTypesService extends AbstractPersistenceService<Registr
     }
 
     @Override
-    protected RegistrationTypeModel convertEntity( RegistrationTypeEntity entity ) {
+    RegistrationTypeModel convertEntity( RegistrationTypeEntity entity ) {
         RegistrationTypeModel model = new RegistrationTypeModel();
 
         model.setId( entity.getId() );

@@ -19,7 +19,9 @@
                 <constraints nullable="false"/>
             </column>
 
-            <column name="start_date" type="date" />
+            <column name="start_date" type="date">
+                <constraints nullable="false"/>
+            </column>
             <column name="end_date" type="date" />
             <column name="monday_norm" type="double" />
             <column name="tuesday_norm" type="double" />
@@ -29,6 +31,11 @@
             <column name="saturday_norm" type="double" />
             <column name="sunday_norm" type="double" />
         </createTable>
+
+        <createIndex tableName="agreements" indexName="idx_find_agreements_by_date">
+            <column name="start_date"/>
+            <column name="end_date"/>
+        </createIndex>
     </changeSet>
 
 </databaseChangeLog>

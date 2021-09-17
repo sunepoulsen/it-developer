@@ -1,5 +1,6 @@
 {
-    "date-formats": {
-        "short": "dd-MM-yyyy"
+    "calendar": {
+        "short-date-format": "dd-MM-yyyy",
+        "short-time-format": "HH:mm"
     }
 }

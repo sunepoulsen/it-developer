@@ -2,33 +2,39 @@ package dk.sunepoulsen.timelog.persistence.entities;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.time.LocalDate;
-import java.util.Set;
-
-import static javax.persistence.CascadeType.ALL;
 
 @Data
 @Entity
 @Table( name = "agreements" )
 @NamedQueries( {
-    @NamedQuery( name = "findAllAgreements", query = "SELECT r FROM AgreementEntity r" ),
-    @NamedQuery( name = "deleteAgreements", query = "DELETE FROM AgreementEntity r WHERE r.id IN :ids" )
+    @NamedQuery( name = "findAllAgreements", query = "SELECT a FROM AgreementEntity a" ),
+    @NamedQuery( name = "findAgreementsByDate", query = "SELECT a FROM AgreementEntity a WHERE a.startDate <= :date AND (a.endDate IS NULL OR :date <= a.endDate)" ),
+    @NamedQuery( name = "deleteAgreements", query = "DELETE FROM AgreementEntity a WHERE a.id IN :ids" )
 })
 public class AgreementEntity implements AbstractEntity {
     /**
      * Primary key.
      */
     @Id
-    @SequenceGenerator( name = "agreement_id_seq_generator", sequenceName = "agreement_id_seq_seq", allocationSize = 1 )
-    @GeneratedValue( strategy = GenerationType.SEQUENCE, generator = "agreement_id_seq_seq_generator" )
+    @SequenceGenerator( name = "agreement_id_seq_generator", sequenceName = "agreement_id_seq", allocationSize = 1 )
+    @GeneratedValue( strategy = GenerationType.SEQUENCE, generator = "agreement_id_seq_generator" )
     @Column( name = "agreement_id" )
     private Long id;
 
-    @Column( name = "name" )
+    @Column( name = "name", nullable = false )
     private String name;
 
-    @Column( name = "start_date" )
+    @Column( name = "start_date", nullable = false )
     private LocalDate startDate;
 
     @Column( name = "end_date" )

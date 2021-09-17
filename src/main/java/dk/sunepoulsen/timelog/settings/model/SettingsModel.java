@@ -8,6 +8,6 @@ import lombok.Data;
  */
 @Data
 public class SettingsModel {
-    @JsonProperty( "date-formats" )
-    private DateFormats dateFormats;
+    @JsonProperty( "calendar" )
+    private CalendarSettings calendar;
 }

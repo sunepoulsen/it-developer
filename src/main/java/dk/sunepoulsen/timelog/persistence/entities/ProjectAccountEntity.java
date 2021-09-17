@@ -33,4 +33,11 @@ public class ProjectAccountEntity implements AbstractEntity {
 
     @Column( name = "purpose" )
     private String purpose;
+
+    @ManyToMany
+    @JoinTable(name="timelog_project_accounts",
+        joinColumns=@JoinColumn(name="project_account_id", referencedColumnName="project_account_id"),
+        inverseJoinColumns=@JoinColumn(name="timelog_id", referencedColumnName="timelog_id")
+    )
+    public Set<TimeLogEntity> timeLogs;
 }

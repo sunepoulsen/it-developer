@@ -199,8 +199,13 @@ public class PersistenceStorage {
     }
 
     public void deleteAllData() {
-        // transactional( em -> em.createQuery( "DELETE FROM HolidayEntity entity" ).executeUpdate() );
-        // transactional( em -> em.createQuery( "DELETE FROM AgreementEntity entity" ).executeUpdate() );
+        transactional( em -> {
+            em.createQuery( "DELETE FROM TimeLogEntity entity" ).executeUpdate();
+            em.createQuery( "DELETE FROM RegistrationReasonEntity entity" ).executeUpdate();
+            em.createQuery( "DELETE FROM RegistrationTypeEntity entity" ).executeUpdate();
+            em.createQuery( "DELETE FROM ProjectAccountEntity entity" ).executeUpdate();
+            em.createQuery( "DELETE FROM AgreementEntity entity" ).executeUpdate();
+        } );
     }
 
     //-------------------------------------------------------------------------

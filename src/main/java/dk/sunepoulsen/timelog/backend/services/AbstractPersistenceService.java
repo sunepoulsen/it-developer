@@ -86,6 +86,6 @@ public abstract class AbstractPersistenceService<M extends AbstractModel, T exte
             .collect( Collectors.toList() );
     }
 
-    protected abstract T convertModel( T entity, M model );
-    protected abstract M convertEntity( T entity );
+    abstract T convertModel( T entity, M model );
+    abstract M convertEntity( T entity );
 }

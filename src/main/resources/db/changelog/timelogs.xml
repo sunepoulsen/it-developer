@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet id="1" author="stp">
+        <createSequence cycle="false"
+                        incrementBy="50"
+                        sequenceName="timelog_id_seq"
+                        startValue="1"/>
+
+        <createTable tableName="timelogs">
+            <column name="timelog_id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="timelog_date" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="start_time" type="time">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_time" type="time">
+                <constraints nullable="false"/>
+            </column>
+            <column name="registration_type_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="registration_reason_id" type="bigint"/>
+        </createTable>
+
+        <createIndex tableName="timelogs" indexName="idx_timelogs_timelog_date">
+            <column name="timelog_date"/>
+        </createIndex>
+
+        <createSequence cycle="false"
+                        incrementBy="50"
+                        sequenceName="timelog_project_account_id_seq"
+                        startValue="1"/>
+
+        <createTable tableName="timelog_project_accounts">
+            <column name="timelog_project_account_id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+
+            <column name="timelog_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="project_account_id" type="time">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint constraintName="fk_timelog_project_accounts_timelog_id"
+                                 baseTableName="timelog_project_accounts" baseColumnNames="timelog_id"
+                                 referencedTableName="timelogs" referencedColumnNames="timelog_id"
+        />
+        <addForeignKeyConstraint constraintName="fk_timelog_project_accounts_project_account_id"
+                                 baseTableName="timelog_project_accounts" baseColumnNames="project_account_id"
+                                 referencedTableName="project_accounts" referencedColumnNames="project_account_id"
+        />
+    </changeSet>
+
+</databaseChangeLog>

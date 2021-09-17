@@ -13,6 +13,10 @@
         <appender-ref ref="PRODUCTION"/>
     </logger>
 
+    <logger name="org.perf4j.TimingLogger" level="INFO">
+        <appender-ref ref="PRODUCTION"/>
+    </logger>
+
     <logger name="org.hibernate" level="INFO">
         <appender-ref ref="PRODUCTION"/>
     </logger>

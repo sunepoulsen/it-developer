@@ -7,4 +7,5 @@
     <include file="agreements.xml" relativeToChangelogFile="true" />
     <include file="project_accounts.xml" relativeToChangelogFile="true" />
     <include file="registration_types.xml" relativeToChangelogFile="true" />
+    <include file="timelogs.xml" relativeToChangelogFile="true" />
 </databaseChangeLog>

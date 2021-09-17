@@ -36,4 +36,7 @@ public class RegistrationReasonEntity implements AbstractEntity {
 
     @Column( name = "purpose" )
     private String purpose;
+
+    @OneToMany( cascade = ALL, fetch = FetchType.LAZY, mappedBy = "registrationReason" )
+    private Set<TimeLogEntity> timeLogs;
 }
