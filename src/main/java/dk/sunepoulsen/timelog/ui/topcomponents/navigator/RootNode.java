@@ -5,6 +5,7 @@ import dk.sunepoulsen.timelog.ui.model.TreeNavigatorModel;
 import dk.sunepoulsen.timelog.ui.topcomponents.AgreementsPane;
 import dk.sunepoulsen.timelog.ui.topcomponents.ProjectAccountsPane;
 import dk.sunepoulsen.timelog.ui.topcomponents.registration.types.RegistrationTypesPane;
+import dk.sunepoulsen.timelog.ui.topcomponents.reportings.ReportingsPane;
 import dk.sunepoulsen.timelog.ui.topcomponents.timelogs.TimeLogsPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
@@ -17,6 +18,7 @@ public class RootNode extends TreeItem<TreeNavigatorModel> {
         super();
 
         createAndAddRootItem(new NodeNavigationModel("Time Logs", new TimeLogsPane()));
+        createAndAddRootItem(new NodeNavigationModel("Reportings", new ReportingsPane()));
 
         TreeItem<TreeNavigatorModel> adminItem = createParentItem("Admin");
         createAndAddChildItem(adminItem, new NodeNavigationModel( "Agreements", new AgreementsPane() ));
