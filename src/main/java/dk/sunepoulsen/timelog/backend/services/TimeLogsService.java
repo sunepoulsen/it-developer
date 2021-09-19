@@ -1,5 +1,6 @@
 package dk.sunepoulsen.timelog.backend.services;
 
+import dk.sunepoulsen.timelog.persistence.entities.ProjectAccountEntity;
 import dk.sunepoulsen.timelog.persistence.entities.RegistrationReasonEntity;
 import dk.sunepoulsen.timelog.persistence.entities.RegistrationTypeEntity;
 import dk.sunepoulsen.timelog.persistence.entities.TimeLogEntity;
@@ -53,6 +54,18 @@ public class TimeLogsService extends AbstractPersistenceService<TimeLogModel, Ti
             entity.setRegistrationReason(registrationReasonEntity);
         }
 
+        if (model.getProjectAccounts() != null) {
+            entity.setProjectAccounts(model.getProjectAccounts().stream()
+                .map(projectAccountModel -> {
+                    ProjectAccountEntity accountEntity = new ProjectAccountEntity();
+                    accountEntity.setId(projectAccountModel.getId());
+
+                    return accountEntity;
+                })
+                .collect(Collectors.toSet())
+            );
+        }
+
         return entity;
     }
 
@@ -70,6 +83,12 @@ public class TimeLogsService extends AbstractPersistenceService<TimeLogModel, Ti
         }
         if (entity.getRegistrationReason() != null) {
             model.setRegistrationReason(new RegistrationReasonsService(database, entity.getRegistrationType().getId()).convertEntity(entity.getRegistrationReason()));
+        }
+        if (entity.getProjectAccounts() != null) {
+            model.setProjectAccounts(entity.getProjectAccounts().stream()
+                .map(projectAccountEntity -> new ProjectAccountsService(database).convertEntity(projectAccountEntity))
+                .collect(Collectors.toList())
+            );
         }
 
         return model;

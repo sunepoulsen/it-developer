@@ -47,7 +47,7 @@
             <column name="timelog_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="project_account_id" type="time">
+            <column name="project_account_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
         </createTable>

@@ -1,20 +1,35 @@
 package dk.sunepoulsen.timelog.persistence.entities;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.*;
-import java.time.LocalDate;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.util.Set;
 
-import static javax.persistence.CascadeType.ALL;
-
-@Data
 @Entity
 @Table( name = "project_accounts" )
 @NamedQueries( {
     @NamedQuery( name = "findAllProjectAccounts", query = "SELECT r FROM ProjectAccountEntity r" ),
     @NamedQuery( name = "deleteProjectAccounts", query = "DELETE FROM ProjectAccountEntity r WHERE r.id IN :ids" )
 })
+@NoArgsConstructor
+@Setter
+@Getter
+@ToString(exclude = {"timeLogs"})
+@EqualsAndHashCode(exclude = {"timeLogs"})
 public class ProjectAccountEntity implements AbstractEntity {
     /**
      * Primary key.
@@ -34,10 +49,6 @@ public class ProjectAccountEntity implements AbstractEntity {
     @Column( name = "purpose" )
     private String purpose;
 
-    @ManyToMany
-    @JoinTable(name="timelog_project_accounts",
-        joinColumns=@JoinColumn(name="project_account_id", referencedColumnName="project_account_id"),
-        inverseJoinColumns=@JoinColumn(name="timelog_id", referencedColumnName="timelog_id")
-    )
+    @ManyToMany(mappedBy = "projectAccounts", fetch = FetchType.EAGER)
     public Set<TimeLogEntity> timeLogs;
 }

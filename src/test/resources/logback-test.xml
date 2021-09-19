@@ -16,5 +16,8 @@
     <logger name="liquibase" level="DEBUG">
         <appender-ref ref="PRODUCTION"/>
     </logger>
+    <logger name="org.hibernate.SQL" level="DEBUG">
+        <appender-ref ref="PRODUCTION"/>
+    </logger>
 
 </configuration>

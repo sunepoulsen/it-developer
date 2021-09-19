@@ -4,6 +4,7 @@ import dk.sunepoulsen.timelog.persistence.storage.PersistenceStorage
 import dk.sunepoulsen.timelog.persistence.storage.PersistenceStorageSettings
 import dk.sunepoulsen.timelog.testutils.persistence.TestDataHelper
 import dk.sunepoulsen.timelog.testutils.persistence.TimeUtils
+import dk.sunepoulsen.timelog.ui.model.ProjectAccountModel
 import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationTypeModel
 import dk.sunepoulsen.timelog.ui.model.timelogs.TimeLogModel
 import org.junit.After
@@ -47,6 +48,53 @@ class TimeLogsServiceTest {
     }
 
     @Test
+    void "Create new timelog with project accounts"() {
+        // Given: Have existing registration type in the database
+        RegistrationTypeModel registrationType = testDataHelper.createRegistrationType('ARB')
+
+        // Given: Have existing project accounts in the database
+        List<ProjectAccountModel> projectAccounts = [
+            testDataHelper.createProjectAccount("ACC-001"),
+            testDataHelper.createProjectAccount("ACC-002"),
+            testDataHelper.createProjectAccount("ACC-003")
+        ]
+
+        // When: Create new timelog with two project accounts
+        TimeLogModel result = testDataHelper.createTimeLog(LocalDate.now(), registrationType, [projectAccounts[0], projectAccounts[2]])
+
+        // Then
+        assert result.getId() > 0
+        assert result.projectAccounts.size() == 2
+        assert result.projectAccounts[0].accountNumber == projectAccounts[0].accountNumber
+        assert result.projectAccounts[1].accountNumber == projectAccounts[2].accountNumber
+    }
+
+    @Test
+    void "Update timelog with new project accounts"() {
+        // Given: Have existing registration type in the database
+        RegistrationTypeModel registrationType = testDataHelper.createRegistrationType('ARB')
+
+        // Given: Have existing project accounts in the database
+        List<ProjectAccountModel> projectAccounts = [
+            testDataHelper.createProjectAccount("ACC-001"),
+            testDataHelper.createProjectAccount("ACC-002"),
+            testDataHelper.createProjectAccount("ACC-003")
+        ]
+
+        // Given: Existing timelog with project accounts
+        TimeLogModel timeLogModel = testDataHelper.createTimeLog(LocalDate.now(), registrationType, [projectAccounts[0], projectAccounts[2]])
+
+        // When: Update timelog with new project account
+        timeLogModel.projectAccounts = [projectAccounts[1]]
+        TimeLogModel result = testDataHelper.updateTimeLog(timeLogModel)
+
+        // Then
+        assert result.getId() == timeLogModel.id
+        assert result.projectAccounts.size() == 1
+        assert result.projectAccounts[0].accountNumber == projectAccounts[1].accountNumber
+    }
+
+    @Test
     void "Find timelogs between dates"() {
         // Given: Have existing registration type in the database
         RegistrationTypeModel registrationType = testDataHelper.createRegistrationType('ARB')
@@ -69,4 +117,5 @@ class TimeLogsServiceTest {
         assert results.size() == 1
         assert results.first().getId() == expectedTimeLogId
     }
+
 }

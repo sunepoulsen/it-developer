@@ -4,10 +4,12 @@ import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -36,13 +38,13 @@ public class TimeLogEntity implements AbstractEntity {
     @Column( name = "timelog_id" )
     private Long id;
 
-    @Column( name = "timelog_date" )
+    @Column( name = "timelog_date", columnDefinition="DATE" )
     private LocalDate date;
 
-    @Column( name = "start_time" )
+    @Column( name = "start_time", columnDefinition="TIME" )
     private LocalTime startTime;
 
-    @Column( name = "end_time" )
+    @Column( name = "end_time", columnDefinition="TIME" )
     private LocalTime endTime;
 
     @ManyToOne
@@ -53,6 +55,10 @@ public class TimeLogEntity implements AbstractEntity {
     @JoinColumn( name = "registration_reason_id" )
     private RegistrationReasonEntity registrationReason;
 
-    @ManyToMany(mappedBy="timeLogs")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name="timelog_project_accounts",
+        joinColumns=@JoinColumn(name="timelog_id", referencedColumnName="timelog_id"),
+        inverseJoinColumns=@JoinColumn(name="project_account_id", referencedColumnName="project_account_id")
+    )
     public Set<ProjectAccountEntity> projectAccounts;
 }

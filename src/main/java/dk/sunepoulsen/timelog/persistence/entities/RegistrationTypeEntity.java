@@ -1,6 +1,10 @@
 package dk.sunepoulsen.timelog.persistence.entities;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -17,13 +21,17 @@ import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
 
-@Data
 @Entity
 @Table( name = "registration_types" )
 @NamedQueries( {
     @NamedQuery( name = "findAllRegistrationTypes", query = "SELECT r FROM RegistrationTypeEntity r" ),
     @NamedQuery( name = "deleteRegistrationTypes", query = "DELETE FROM RegistrationTypeEntity r WHERE r.id IN :ids" )
 })
+@NoArgsConstructor
+@Setter
+@Getter
+@ToString(exclude = {"timeLogs"})
+@EqualsAndHashCode(exclude = {"timeLogs"})
 public class RegistrationTypeEntity implements AbstractEntity {
     /**
      * Primary key.

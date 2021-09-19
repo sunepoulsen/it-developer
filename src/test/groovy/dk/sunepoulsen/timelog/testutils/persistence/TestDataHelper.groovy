@@ -80,16 +80,21 @@ class TestDataHelper {
         ))
     }
 
-    TimeLogModel createTimeLog(LocalDate date, LocalTime startTime, LocalTime endTime, RegistrationTypeModel registrationType) {
+    TimeLogModel createTimeLog(LocalDate date, LocalTime startTime, LocalTime endTime, RegistrationTypeModel registrationType, List<ProjectAccountModel> projectAccounts = []) {
         return new TimeLogsService(persistenceStorage).create(new TimeLogModel(
             date: date,
             startTime: startTime,
             endTime: endTime,
-            registrationType: registrationType
+            registrationType: registrationType,
+            projectAccounts: projectAccounts
         ))
     }
 
-    TimeLogModel createTimeLog(LocalDate date, RegistrationTypeModel registrationType) {
-        return createTimeLog( date, TimeUtils.randomEntryTime(), TimeUtils.randomLeaveTime(), registrationType )
+    TimeLogModel createTimeLog(LocalDate date, RegistrationTypeModel registrationType, List<ProjectAccountModel> projectAccounts = []) {
+        return createTimeLog( date, TimeUtils.randomEntryTime(), TimeUtils.randomLeaveTime(), registrationType, projectAccounts )
+    }
+
+    TimeLogModel updateTimeLog(TimeLogModel model) {
+        return new TimeLogsService(persistenceStorage).update(model)
     }
 }
