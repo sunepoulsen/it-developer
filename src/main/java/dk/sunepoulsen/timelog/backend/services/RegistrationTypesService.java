@@ -3,13 +3,7 @@ package dk.sunepoulsen.timelog.backend.services;
 import dk.sunepoulsen.timelog.persistence.entities.RegistrationTypeEntity;
 import dk.sunepoulsen.timelog.persistence.storage.PersistenceStorage;
 import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationTypeModel;
-import dk.sunepoulsen.timelog.validation.TimeLogValidateException;
-import dk.sunepoulsen.timelog.validation.TimeLogValidation;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.persistence.Query;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by sunepoulsen on 12/06/2017.
@@ -26,7 +20,7 @@ public class RegistrationTypesService extends AbstractPersistenceService<Registr
         entity.setName( model.getName() );
         entity.setDescription( model.getDescription() );
         entity.setPurpose( model.getPurpose() );
-        entity.setAllDay( model.isAllDay() );
+        entity.setProjectTime( model.getProjectTime() );
 
         return entity;
     }
@@ -39,7 +33,7 @@ public class RegistrationTypesService extends AbstractPersistenceService<Registr
         model.setName( entity.getName() );
         model.setDescription( entity.getDescription() );
         model.setPurpose( entity.getPurpose() );
-        model.setAllDay( entity.getAllDay() );
+        model.setProjectTime( entity.getProjectTime() );
 
         return model;
     }

@@ -40,6 +40,7 @@ public abstract class AbstractPersistenceService<M extends AbstractModel, T exte
             }
 
             entity = convertModel(entity, model );
+            entity.setId(null);
             em.persist( entity );
 
             model.setId( entity.getId() );

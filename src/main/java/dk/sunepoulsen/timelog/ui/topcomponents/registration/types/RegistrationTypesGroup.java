@@ -17,7 +17,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.CheckBoxTableCell;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -35,6 +38,9 @@ public class RegistrationTypesGroup extends BorderPane {
 
     @FXML
     private TableView<RegistrationTypeModel> viewer;
+
+    @FXML
+    private TableColumn<RegistrationTypeModel, Boolean> projectTimeColumn;
 
     @FXML
     private Region veil = null;
@@ -68,6 +74,9 @@ public class RegistrationTypesGroup extends BorderPane {
         viewer.getSelectionModel().getSelectedItems().addListener( this::updateButtonsState );
         viewer.getSelectionModel().getSelectedItems().addListener( this::updateSelectedRegistrationType );
 
+        projectTimeColumn.setCellValueFactory(new PropertyValueFactory<>("projectTime"));
+        projectTimeColumn.setCellFactory(param -> new CheckBoxTableCell<>());
+
         reload();
     }
 
@@ -98,10 +107,10 @@ public class RegistrationTypesGroup extends BorderPane {
         progressIndicator.visibleProperty().bind( task.runningProperty() );
 
         task.setOnSucceeded( event -> {
-            ObservableList<RegistrationTypeModel> movies = task.getValue();
+            ObservableList<RegistrationTypeModel> list = task.getValue();
 
-            log.info( "Viewing {} registration types", movies.size() );
-            viewer.setItems( movies );
+            log.info( "Viewing {} registration types", list.size() );
+            viewer.setItems( list );
 
             editButton.setDisable( true );
             deleteButton.setDisable( true );

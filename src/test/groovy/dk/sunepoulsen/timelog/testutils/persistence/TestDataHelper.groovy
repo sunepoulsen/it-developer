@@ -1,11 +1,6 @@
 package dk.sunepoulsen.timelog.testutils.persistence
 
-
-import dk.sunepoulsen.timelog.backend.services.AgreementsService
-import dk.sunepoulsen.timelog.backend.services.ProjectAccountsService
-import dk.sunepoulsen.timelog.backend.services.RegistrationReasonsService
-import dk.sunepoulsen.timelog.backend.services.RegistrationTypesService
-import dk.sunepoulsen.timelog.backend.services.TimeLogsService
+import dk.sunepoulsen.timelog.backend.services.*
 import dk.sunepoulsen.timelog.persistence.storage.PersistenceStorage
 import dk.sunepoulsen.timelog.ui.model.AgreementModel
 import dk.sunepoulsen.timelog.ui.model.ProjectAccountModel
@@ -50,21 +45,21 @@ class TestDataHelper {
         return createAgreement(name, startDate, null, weekDayNorm)
     }
 
-    RegistrationTypeModel createRegistrationType(String name, boolean allDay = false) {
+    RegistrationTypeModel createRegistrationType(String name, boolean projectTime = true) {
         return new RegistrationTypesService(persistenceStorage).create(new RegistrationTypeModel(
             name: name,
             description: "description of ${name}",
             purpose: "purpose of ${name}",
-            allDay: allDay
+            projectTime: projectTime
         ))
     }
 
-    RegistrationTypeModel createRegistrationType(String name, String description, boolean allDay = false) {
+    RegistrationTypeModel createRegistrationType(String name, String description, boolean projectTime = true) {
         return new RegistrationTypesService(persistenceStorage).create(new RegistrationTypeModel(
             name: name,
             description: description,
             purpose: '',
-            allDay: allDay
+            projectTime: projectTime
         ))
     }
 
