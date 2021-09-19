@@ -2,10 +2,7 @@ package dk.sunepoulsen.timelog.persistence.storage
 
 import dk.sunepoulsen.timelog.testutils.persistence.TestDataHelper
 import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationTypeModel
-import org.junit.After
-import org.junit.Before
-import org.junit.BeforeClass
-import org.junit.Test
+import org.junit.*
 
 import java.time.LocalDate
 import java.util.stream.IntStream
@@ -39,7 +36,7 @@ class DeveloperLoadTest {
     }
 
     @Test
-    //@Ignore
+    @Ignore
     void "Load admin data"() {
         createAgreements()
         createRegistrationTypes()
