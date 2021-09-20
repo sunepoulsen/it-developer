@@ -8,11 +8,13 @@ import dk.sunepoulsen.timelog.ui.model.timelogs.TimeLogModel;
 import dk.sunepoulsen.timelog.ui.model.timelogs.WeekModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class LoadWeekReportingTask extends BackendConnectionTask<ObservableList<TimeReporting>>{
     private final WeekModel weekModel;
 
@@ -23,11 +25,18 @@ public class LoadWeekReportingTask extends BackendConnectionTask<ObservableList<
 
     @Override
     protected ObservableList<TimeReporting> call() throws Exception {
-        List<TimeReporting> reportings = new ArrayList<>();
+        try {
+            List<TimeReporting> reportings = new ArrayList<>();
 
-        loadTimeLogs().forEach(timeLogModel -> addTimeLog(reportings, timeLogModel));
+            loadTimeLogs().forEach(timeLogModel -> addTimeLog(reportings, timeLogModel));
 
-        return FXCollections.observableList(reportings);
+            return FXCollections.observableList(reportings);
+        }
+        catch( Exception ex) {
+            log.info("Unable to execute task {}: {}", getClass().getName(), ex.getMessage());
+            log.debug("Exception", ex);
+            throw ex;
+        }
     }
 
     private List<TimeLogModel> loadTimeLogs() {

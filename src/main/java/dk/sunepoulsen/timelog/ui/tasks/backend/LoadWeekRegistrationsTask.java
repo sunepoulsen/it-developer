@@ -24,7 +24,7 @@ public class LoadWeekRegistrationsTask extends BackendConnectionTask<ObservableL
     private AgreementModel cachedAgreement = null;
 
     public LoadWeekRegistrationsTask(BackendConnection connection, WeekModel weekModel, Locale locale) {
-        super( connection, "week.load.task" );
+        super(connection, "week.load.task");
         this.weekModel = weekModel;
         this.locale = locale;
     }
@@ -38,22 +38,20 @@ public class LoadWeekRegistrationsTask extends BackendConnectionTask<ObservableL
 
             List<TimeLogModel> timelogs = loadTimeLogs();
             timelogs.forEach(timeLogModel -> {
-                    Optional<DayRegistration> dayRegistration = findDayRegistration(result, timeLogModel.getDate());
+                Optional<DayRegistration> dayRegistration = findDayRegistration(result, timeLogModel.getDate());
 
-                    if (dayRegistration.isPresent()) {
-                        dayRegistration.get().getRegistrations().add(new TimeLogRegistration(timeLogModel));
-                    }
-                    else {
-                        log.info("Unable to find DayRegistration for date {}. This timelog will be ignored. TimeLog: {}", timeLogModel.getDate(), timeLogModel);
-                    }
+                if (dayRegistration.isPresent()) {
+                    dayRegistration.get().getRegistrations().add(new TimeLogRegistration(timeLogModel));
+                } else {
+                    log.info("Unable to find DayRegistration for date {}. This timelog will be ignored. TimeLog: {}", timeLogModel.getDate(), timeLogModel);
                 }
-            );
+            });
 
             log.info("Loaded week registrations for week {}.{} -> OK", weekModel.weekNumber(), weekModel.year());
             return FXCollections.observableList(result);
-        }
-        catch( Exception ex ) {
-            log.info("Unable to load week registrations for week {}.{} -> {}", weekModel.weekNumber(), weekModel.year(), ex.getMessage(), ex);
+        } catch (Exception ex) {
+            log.info("Unable to load week registrations for week {}.{} -> {}", weekModel.weekNumber(), weekModel.year(), ex.getMessage());
+            log.debug("Exception", ex);
             failed();
             return FXCollections.emptyObservableList();
         }
@@ -67,7 +65,7 @@ public class LoadWeekRegistrationsTask extends BackendConnectionTask<ObservableL
         List<TimeRegistration> list = new ArrayList<>();
 
         log.debug("Create TimeRegistration for each day of the used week");
-        for( LocalDate date = weekModel.firstDate(); !date.isAfter(weekModel.lastDate()); date = date.plusDays(1)) {
+        for (LocalDate date = weekModel.firstDate(); !date.isAfter(weekModel.lastDate()); date = date.plusDays(1)) {
             DayRegistration dayRegistration = new DayRegistration(date, workingNorm(date), locale);
             list.add(dayRegistration);
         }
@@ -122,8 +120,7 @@ public class LoadWeekRegistrationsTask extends BackendConnectionTask<ObservableL
             // cachedAgreement.getStartDate() <= date
             (cachedAgreement.getStartDate().isEqual(date) || cachedAgreement.getStartDate().isBefore(date)) &&
             // cachedAgreement.getEndDate() == null | date <= cachedAgreement.getEndDate()
-            (cachedAgreement.getEndDate() == null || cachedAgreement.getEndDate().isEqual(date) || cachedAgreement.getEndDate().isAfter(date)))
-        {
+            (cachedAgreement.getEndDate() == null || cachedAgreement.getEndDate().isEqual(date) || cachedAgreement.getEndDate().isAfter(date))) {
             return Optional.of(cachedAgreement);
         }
 
