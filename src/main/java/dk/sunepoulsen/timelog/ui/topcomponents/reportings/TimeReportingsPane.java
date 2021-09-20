@@ -73,8 +73,6 @@ public class TimeReportingsPane extends BorderPane {
         }
 
         viewer.getSelectionModel().setSelectionMode( SelectionMode.SINGLE );
-
-        reload();
     }
 
     private void reload() {
