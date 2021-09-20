@@ -4,7 +4,6 @@ import lombok.Data;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -55,7 +54,7 @@ public class TimeLogEntity implements AbstractEntity {
     @JoinColumn( name = "registration_reason_id" )
     private RegistrationReasonEntity registrationReason;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name="timelog_project_accounts",
         joinColumns=@JoinColumn(name="timelog_id", referencedColumnName="timelog_id"),
         inverseJoinColumns=@JoinColumn(name="project_account_id", referencedColumnName="project_account_id")

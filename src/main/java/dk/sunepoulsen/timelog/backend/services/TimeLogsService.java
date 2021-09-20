@@ -20,17 +20,15 @@ public class TimeLogsService extends AbstractPersistenceService<TimeLogModel, Ti
     }
 
     public List<TimeLogModel> findByDates(LocalDate from, LocalDate to) {
-        List<TimeLogEntity> entities = database.query( em -> {
-            TypedQuery<TimeLogEntity> q = em.createNamedQuery( "findByDates", TimeLogEntity.class );
+        return database.untransactionalFunction( em -> {
+            TypedQuery<TimeLogEntity> q = em.createNamedQuery("findByDates", TimeLogEntity.class);
             q.setParameter("from", from);
             q.setParameter("to", to);
 
-            return q;
-        } );
-
-        return entities.stream()
-            .map( this::convertEntity )
-            .collect( Collectors.toList() );
+            return q.getResultList().stream()
+                .map(this::convertEntity)
+                .collect(Collectors.toList());
+        });
     }
 
     @Override

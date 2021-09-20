@@ -8,7 +8,6 @@ import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -49,6 +48,6 @@ public class ProjectAccountEntity implements AbstractEntity {
     @Column( name = "purpose" )
     private String purpose;
 
-    @ManyToMany(mappedBy = "projectAccounts", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "projectAccounts")
     public Set<TimeLogEntity> timeLogs;
 }
