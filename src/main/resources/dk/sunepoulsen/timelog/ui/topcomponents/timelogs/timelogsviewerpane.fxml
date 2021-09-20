@@ -3,10 +3,9 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
-<?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.control.ProgressIndicator?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TreeTableColumn?>
+<?import javafx.scene.control.TreeTableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -17,29 +16,28 @@
     <center>
         <StackPane AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0"
                    AnchorPane.bottomAnchor="0.0">
+            <padding>
+                <Insets top="10.0" />
+            </padding>
+
             <children>
-                <TableView fx:id="viewer" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0"
+                <TreeTableView fx:id="viewer" showRoot="false" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0"
                                AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0" onMouseClicked="#viewerRowClicked">
                     <columns>
-                        <TableColumn text="%table.column.name.title" visible="true">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="name"/>
-                            </cellValueFactory>
-                        </TableColumn>
-
-                        <TableColumn text="%table.column.description.title" visible="true">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="description"/>
-                            </cellValueFactory>
-                        </TableColumn>
-
-                        <TableColumn fx:id="projectTimeColumn" text="%table.column.project-time.title" visible="true">
-                            <cellValueFactory>
-                                <PropertyValueFactory property="projectTime"/>
-                            </cellValueFactory>
-                        </TableColumn>
+                        <TreeTableColumn fx:id="typeNameTableColumn" text="%table.column.type-name.title" visible="true" prefWidth="300">
+                        </TreeTableColumn>
+                        <TreeTableColumn fx:id="reasonTableColumn" text="%table.column.reason.title" visible="true" prefWidth="300">
+                        </TreeTableColumn>
+                        <TreeTableColumn fx:id="startTimeTableColumn" text="%table.column.start-time.title" visible="true" prefWidth="100">
+                        </TreeTableColumn>
+                        <TreeTableColumn fx:id="endTimeTableColumn" text="%table.column.end-time.title" visible="true" prefWidth="100">
+                        </TreeTableColumn>
+                        <TreeTableColumn fx:id="workedHoursTableColumn" text="%table.column.work-time.title" visible="true" prefWidth="100">
+                        </TreeTableColumn>
+                        <TreeTableColumn fx:id="flexTableColumn" text="%table.column.flex.title" visible="true" prefWidth="100">
+                        </TreeTableColumn>
                     </columns>
-                </TableView>
+                </TreeTableView>
 
                 <Region fx:id="veil" style="-fx-background-color: rgba(0, 0, 0, 0.4)" visible="false" />
                 <ProgressIndicator fx:id="progressIndicator" maxWidth="150" maxHeight="150" visible="false" />

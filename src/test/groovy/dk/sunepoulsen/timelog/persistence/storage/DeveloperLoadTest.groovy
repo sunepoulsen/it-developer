@@ -2,11 +2,7 @@ package dk.sunepoulsen.timelog.persistence.storage
 
 import dk.sunepoulsen.timelog.testutils.persistence.TestDataHelper
 import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationTypeModel
-import org.junit.After
-import org.junit.Before
-import org.junit.BeforeClass
-import org.junit.Ignore
-import org.junit.Test
+import org.junit.*
 
 import java.time.LocalDate
 import java.util.stream.IntStream
@@ -54,38 +50,38 @@ class DeveloperLoadTest {
     }
 
     private void createRegistrationTypes() {
-        RegistrationTypeModel workType = testDataHelper.createRegistrationType('ARB', 'Arbejdet tid', false)
+        RegistrationTypeModel workType = testDataHelper.createRegistrationType('ARB', 'Arbejdet tid')
         testDataHelper.createRegistrationReason(workType, 'Project work')
         testDataHelper.createRegistrationReason(workType, 'Project meetings')
         testDataHelper.createRegistrationReason(workType, 'Refinement')
         testDataHelper.createRegistrationReason(workType, 'Internal meetings')
 
-        testDataHelper.createRegistrationType('ASP', 'Afspadsering', true)
-        testDataHelper.createRegistrationType('ATN', 'ATN', true)
-        testDataHelper.createRegistrationType('BEV', 'Bevilget frihed', true)
-        testDataHelper.createRegistrationType('BSY', 'Barns første sygedag', true)
-        testDataHelper.createRegistrationType('FER', 'Ferie', true)
-        testDataHelper.createRegistrationType('FERF', 'Flerårsaftale', true)
-        testDataHelper.createRegistrationType('FERU', 'Ferie uden løn', true)
-        testDataHelper.createRegistrationType('FLXA', 'Fleksfri-afviklingsaftale', true)
-        testDataHelper.createRegistrationType('FRIL', 'Frihed med løntræk', true)
-        testDataHelper.createRegistrationType('KUR', 'Kursus', true)
-        testDataHelper.createRegistrationType('ODAG', '0-dag', true)
-        testDataHelper.createRegistrationType('OMS', 'Omsorgsdage', true)
-        testDataHelper.createRegistrationType('SFD', 'Særlig feriedage', true)
-        testDataHelper.createRegistrationType('SYG', 'Sygdom', true)
-        testDataHelper.createRegistrationType('TJFR', 'Beordret', true)
-        testDataHelper.createRegistrationType('XSYG', 'Sygdom - rapp. af tidsadm', true)
-        testDataHelper.createRegistrationType('ZADO', 'Adoptionsorlov', true)
-        testDataHelper.createRegistrationType('ZASO', 'Arbejdsskade overenskomst', true)
-        testDataHelper.createRegistrationType('ZAST', 'Arbejdsskade tjenestemænd', true)
-        testDataHelper.createRegistrationType('ZBAR', 'Barselsorlov', true)
-        testDataHelper.createRegistrationType('ZFOR', 'Forældreorlov', true)
-        testDataHelper.createRegistrationType('ZFR1', 'Hospitalsindlæg. af barn', true)
-        testDataHelper.createRegistrationType('ZFR2', 'Pasning af nær slægtning', true)
-        testDataHelper.createRegistrationType('ZFR3', 'Fritstilling/Tjen.frihed', true)
-        testDataHelper.createRegistrationType('ZFR4', 'Særlige hændelser', true)
-        testDataHelper.createRegistrationType('ZFR5', 'Hovedopgave/Afhandling', true)
+        testDataHelper.createRegistrationType('ASP', 'Afspadsering', false)
+        testDataHelper.createRegistrationType('ATN', 'ATN', false)
+        testDataHelper.createRegistrationType('BEV', 'Bevilget frihed', false)
+        testDataHelper.createRegistrationType('BSY', 'Barns første sygedag', false)
+        testDataHelper.createRegistrationType('FER', 'Ferie', false)
+        testDataHelper.createRegistrationType('FERF', 'Flerårsaftale', false)
+        testDataHelper.createRegistrationType('FERU', 'Ferie uden løn', false)
+        testDataHelper.createRegistrationType('FLXA', 'Fleksfri-afviklingsaftale', false)
+        testDataHelper.createRegistrationType('FRIL', 'Frihed med løntræk', false)
+        testDataHelper.createRegistrationType('KUR', 'Kursus', false)
+        testDataHelper.createRegistrationType('ODAG', '0-dag', false)
+        testDataHelper.createRegistrationType('OMS', 'Omsorgsdage', false)
+        testDataHelper.createRegistrationType('SFD', 'Særlig feriedage', false)
+        testDataHelper.createRegistrationType('SYG', 'Sygdom', false)
+        testDataHelper.createRegistrationType('TJFR', 'Beordret', false)
+        testDataHelper.createRegistrationType('XSYG', 'Sygdom - rapp. af tidsadm', false)
+        testDataHelper.createRegistrationType('ZADO', 'Adoptionsorlov', false)
+        testDataHelper.createRegistrationType('ZASO', 'Arbejdsskade overenskomst', false)
+        testDataHelper.createRegistrationType('ZAST', 'Arbejdsskade tjenestemænd', false)
+        testDataHelper.createRegistrationType('ZBAR', 'Barselsorlov', false)
+        testDataHelper.createRegistrationType('ZFOR', 'Forældreorlov', false)
+        testDataHelper.createRegistrationType('ZFR1', 'Hospitalsindlæg. af barn', false)
+        testDataHelper.createRegistrationType('ZFR2', 'Pasning af nær slægtning', false)
+        testDataHelper.createRegistrationType('ZFR3', 'Fritstilling/Tjen.frihed', false)
+        testDataHelper.createRegistrationType('ZFR4', 'Særlige hændelser', false)
+        testDataHelper.createRegistrationType('ZFR5', 'Hovedopgave/Afhandling', false)
     }
 
     private void createProjectAccounts() {

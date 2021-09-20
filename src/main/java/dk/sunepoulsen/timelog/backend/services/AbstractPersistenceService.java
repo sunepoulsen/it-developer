@@ -40,11 +40,13 @@ public abstract class AbstractPersistenceService<M extends AbstractModel, T exte
             }
 
             entity = convertModel(entity, model );
+            entity.setId(null);
             em.persist( entity );
 
             model.setId( entity.getId() );
         } );
 
+        log.info("Created new entity of type {} with id {}", entityClass.getName(), model.getId());
         return model;
     }
 
@@ -59,6 +61,7 @@ public abstract class AbstractPersistenceService<M extends AbstractModel, T exte
             model.setId( entity.getId() );
         } );
 
+        log.info("Updated entity of type {} with id {}", entityClass.getName(), model.getId());
         return model;
     }
 
@@ -74,16 +77,22 @@ public abstract class AbstractPersistenceService<M extends AbstractModel, T exte
     public M find( Long id ) {
         return database.untransactionalFunction( em -> {
             T entity = em.find( entityClass, id );
+
+            log.info("Found entity of type {} with id {}", entityClass.getName(), entity.getId());
             return convertEntity( entity );
         } );
     }
 
     public List<M> findAll() {
-        List<T> entities = database.query( em ->  em.createNamedQuery( findAllQueryName, entityClass ) );
+        return database.untransactionalFunction( em -> {
+            List<T> entities = em.createNamedQuery( findAllQueryName, entityClass )
+                .getResultList();
 
-        return entities.stream()
-            .map( this::convertEntity )
-            .collect( Collectors.toList() );
+            log.info("Found all entities of type {}", entityClass.getName());
+            return entities.stream()
+                .map( this::convertEntity )
+                .collect( Collectors.toList() );
+        } );
     }
 
     abstract T convertModel( T entity, M model );

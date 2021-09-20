@@ -15,5 +15,5 @@
     <Label text="%label.purpose" GridPane.valignment="TOP" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
     <TextArea fx:id="purposeField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
 
-    <CheckBox fx:id="allDayField" text="%label.allday" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+    <CheckBox fx:id="projectTimeField" text="%label.project-time" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
 </fx:root>

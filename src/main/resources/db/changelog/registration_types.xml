@@ -21,7 +21,7 @@
 
             <column name="description" type="varchar(8192)" />
             <column name="purpose" type="varchar(8192)" />
-            <column name="all_day" type="boolean" />
+            <column name="project_time" type="boolean" />
         </createTable>
 
         <createSequence cycle="false"

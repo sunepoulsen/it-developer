@@ -29,7 +29,7 @@ public class RegistrationTypeDialog extends GridPane implements Initializable, D
     private TextArea purposeField = null;
 
     @FXML
-    private CheckBox allDayField = null;
+    private CheckBox projectTimeField = null;
 
     private DialogHelper<RegistrationTypeModel> dialogHelper;
 
@@ -62,7 +62,7 @@ public class RegistrationTypeDialog extends GridPane implements Initializable, D
         result.setName(nameField.getText());
         result.setDescription(descriptionField.getText());
         result.setPurpose(purposeField.getText());
-        result.setAllDay(allDayField.isSelected());
+        result.setProjectTime(projectTimeField.isSelected());
 
         return result;
     }
@@ -72,6 +72,6 @@ public class RegistrationTypeDialog extends GridPane implements Initializable, D
         nameField.setText(model.getName());
         descriptionField.setText(model.getDescription());
         purposeField.setText(model.getPurpose());
-        allDayField.setSelected(model.isAllDay());
+        projectTimeField.setSelected(model.getProjectTime());
     }
 }

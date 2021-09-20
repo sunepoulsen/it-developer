@@ -1,19 +1,37 @@
 package dk.sunepoulsen.timelog.persistence.entities;
 
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import java.util.Set;
 
 import static javax.persistence.CascadeType.ALL;
 
-@Data
 @Entity
 @Table( name = "registration_types" )
 @NamedQueries( {
     @NamedQuery( name = "findAllRegistrationTypes", query = "SELECT r FROM RegistrationTypeEntity r" ),
     @NamedQuery( name = "deleteRegistrationTypes", query = "DELETE FROM RegistrationTypeEntity r WHERE r.id IN :ids" )
 })
+@NoArgsConstructor
+@Setter
+@Getter
+@ToString(exclude = {"timeLogs"})
+@EqualsAndHashCode(exclude = {"timeLogs"})
 public class RegistrationTypeEntity implements AbstractEntity {
     /**
      * Primary key.
@@ -33,8 +51,8 @@ public class RegistrationTypeEntity implements AbstractEntity {
     @Column( name = "purpose" )
     private String purpose;
 
-    @Column( name = "all_day" )
-    private Boolean allDay;
+    @Column( name = "project_time" )
+    private Boolean projectTime;
 
     @OneToMany( cascade = ALL, fetch = FetchType.LAZY, mappedBy = "registrationType" )
     private Set<RegistrationReasonEntity> reasons;
