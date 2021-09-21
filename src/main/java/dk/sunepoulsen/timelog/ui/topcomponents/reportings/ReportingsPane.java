@@ -16,7 +16,10 @@ public class ReportingsPane extends BorderPane implements Initializable {
     private WeekNavigationPane navigationPane;
 
     @FXML
-    private TimeReportingsPane timeReportings;
+    private TimeRegistrationReportingsPane timeRegistrationsPane;
+
+    @FXML
+    private TimeSpendReportingsPane timeSpendPane;
 
     public ReportingsPane() {
         FXMLUtils.initFxmlWithNoBundle(this);
@@ -24,6 +27,7 @@ public class ReportingsPane extends BorderPane implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        timeReportings.getCurrentWeekProperty().bind(navigationPane.getSelectedProperty());
+        timeRegistrationsPane.getCurrentWeekProperty().bind(navigationPane.getSelectedProperty());
+        timeSpendPane.getCurrentWeekProperty().bind(navigationPane.getSelectedProperty());
     }
 }

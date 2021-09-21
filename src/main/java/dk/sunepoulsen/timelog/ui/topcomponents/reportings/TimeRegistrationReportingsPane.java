@@ -27,7 +27,7 @@ import java.time.format.TextStyle;
 import java.util.ResourceBundle;
 
 @Slf4j
-public class TimeReportingsPane extends BorderPane {
+public class TimeRegistrationReportingsPane extends BorderPane {
     private Registry registry;
     private BackendConnection backendConnection = null;
     private ResourceBundle bundle;
@@ -41,7 +41,7 @@ public class TimeReportingsPane extends BorderPane {
     @Getter
     private SimpleObjectProperty<WeekModel> currentWeekProperty;
 
-    public TimeReportingsPane() {
+    public TimeRegistrationReportingsPane() {
         this.registry = Registry.getDefault();
         this.backendConnection = registry.getBackendConnection();
         this.bundle = registry.getBundle( getClass() );
