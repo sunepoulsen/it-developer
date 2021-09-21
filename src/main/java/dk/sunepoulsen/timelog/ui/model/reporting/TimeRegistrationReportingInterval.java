@@ -5,11 +5,11 @@ import lombok.Data;
 import java.time.LocalTime;
 
 @Data
-public class TimeReportingInterval {
+public class TimeRegistrationReportingInterval {
     private LocalTime startTime;
     private LocalTime endTime;
 
-    public TimeReportingInterval(LocalTime startTime, LocalTime endTime) {
+    public TimeRegistrationReportingInterval(LocalTime startTime, LocalTime endTime) {
         this.startTime = startTime;
         this.endTime = endTime;
     }
