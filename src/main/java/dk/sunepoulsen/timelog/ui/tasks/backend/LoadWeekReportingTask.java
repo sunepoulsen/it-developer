@@ -2,8 +2,8 @@ package dk.sunepoulsen.timelog.ui.tasks.backend;
 
 import dk.sunepoulsen.timelog.backend.BackendConnection;
 import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationTypeModel;
-import dk.sunepoulsen.timelog.ui.model.reporting.TimeReporting;
-import dk.sunepoulsen.timelog.ui.model.reporting.TimeReportingInterval;
+import dk.sunepoulsen.timelog.ui.model.reporting.TimeRegistrationReporting;
+import dk.sunepoulsen.timelog.ui.model.reporting.TimeRegistrationReportingInterval;
 import dk.sunepoulsen.timelog.ui.model.timelogs.TimeLogModel;
 import dk.sunepoulsen.timelog.ui.model.timelogs.WeekModel;
 import javafx.collections.FXCollections;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Slf4j
-public class LoadWeekReportingTask extends BackendConnectionTask<ObservableList<TimeReporting>>{
+public class LoadWeekReportingTask extends BackendConnectionTask<ObservableList<TimeRegistrationReporting>>{
     private final WeekModel weekModel;
 
     public LoadWeekReportingTask(BackendConnection connection, WeekModel weekModel) {
@@ -24,9 +24,9 @@ public class LoadWeekReportingTask extends BackendConnectionTask<ObservableList<
     }
 
     @Override
-    protected ObservableList<TimeReporting> call() throws Exception {
+    protected ObservableList<TimeRegistrationReporting> call() throws Exception {
         try {
-            List<TimeReporting> reportings = new ArrayList<>();
+            List<TimeRegistrationReporting> reportings = new ArrayList<>();
 
             loadTimeLogs().forEach(timeLogModel -> addTimeLog(reportings, timeLogModel));
 
@@ -43,17 +43,17 @@ public class LoadWeekReportingTask extends BackendConnectionTask<ObservableList<
         return connection.servicesFactory().newTimeLogsService().findByDates(weekModel.firstDate(), weekModel.lastDate());
     }
 
-    private void addTimeLog(List<TimeReporting> reportings, TimeLogModel timeLogModel) {
-        List<TimeReporting> list = findReportings(reportings, timeLogModel.getRegistrationType());
+    private void addTimeLog(List<TimeRegistrationReporting> reportings, TimeLogModel timeLogModel) {
+        List<TimeRegistrationReporting> list = findReportings(reportings, timeLogModel.getRegistrationType());
 
         boolean mergedTimeLog = false;
 
         // Iterate over each TimeReporting
-        for (TimeReporting report : list ) {
+        for (TimeRegistrationReporting report : list ) {
             if (!report.getDates().containsKey(timeLogModel.getDate())) {
                 // No interval for the correct day.
 
-                report.getDates().put(timeLogModel.getDate(), new TimeReportingInterval(timeLogModel.getStartTime(), timeLogModel.getEndTime()));
+                report.getDates().put(timeLogModel.getDate(), new TimeRegistrationReportingInterval(timeLogModel.getStartTime(), timeLogModel.getEndTime()));
                 mergedTimeLog = true;
                 break;
             }
@@ -74,16 +74,16 @@ public class LoadWeekReportingTask extends BackendConnectionTask<ObservableList<
         }
 
         if (!mergedTimeLog) {
-            TimeReporting newReporting = new TimeReporting(timeLogModel.getRegistrationType());
-            newReporting.getDates().put(timeLogModel.getDate(), new TimeReportingInterval(timeLogModel.getStartTime(), timeLogModel.getEndTime()));
+            TimeRegistrationReporting newReporting = new TimeRegistrationReporting(timeLogModel.getRegistrationType());
+            newReporting.getDates().put(timeLogModel.getDate(), new TimeRegistrationReportingInterval(timeLogModel.getStartTime(), timeLogModel.getEndTime()));
 
             reportings.add(newReporting);
         }
     }
 
-    private List<TimeReporting> findReportings(List<TimeReporting> reportings, RegistrationTypeModel registrationType) {
+    private List<TimeRegistrationReporting> findReportings(List<TimeRegistrationReporting> reportings, RegistrationTypeModel registrationType) {
         return reportings.stream()
-            .filter(timeReporting -> timeReporting.getRegistrationType().getId().equals(registrationType.getId()))
+            .filter(timeRegistrationReporting -> timeRegistrationReporting.getRegistrationType().getId().equals(registrationType.getId()))
             .collect(Collectors.toList());
     }
 }

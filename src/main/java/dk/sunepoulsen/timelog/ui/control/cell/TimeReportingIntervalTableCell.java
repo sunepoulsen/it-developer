@@ -1,11 +1,11 @@
 package dk.sunepoulsen.timelog.ui.control.cell;
 
-import dk.sunepoulsen.timelog.ui.model.reporting.TimeReportingInterval;
+import dk.sunepoulsen.timelog.ui.model.reporting.TimeRegistrationReportingInterval;
 import javafx.scene.control.TableCell;
 
 import java.time.format.DateTimeFormatter;
 
-public class TimeReportingIntervalTableCell<S> extends TableCell<S, TimeReportingInterval> {
+public class TimeReportingIntervalTableCell<S> extends TableCell<S, TimeRegistrationReportingInterval> {
     private DateTimeFormatter timeFormatter;
 
     public TimeReportingIntervalTableCell(DateTimeFormatter timeFormatter) {
@@ -13,7 +13,7 @@ public class TimeReportingIntervalTableCell<S> extends TableCell<S, TimeReportin
     }
 
     @Override
-    protected void updateItem(TimeReportingInterval item, boolean empty) {
+    protected void updateItem(TimeRegistrationReportingInterval item, boolean empty) {
         super.updateItem(item, empty);
 
         if (empty || item == null) {

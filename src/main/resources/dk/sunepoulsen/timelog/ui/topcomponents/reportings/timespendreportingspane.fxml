@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<fx:root type="javafx.scene.layout.BorderPane" xmlns:fx="http://javafx.com/fxml">
+    <center>
+        <TableView fx:id="viewer" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0"
+                   AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0">
+            <columns>
+                <TableColumn fx:id="accountNumberTableColumn" text="%table.column.account-number.title" visible="true" prefWidth="200">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="accountNumber"/>
+                    </cellValueFactory>
+                </TableColumn>
+                <TableColumn fx:id="descriptionTableColumn" text="%table.column.description.title" visible="true" prefWidth="200">
+                    <cellValueFactory>
+                        <PropertyValueFactory property="description"/>
+                    </cellValueFactory>
+                </TableColumn>
+            </columns>
+        </TableView>
+    </center>
+</fx:root>

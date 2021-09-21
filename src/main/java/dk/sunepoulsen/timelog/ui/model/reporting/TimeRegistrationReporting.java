@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Data
-public class TimeReporting {
+public class TimeRegistrationReporting {
     private RegistrationTypeModel registrationType;
-    private Map<LocalDate, TimeReportingInterval> dates;
+    private Map<LocalDate, TimeRegistrationReportingInterval> dates;
 
-    public TimeReporting(RegistrationTypeModel registrationType) {
+    public TimeRegistrationReporting(RegistrationTypeModel registrationType) {
         this.registrationType = registrationType;
         this.dates = new HashMap<>();
     }
