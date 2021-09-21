@@ -3,6 +3,7 @@ package dk.sunepoulsen.timelog.ui.dialogs;
 import dk.sunepoulsen.timelog.backend.BackendConnection;
 import dk.sunepoulsen.timelog.registry.Registry;
 import dk.sunepoulsen.timelog.settings.model.SettingsModel;
+import dk.sunepoulsen.timelog.ui.control.SelectProjectAccountsPane;
 import dk.sunepoulsen.timelog.ui.converters.RegistrationReasonConverter;
 import dk.sunepoulsen.timelog.ui.converters.RegistrationTypeConverter;
 import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationReasonModel;
@@ -20,6 +21,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutorService;
@@ -46,6 +49,9 @@ public class TimeLogDialog extends GridPane implements Initializable, DialogImpl
     @FXML
     private ComboBox<RegistrationReasonModel> registrationReasonField = null;
 
+    @FXML
+    private SelectProjectAccountsPane selectProjectAccountsField;
+
     private DialogHelper<TimeLogModel> dialogHelper;
 
     public TimeLogDialog() {
@@ -57,6 +63,10 @@ public class TimeLogDialog extends GridPane implements Initializable, DialogImpl
         this.backendConnection = Registry.getDefault().getBackendConnection();
         this.executorService = Registry.getDefault().getUiRegistry().getTaskExecutorService();
         this.model = model;
+
+        if (model.getProjectAccounts() == null) {
+            model.setProjectAccounts(Collections.emptyList());
+        }
 
         FXMLUtils.initFxml(Registry.getDefault(), this);
     }
@@ -75,6 +85,7 @@ public class TimeLogDialog extends GridPane implements Initializable, DialogImpl
         registrationReasonField.focusedProperty().addListener(dialogHelper::disableButtons);
 
         registrationTypeField.getSelectionModel().selectedItemProperty().addListener(this::reloadRegistrationReasons);
+        registrationTypeField.getSelectionModel().selectedItemProperty().addListener(this::disableProjectAccounts);
         initializeRegistrationTypes();
 
         dialogHelper.disableButtons();
@@ -104,6 +115,18 @@ public class TimeLogDialog extends GridPane implements Initializable, DialogImpl
         this.executorService.submit(task);
     }
 
+    private void disableProjectAccounts(ObservableValue<? extends RegistrationTypeModel> observable, RegistrationTypeModel oldValue, RegistrationTypeModel newValue) {
+        if (newValue.getProjectTime()) {
+            selectProjectAccountsField.reload(model.getProjectAccounts());
+            selectProjectAccountsField.setDisable(false);
+        }
+        else {
+            model.setProjectAccounts(Collections.emptyList());
+            selectProjectAccountsField.clearContent();
+            selectProjectAccountsField.setDisable(true);
+        }
+    }
+
     public Optional<TimeLogModel> showAndWait() {
         return dialogHelper.showAndWait(dateField);
     }
@@ -117,6 +140,7 @@ public class TimeLogDialog extends GridPane implements Initializable, DialogImpl
         result.setEndTime(ControlUtils.getLocalTime(endTimeField, settings.getCalendar().shortTimeFormatter()));
         result.setRegistrationType(registrationTypeField.getValue());
         result.setRegistrationReason(registrationReasonField.getValue());
+        result.setProjectAccounts(new ArrayList<>(selectProjectAccountsField.getSelectedResultProperty()));
 
         return result;
     }
@@ -126,5 +150,6 @@ public class TimeLogDialog extends GridPane implements Initializable, DialogImpl
         dateField.setValue(model.getDate());
         ControlUtils.setLocalTime(startTimeField, model.getStartTime(), settings.getCalendar().shortTimeFormatter());
         ControlUtils.setLocalTime(endTimeField, model.getEndTime(), settings.getCalendar().shortTimeFormatter());
+        selectProjectAccountsField.reload(model.getProjectAccounts());
     }
 }
