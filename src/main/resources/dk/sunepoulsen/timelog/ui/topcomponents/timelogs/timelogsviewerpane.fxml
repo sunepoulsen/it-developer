@@ -16,10 +16,6 @@
     <center>
         <StackPane AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0"
                    AnchorPane.bottomAnchor="0.0">
-            <padding>
-                <Insets top="10.0" />
-            </padding>
-
             <children>
                 <TreeTableView fx:id="viewer" showRoot="false" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0"
                                AnchorPane.rightAnchor="10.0" AnchorPane.bottomAnchor="10.0" onMouseClicked="#viewerRowClicked">

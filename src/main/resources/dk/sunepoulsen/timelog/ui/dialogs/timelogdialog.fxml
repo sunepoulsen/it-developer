@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import dk.sunepoulsen.timelog.ui.control.SelectProjectAccountsPane?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -24,4 +25,8 @@
 
     <Label text="%label.registration-reason" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
     <ComboBox fx:id="registrationReasonField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+    <Label text="%label.project-accounts" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+    <SelectProjectAccountsPane fx:id="selectProjectAccountsField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
 </fx:root>
