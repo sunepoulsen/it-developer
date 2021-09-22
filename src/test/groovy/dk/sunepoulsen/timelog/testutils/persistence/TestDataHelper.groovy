@@ -45,6 +45,10 @@ class TestDataHelper {
         return createAgreement(name, startDate, null, weekDayNorm)
     }
 
+    AgreementModel findFirstAgreement() {
+        return new AgreementsService(persistenceStorage).findAll().first()
+    }
+
     RegistrationTypeModel createRegistrationType(String name, boolean projectTime = true) {
         return new RegistrationTypesService(persistenceStorage).create(new RegistrationTypeModel(
             name: name,
@@ -63,6 +67,13 @@ class TestDataHelper {
         ))
     }
 
+    RegistrationTypeModel findRegistrationType(String name) {
+        return new RegistrationTypesService(persistenceStorage).findAll().stream()
+            .filter {it.name == name}
+            .findFirst()
+            .orElse(null)
+    }
+
     RegistrationReasonModel createRegistrationReason(RegistrationTypeModel registrationType, String name) {
         return new RegistrationReasonsService(persistenceStorage, registrationType.getId()).create(new RegistrationReasonModel(
             registrationTypeId: registrationType.id,
@@ -78,6 +89,10 @@ class TestDataHelper {
             description: "description of ${accountNumber}",
             purpose: "purpose of ${accountNumber}"
         ))
+    }
+
+    List<ProjectAccountModel> findProjectAccounts() {
+        return new ProjectAccountsService(persistenceStorage).findAll()
     }
 
     TimeLogModel createTimeLog(LocalDate date, LocalTime startTime, LocalTime endTime, RegistrationTypeModel registrationType, List<ProjectAccountModel> projectAccounts = []) {

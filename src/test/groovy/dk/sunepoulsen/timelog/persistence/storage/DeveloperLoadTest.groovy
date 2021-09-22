@@ -1,10 +1,17 @@
 package dk.sunepoulsen.timelog.persistence.storage
 
 import dk.sunepoulsen.timelog.testutils.persistence.TestDataHelper
+import dk.sunepoulsen.timelog.ui.model.AgreementModel
+import dk.sunepoulsen.timelog.ui.model.ProjectAccountModel
 import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationTypeModel
-import org.junit.*
+import org.junit.After
+import org.junit.Before
+import org.junit.BeforeClass
+import org.junit.Test
 
+import java.time.DayOfWeek
 import java.time.LocalDate
+import java.util.stream.Collectors
 import java.util.stream.IntStream
 
 /**
@@ -36,17 +43,18 @@ class DeveloperLoadTest {
     }
 
     @Test
-    @Ignore
-    void "Load admin data"() {
+    //@Ignore
+    void "Load test data"() {
         createAgreements()
         createRegistrationTypes()
         createProjectAccounts()
+        createTimeLogs()
     }
 
     private void createAgreements() {
         LocalDate now = LocalDate.now()
 
-        testDataHelper.createAgreement('Full time', LocalDate.of(now.year - 1, now.month, 1), 7.5)
+        testDataHelper.createAgreement('Full time', LocalDate.of(now.year - 1, now.month, 1), 7.6)
     }
 
     private void createRegistrationTypes() {
@@ -90,4 +98,22 @@ class DeveloperLoadTest {
         }
     }
 
+    private void createTimeLogs() {
+        AgreementModel agreement = testDataHelper.findFirstAgreement()
+        List<ProjectAccountModel> projectAccounts = testDataHelper.findProjectAccounts()
+
+        RegistrationTypeModel registrationType = testDataHelper.findRegistrationType("ARB")
+        for (LocalDate date = agreement.startDate; date.isBefore(LocalDate.now()); date = date.plusDays(1)) {
+            // Skip weekends
+            if (date.dayOfWeek.value >= DayOfWeek.SATURDAY.value) {
+                continue
+            }
+
+            testDataHelper.createTimeLog(date, registrationType, projectAccounts.stream()
+                .filter(it -> Math.random() <= 0.5)
+                .limit(3)
+                .collect(Collectors.toList())
+            )
+        }
+    }
 }
