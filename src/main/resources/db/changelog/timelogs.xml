@@ -24,6 +24,9 @@
             <column name="end_time" type="time">
                 <constraints nullable="false"/>
             </column>
+            <column name="work_time" type="double">
+                <constraints nullable="false"/>
+            </column>
             <column name="registration_type_id" type="bigint">
                 <constraints nullable="false"/>
             </column>

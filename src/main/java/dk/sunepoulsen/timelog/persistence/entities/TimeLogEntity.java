@@ -13,10 +13,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Set;
 
 @Data
@@ -37,14 +40,17 @@ public class TimeLogEntity implements AbstractEntity {
     @Column( name = "timelog_id" )
     private Long id;
 
-    @Column( name = "timelog_date", columnDefinition="DATE" )
+    @Column( name = "timelog_date", nullable = false, columnDefinition="DATE" )
     private LocalDate date;
 
-    @Column( name = "start_time", columnDefinition="TIME" )
+    @Column( name = "start_time", nullable = false, columnDefinition="TIME" )
     private LocalTime startTime;
 
-    @Column( name = "end_time", columnDefinition="TIME" )
+    @Column( name = "end_time", nullable = false, columnDefinition="TIME" )
     private LocalTime endTime;
+
+    @Column( name = "work_time", nullable = false )
+    private Double workTime;
 
     @ManyToOne
     @JoinColumn( name = "registration_type_id", nullable = false )
@@ -60,4 +66,10 @@ public class TimeLogEntity implements AbstractEntity {
         inverseJoinColumns=@JoinColumn(name="project_account_id", referencedColumnName="project_account_id")
     )
     public Set<ProjectAccountEntity> projectAccounts;
+
+    @PrePersist
+    @PreUpdate
+    private void updateWorkTime() {
+        this.workTime = ChronoUnit.MINUTES.between(startTime, endTime) / 60.0;
+    }
 }
