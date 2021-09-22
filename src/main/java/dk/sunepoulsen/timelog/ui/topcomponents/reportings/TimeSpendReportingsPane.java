@@ -7,6 +7,7 @@ import dk.sunepoulsen.timelog.ui.control.cell.TableValueFactory;
 import dk.sunepoulsen.timelog.ui.model.reporting.TimeSpendReporting;
 import dk.sunepoulsen.timelog.ui.model.timelogs.WeekModel;
 import dk.sunepoulsen.timelog.ui.tasks.backend.LoadTimeSpendReportingTask;
+import dk.sunepoulsen.timelog.utils.CalendarUtils;
 import dk.sunepoulsen.timelog.utils.FXMLUtils;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
@@ -65,7 +66,10 @@ public class TimeSpendReportingsPane extends BorderPane {
             TableColumn<TimeSpendReporting, Double> column = new TableColumn<>();
             column.setText(date.getDayOfWeek().getDisplayName(TextStyle.FULL_STANDALONE, registry.getLocale()));
             column.setPrefWidth(110.0);
-            column.setCellValueFactory(new TableValueFactory<>(timeSpendReporting -> timeSpendReporting.getDates().get(columnDate)));
+            column.setCellValueFactory(new TableValueFactory<>(timeSpendReporting -> {
+                LocalDate lookupDate = CalendarUtils.findSameWeekDay(timeSpendReporting.getDates().keySet(), columnDate);
+                return timeSpendReporting.getDates().get(lookupDate);
+            }));
             column.setCellFactory(param -> {
                 DoubleTableCell<TimeSpendReporting> cell = new DoubleTableCell<>(this.registry.getLocale());
                 cell.setPositiveColor(Color.BLACK);

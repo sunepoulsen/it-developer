@@ -10,6 +10,7 @@ import dk.sunepoulsen.timelog.ui.model.reporting.TimeRegistrationReporting;
 import dk.sunepoulsen.timelog.ui.model.reporting.TimeRegistrationReportingInterval;
 import dk.sunepoulsen.timelog.ui.model.timelogs.WeekModel;
 import dk.sunepoulsen.timelog.ui.tasks.backend.LoadWeekReportingTask;
+import dk.sunepoulsen.timelog.utils.CalendarUtils;
 import dk.sunepoulsen.timelog.utils.FXMLUtils;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
@@ -66,7 +67,10 @@ public class TimeRegistrationReportingsPane extends BorderPane {
             TableColumn<TimeRegistrationReporting, TimeRegistrationReportingInterval> column = new TableColumn<>();
             column.setText(date.getDayOfWeek().getDisplayName(TextStyle.FULL_STANDALONE, registry.getLocale()));
             column.setPrefWidth(110.0);
-            column.setCellValueFactory(new TableValueFactory<>(timeRegistrationReporting -> timeRegistrationReporting.getDates().get(columnDate)));
+            column.setCellValueFactory(new TableValueFactory<>(timeRegistrationReporting -> {
+                LocalDate lookupDate = CalendarUtils.findSameWeekDay(timeRegistrationReporting.getDates().keySet(), columnDate);
+                return timeRegistrationReporting.getDates().get(lookupDate);
+            } ));
             column.setCellFactory(param -> new TimeReportingIntervalTableCell<>(timeFormatter));
 
             viewer.getColumns().add(column);
@@ -81,7 +85,7 @@ public class TimeRegistrationReportingsPane extends BorderPane {
         task.setOnSucceeded( event -> {
             ObservableList<TimeRegistrationReporting> movies = task.getValue();
 
-            log.info( "Viewing {} registration types", movies.size() );
+            log.info( "Viewing {} TimeRegistrationReporting from week {}.{}: {}", movies.size(), currentWeekProperty.getValue().weekNumber(), currentWeekProperty.getValue().weekNumber(), movies );
             viewer.setItems( movies );
         } );
 
