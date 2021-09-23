@@ -1,8 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true" scan="true" scanPeriod="1 minutes">
-    <appender name="PRODUCTION" class="ch.qos.logback.core.FileAppender">
-        <append>false</append>
+    <appender name="PRODUCTION" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <append>true</append>
         <file>logs/timelog.log</file>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover daily -->
+            <fileNamePattern>logs/timelog-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- each file should be at most 256MB, keep 90 days worth of history, but at most 20GB -->
+            <maxFileSize>256MB</maxFileSize>
+            <maxHistory>90</maxHistory>
+            <totalSizeCap>40GB</totalSizeCap>
+        </rollingPolicy>
 
         <encoder>
             <pattern>%date %level [%thread] %logger{35} - %msg%n</pattern>
