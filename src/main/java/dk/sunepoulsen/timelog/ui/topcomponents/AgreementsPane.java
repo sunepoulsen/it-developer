@@ -2,6 +2,8 @@ package dk.sunepoulsen.timelog.ui.topcomponents;
 
 import dk.sunepoulsen.timelog.backend.BackendConnection;
 import dk.sunepoulsen.timelog.registry.Registry;
+import dk.sunepoulsen.timelog.ui.control.cell.DoubleTableCell;
+import dk.sunepoulsen.timelog.ui.control.cell.LocalDateTableCell;
 import dk.sunepoulsen.timelog.ui.dialogs.AgreementDialog;
 import dk.sunepoulsen.timelog.ui.model.AgreementModel;
 import dk.sunepoulsen.timelog.ui.tasks.backend.ExecuteBackendServiceTask;
@@ -16,13 +18,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.SelectionMode;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Region;
+import javafx.scene.paint.Color;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 @Slf4j
@@ -33,6 +38,33 @@ public class AgreementsPane extends BorderPane {
 
     @FXML
     private TableView<AgreementModel> viewer;
+
+    @FXML
+    private TableColumn<AgreementModel, LocalDate> startDateColumn;
+
+    @FXML
+    private TableColumn<AgreementModel, LocalDate> endDateColumn;
+
+    @FXML
+    private TableColumn<AgreementModel, Double> mondayColumn;
+
+    @FXML
+    private TableColumn<AgreementModel, Double> tuesdayColumn;
+
+    @FXML
+    private TableColumn<AgreementModel, Double> wednesdayColumn;
+
+    @FXML
+    private TableColumn<AgreementModel, Double> thursdayColumn;
+
+    @FXML
+    private TableColumn<AgreementModel, Double> fridayColumn;
+
+    @FXML
+    private TableColumn<AgreementModel, Double> saturdayColumn;
+
+    @FXML
+    private TableColumn<AgreementModel, Double> sundayColumn;
 
     @FXML
     private Region veil = null;
@@ -60,6 +92,17 @@ public class AgreementsPane extends BorderPane {
 
         viewer.getSelectionModel().setSelectionMode( SelectionMode.MULTIPLE );
         viewer.getSelectionModel().getSelectedItems().addListener( this::updateButtonsState );
+
+        startDateColumn.setCellFactory(param -> new LocalDateTableCell<>(this.registry.getSettings().getModel().getCalendar().shortDateFormatter()));
+        endDateColumn.setCellFactory(param -> new LocalDateTableCell<>(this.registry.getSettings().getModel().getCalendar().shortDateFormatter()));
+
+        mondayColumn.setCellFactory(param -> DoubleTableCell.of(this.registry.getLocale(), Color.BLACK));
+        tuesdayColumn.setCellFactory(param -> DoubleTableCell.of(this.registry.getLocale(), Color.BLACK));
+        wednesdayColumn.setCellFactory(param -> DoubleTableCell.of(this.registry.getLocale(), Color.BLACK));
+        thursdayColumn.setCellFactory(param -> DoubleTableCell.of(this.registry.getLocale(), Color.BLACK));
+        fridayColumn.setCellFactory(param -> DoubleTableCell.of(this.registry.getLocale(), Color.BLACK));
+        saturdayColumn.setCellFactory(param -> DoubleTableCell.of(this.registry.getLocale(), Color.BLACK));
+        sundayColumn.setCellFactory(param -> DoubleTableCell.of(this.registry.getLocale(), Color.BLACK));
 
         reload();
     }

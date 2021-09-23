@@ -33,6 +33,13 @@ public class DoubleTableCell<S> extends TableCell<S, Double> {
         this.zeroColor = Color.BLACK;
     }
 
+    public static <T> DoubleTableCell<T> of(Locale locale, Color positiveColor) {
+        DoubleTableCell<T> normCell = new DoubleTableCell<>(locale);
+        normCell.setPositiveColor(positiveColor);
+
+        return normCell;
+    }
+
     @Override
     public void updateItem(Double item, boolean empty) {
         super.updateItem(item, empty);
