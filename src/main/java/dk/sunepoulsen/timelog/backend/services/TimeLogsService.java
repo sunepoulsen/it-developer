@@ -31,6 +31,16 @@ public class TimeLogsService extends AbstractPersistenceService<TimeLogModel, Ti
         });
     }
 
+    public Double workingTimeByDates(LocalDate from, LocalDate to) {
+        return database.untransactionalFunction( em -> {
+            TypedQuery<Double> q = em.createNamedQuery("workingTimeByDates", Double.class);
+            q.setParameter("from", from);
+            q.setParameter("to", to);
+
+            return q.getSingleResult();
+        });
+    }
+
     @Override
     TimeLogEntity convertModel( TimeLogEntity entity, TimeLogModel model ) {
         entity.setId( model.getId() );

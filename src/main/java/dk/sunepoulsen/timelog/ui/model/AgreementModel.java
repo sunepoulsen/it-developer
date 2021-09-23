@@ -45,4 +45,72 @@ public class AgreementModel implements AbstractModel {
 
     @PositiveOrZero
     private Double sundayNorm;
+
+    public int numberOfWorkingDays() {
+        int result = 0;
+
+        if (mondayNorm != null) {
+            result += 1;
+        }
+
+        if (tuesdayNorm != null) {
+            result += 1;
+        }
+
+        if (wednesdayNorm != null) {
+            result += 1;
+        }
+
+        if (thursdayNorm != null) {
+            result += 1;
+        }
+
+        if (fridayNorm != null) {
+            result += 1;
+        }
+
+        if (saturdayNorm != null) {
+            result += 1;
+        }
+
+        if (sundayNorm != null) {
+            result += 1;
+        }
+
+        return result;
+    }
+
+    public double weeklyNorm() {
+        double result = 0.0;
+
+        if (mondayNorm != null) {
+            result += mondayNorm;
+        }
+
+        if (tuesdayNorm != null) {
+            result += tuesdayNorm;
+        }
+
+        if (wednesdayNorm != null) {
+            result += wednesdayNorm;
+        }
+
+        if (thursdayNorm != null) {
+            result += thursdayNorm;
+        }
+
+        if (fridayNorm != null) {
+            result += fridayNorm;
+        }
+
+        if (saturdayNorm != null) {
+            result += saturdayNorm;
+        }
+
+        if (sundayNorm != null) {
+            result += sundayNorm;
+        }
+
+        return result;
+    }
 }

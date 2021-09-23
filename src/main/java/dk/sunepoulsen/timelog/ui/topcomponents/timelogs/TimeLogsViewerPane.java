@@ -1,17 +1,22 @@
 package dk.sunepoulsen.timelog.ui.topcomponents.timelogs;
 
 import dk.sunepoulsen.timelog.backend.BackendConnection;
+import dk.sunepoulsen.timelog.formatter.FlexFormatter;
 import dk.sunepoulsen.timelog.registry.Registry;
 import dk.sunepoulsen.timelog.ui.control.cell.DoubleTreeTableCell;
 import dk.sunepoulsen.timelog.ui.control.cell.TreeTableValueFactory;
 import dk.sunepoulsen.timelog.ui.dialogs.TimeLogDialog;
+import dk.sunepoulsen.timelog.ui.model.AgreementModel;
 import dk.sunepoulsen.timelog.ui.model.timelogs.DayRegistration;
 import dk.sunepoulsen.timelog.ui.model.timelogs.TimeLogModel;
 import dk.sunepoulsen.timelog.ui.model.timelogs.TimeLogRegistration;
 import dk.sunepoulsen.timelog.ui.model.timelogs.TimeRegistration;
 import dk.sunepoulsen.timelog.ui.model.timelogs.WeekModel;
+import dk.sunepoulsen.timelog.ui.tasks.backend.CalculateFlexBalanceTask;
 import dk.sunepoulsen.timelog.ui.tasks.backend.ExecuteBackendServiceTask;
+import dk.sunepoulsen.timelog.ui.tasks.backend.LoadBackendServiceItemsTask;
 import dk.sunepoulsen.timelog.ui.tasks.backend.LoadWeekRegistrationsTask;
+import dk.sunepoulsen.timelog.utils.ControlUtils;
 import dk.sunepoulsen.timelog.utils.FXMLUtils;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ListChangeListener;
@@ -21,6 +26,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TreeItem;
@@ -75,6 +81,15 @@ public class TimeLogsViewerPane extends BorderPane {
     private ProgressIndicator progressIndicator = null;
 
     @FXML
+    private Label openingBalanceField = null;
+
+    @FXML
+    private Label flexHoursField = null;
+
+    @FXML
+    private Label ultimateBalanceField = null;
+
+    @FXML
     private Button editButton = null;
 
     @FXML
@@ -100,7 +115,7 @@ public class TimeLogsViewerPane extends BorderPane {
     public void initialize() {
         log.info("Initializing {} custom control", getClass().getSimpleName());
 
-        currentWeekProperty.addListener((observable, oldValue, newValue) -> reload(newValue));
+        currentWeekProperty.addListener((observable, oldValue, newValue) -> loadTimeLogs(newValue));
 
         viewer.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         viewer.getSelectionModel().getSelectedItems().addListener(this::updateButtonsState);
@@ -120,7 +135,7 @@ public class TimeLogsViewerPane extends BorderPane {
         flexTableColumn.setCellValueFactory(new TreeTableValueFactory<>(TimeRegistration::flex));
         flexTableColumn.setCellFactory(param -> new DoubleTreeTableCell<>(Registry.getDefault().getLocale()));
 
-        reload(currentWeekProperty.getValue());
+        loadTimeLogs(currentWeekProperty.getValue());
     }
 
     private void updateCurrentTimeRegistration(ListChangeListener.Change<? extends TreeItem<TimeRegistration>> listener) {
@@ -146,17 +161,13 @@ public class TimeLogsViewerPane extends BorderPane {
         deleteButton.disableProperty().setValue(foundTimeLogRegistration.isEmpty());
     }
 
-    private void reload(WeekModel weekModel) {
+    private void loadTimeLogs(WeekModel weekModel) {
         if (weekModel == null) {
             viewer.setRoot(new TreeItem<>());
             return;
         }
 
         LoadWeekRegistrationsTask task = new LoadWeekRegistrationsTask(backendConnection, weekModel, registry.getLocale());
-
-        progressIndicator.progressProperty().bind(task.progressProperty());
-        veil.visibleProperty().bind(task.runningProperty());
-        progressIndicator.visibleProperty().bind(task.runningProperty());
 
         task.setOnSucceeded(event -> {
             ObservableList<TimeRegistration> timeRegistrations = task.getValue();
@@ -172,10 +183,41 @@ public class TimeLogsViewerPane extends BorderPane {
 
             editButton.setDisable(true);
             deleteButton.setDisable(true);
+
+            loadFlexBalance(weekModel, timeRegistrations);
         });
 
         log.info("Loading agreements");
         registry.getUiRegistry().getTaskExecutorService().submit(task);
+    }
+
+    private void loadFlexBalance(WeekModel weekModel, List<TimeRegistration> timeRegistrations) {
+        LoadBackendServiceItemsTask<AgreementModel> loadAgreementTask = new LoadBackendServiceItemsTask<>(backendConnection, AgreementModel.PERFORMANCE_LOAD_TAG,
+            connection -> connection.servicesFactory().newAgreementsService().findByDate(LocalDate.now())
+        );
+
+        loadAgreementTask.setOnSucceeded(agreementEvent -> {
+            CalculateFlexBalanceTask flexTask = new CalculateFlexBalanceTask(backendConnection, weekModel.firstDate().minusDays(1));
+
+            flexTask.setOnSucceeded(flexEvent -> {
+                loadAgreementTask.getValue().stream().findFirst().ifPresent(agreement -> {
+                    // Update labels
+                    double flexHours = timeRegistrations.stream()
+                        .mapToDouble(value -> value.flex() != null ? value.flex() : 0.0)
+                        .sum();
+
+                    FlexFormatter flexFormatter = new FlexFormatter(agreement.weeklyNorm(), agreement.weeklyNorm() / agreement.numberOfWorkingDays());
+
+                    ControlUtils.setFlexText(openingBalanceField, flexTask.getValue(), flexFormatter);
+                    ControlUtils.setFlexText(flexHoursField, flexHours, flexFormatter);
+                    ControlUtils.setFlexText(ultimateBalanceField,flexTask.getValue() + flexHours, flexFormatter);
+                });
+            });
+
+            registry.getUiRegistry().getTaskExecutorService().submit(flexTask);
+        });
+
+        registry.getUiRegistry().getTaskExecutorService().submit(loadAgreementTask);
     }
 
     @FXML
@@ -211,7 +253,7 @@ public class TimeLogsViewerPane extends BorderPane {
             ExecuteBackendServiceTask task = new ExecuteBackendServiceTask(backendConnection, TimeLogModel.PERFORMANCE_SAVE_TAG, connection ->
                 connection.servicesFactory().newTimeLogsService().create(timeLogModel)
             );
-            task.setOnSucceeded(event -> reload(currentWeekProperty.getValue()));
+            task.setOnSucceeded(event -> loadTimeLogs(currentWeekProperty.getValue()));
             registry.getUiRegistry().getTaskExecutorService().submit(task);
         });
     }
@@ -231,7 +273,7 @@ public class TimeLogsViewerPane extends BorderPane {
             ExecuteBackendServiceTask task = new ExecuteBackendServiceTask(backendConnection, TimeLogModel.PERFORMANCE_SAVE_TAG, connection ->
                 connection.servicesFactory().newTimeLogsService().update(timeLogModel)
             );
-            task.setOnSucceeded(event -> reload(currentWeekProperty.getValue()));
+            task.setOnSucceeded(event -> loadTimeLogs(currentWeekProperty.getValue()));
             registry.getUiRegistry().getTaskExecutorService().submit(task);
         });
     }
@@ -255,7 +297,7 @@ public class TimeLogsViewerPane extends BorderPane {
                 ExecuteBackendServiceTask task = new ExecuteBackendServiceTask(backendConnection, TimeLogModel.PERFORMANCE_DELETE_TAG, connection ->
                     connection.servicesFactory().newTimeLogsService().delete(models)
                 );
-                task.setOnSucceeded(event -> reload(currentWeekProperty.getValue()));
+                task.setOnSucceeded(event -> loadTimeLogs(currentWeekProperty.getValue()));
                 registry.getUiRegistry().getTaskExecutorService().submit(task);
             });
     }

@@ -1,7 +1,10 @@
 package dk.sunepoulsen.timelog.utils;
 
+import dk.sunepoulsen.timelog.formatter.FlexFormatter;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.paint.Color;
 import lombok.extern.slf4j.Slf4j;
 
 import java.text.NumberFormat;
@@ -39,6 +42,22 @@ public class ControlUtils {
         }
 
         return getText( control.editorProperty().getValue() );
+    }
+
+    public static void setFlexText(Label control, double value, FlexFormatter formatter) {
+        control.setText(formatter.format(value));
+        fillTextColor(control, value);
+    }
+
+    public static void fillTextColor(Label control, double value) {
+        if (value > 0.0) {
+            control.setTextFill(Color.GREEN);
+        } else if (value < 0.0) {
+            control.setTextFill(Color.RED);
+        }
+        else {
+            control.setTextFill(Color.BLACK);
+        }
     }
 
     public static void setLocalTime(TextField control, LocalTime localTime, DateTimeFormatter formatter) {

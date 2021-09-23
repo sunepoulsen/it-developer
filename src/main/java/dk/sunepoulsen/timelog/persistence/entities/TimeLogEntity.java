@@ -28,7 +28,8 @@ import java.util.Set;
 @NamedQueries( {
     @NamedQuery( name = "findAllTimeLogs", query = "SELECT t FROM TimeLogEntity t ORDER BY t.date" ),
     @NamedQuery( name = "findByDates", query = "SELECT t FROM TimeLogEntity t WHERE t.date >= :from AND t.date <= :to ORDER BY t.date, t.startTime ASC" ),
-    @NamedQuery( name = "deleteTimeLogs", query = "DELETE FROM TimeLogEntity t WHERE t.id IN :ids" )
+    @NamedQuery( name = "deleteTimeLogs", query = "DELETE FROM TimeLogEntity t WHERE t.id IN :ids" ),
+    @NamedQuery( name = "workingTimeByDates", query = "SELECT SUM(t.workTime) FROM TimeLogEntity t WHERE t.date >= :from AND t.date <= :to" )
 })
 public class TimeLogEntity implements AbstractEntity {
     /**
