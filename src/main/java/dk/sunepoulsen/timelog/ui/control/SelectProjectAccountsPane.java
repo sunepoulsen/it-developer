@@ -35,12 +35,16 @@ public class SelectProjectAccountsPane extends AnchorPane {
     @Getter
     private final ObservableList<ProjectAccountModel> selectedResultProperty;
 
+    @Getter
+    private boolean resultsChanged;
+
     private List<ProjectAccountModel> currentSelectedAccounts;
 
     public SelectProjectAccountsPane() {
         this.registry = Registry.getDefault();
         this.backendConnection = registry.getBackendConnection();
         this.selectedResultProperty = FXCollections.observableArrayList();
+        this.resultsChanged = false;
 
         FXMLUtils.initFxml(registry.getBundle(getClass()), this);
     }
@@ -92,6 +96,7 @@ public class SelectProjectAccountsPane extends AnchorPane {
 
             log.info("Viewing {} project accounts", accounts.size());
             viewer.setRoot(rootItem);
+            this.resultsChanged = false;
         });
 
         log.info("Loading project accounts");
@@ -111,6 +116,7 @@ public class SelectProjectAccountsPane extends AnchorPane {
         }
 
         this.selectedResultProperty.setAll(this.currentSelectedAccounts);
+        this.resultsChanged = true;
     }
 
     private static Optional<ProjectAccountModel> findProjectAccountById(List<ProjectAccountModel> projectAccounts, Long id) {

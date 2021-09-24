@@ -140,7 +140,13 @@ public class TimeLogDialog extends GridPane implements Initializable, DialogImpl
         result.setEndTime(ControlUtils.getLocalTime(endTimeField, settings.getCalendar().shortTimeFormatter()));
         result.setRegistrationType(registrationTypeField.getValue());
         result.setRegistrationReason(registrationReasonField.getValue());
-        result.setProjectAccounts(new ArrayList<>(selectProjectAccountsField.getSelectedResultProperty()));
+
+        if (selectProjectAccountsField.isResultsChanged()) {
+            result.setProjectAccounts(new ArrayList<>(selectProjectAccountsField.getSelectedResultProperty()));
+        }
+        else {
+            result.setProjectAccounts(model.getProjectAccounts());
+        }
 
         return result;
     }
