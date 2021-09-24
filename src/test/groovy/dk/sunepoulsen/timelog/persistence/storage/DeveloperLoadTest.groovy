@@ -7,6 +7,7 @@ import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationTypeModel
 import org.junit.After
 import org.junit.Before
 import org.junit.BeforeClass
+import org.junit.Ignore
 import org.junit.Test
 
 import java.time.DayOfWeek
@@ -43,7 +44,7 @@ class DeveloperLoadTest {
     }
 
     @Test
-    //@Ignore
+    @Ignore
     void "Load test data"() {
         createAgreements()
         createRegistrationTypes()
