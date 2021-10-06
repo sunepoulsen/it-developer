@@ -4,11 +4,7 @@ import dk.sunepoulsen.timelog.testutils.persistence.TestDataHelper
 import dk.sunepoulsen.timelog.ui.model.AgreementModel
 import dk.sunepoulsen.timelog.ui.model.ProjectAccountModel
 import dk.sunepoulsen.timelog.ui.model.registration.types.RegistrationTypeModel
-import org.junit.After
-import org.junit.Before
-import org.junit.BeforeClass
-import org.junit.Ignore
-import org.junit.Test
+import org.junit.*
 
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -104,7 +100,7 @@ class DeveloperLoadTest {
         List<ProjectAccountModel> projectAccounts = testDataHelper.findProjectAccounts()
 
         RegistrationTypeModel registrationType = testDataHelper.findRegistrationType("ARB")
-        for (LocalDate date = agreement.startDate; date.isBefore(LocalDate.now()); date = date.plusDays(1)) {
+        for (LocalDate date = agreement.startDate; !date.isAfter(LocalDate.now()); date = date.plusDays(1)) {
             // Skip weekends
             if (date.dayOfWeek.value >= DayOfWeek.SATURDAY.value) {
                 continue
