@@ -203,6 +203,8 @@ public class TimeLogsViewerPane extends BorderPane {
                 loadAgreementTask.getValue().stream().findFirst().ifPresent(agreement -> {
                     // Update labels
                     double flexHours = timeRegistrations.stream()
+                        .filter(timeRegistration -> timeRegistration instanceof DayRegistration)
+                        .filter(timeRegistration -> !((DayRegistration)timeRegistration).getDate().isAfter(LocalDate.now()))
                         .mapToDouble(value -> value.flex() != null ? value.flex() : 0.0)
                         .sum();
 
