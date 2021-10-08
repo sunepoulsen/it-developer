@@ -65,11 +65,22 @@ public class DayRegistration implements TimeRegistration {
 
     @Override
     public Double flex() {
+        Double workedHours = workedHours();
+
+        Double flex;
         if (workingNorm == null) {
-            return null;
+            flex = workedHours;
+        } else if (workedHours == null) {
+            flex = -workingNorm;
+        } else {
+            flex = workedHours - workingNorm;
         }
 
-        return workedHours() - workingNorm;
+        if (flex == 0.0) {
+            flex = null;
+        }
+
+        return flex;
     }
 
     @Override
