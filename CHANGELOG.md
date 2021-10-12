@@ -24,6 +24,7 @@ For release-dates, use date-format: YYYY-MM-DD
 - [TIM-19](https://sunepoulsen.atlassian.net/browse/TIM-19): Extend the developer loadtest with timelogs
 - [TIM-21](https://sunepoulsen.atlassian.net/browse/TIM-21): Format of columns with working norm.
 - [TIM-29](https://sunepoulsen.atlassian.net/browse/TIM-29): Flex balance should only be summarized until current date on the timelogs view
+- [TIM-30](https://sunepoulsen.atlassian.net/browse/TIM-30): Burn up chart on TimeLogs Viewer Pane
 
 ### Fixed
 

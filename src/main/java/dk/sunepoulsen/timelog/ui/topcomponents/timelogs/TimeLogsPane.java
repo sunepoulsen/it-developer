@@ -33,6 +33,9 @@ public class TimeLogsPane extends BorderPane {
     @FXML
     private SelectProjectAccountsPane selectProjectAccountsPane;
 
+    @FXML
+    private TimeLogsChartPane chartPane;
+
     public TimeLogsPane() {
         this.registry = Registry.getDefault();
         this.backendConnection = registry.getBackendConnection();
@@ -48,6 +51,8 @@ public class TimeLogsPane extends BorderPane {
         timeLogsPane.getCurrentTimeRegistrationProperty().addListener(this::refreshProjectAccounts);
 
         selectProjectAccountsPane.getSelectedResultProperty().addListener(this::storeProjectAccounts);
+
+        chartPane.getCurrentWeekProperty().bind(navigationPane.getSelectedProperty());
     }
 
     private void refreshProjectAccounts(ObservableValue<? extends TimeRegistration> observableValue, TimeRegistration oldValue, TimeRegistration newValue) {

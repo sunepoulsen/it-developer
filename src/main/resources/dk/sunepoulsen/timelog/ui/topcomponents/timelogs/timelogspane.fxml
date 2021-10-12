@@ -2,6 +2,7 @@
 
 <?import dk.sunepoulsen.timelog.ui.control.SelectProjectAccountsPane?>
 <?import dk.sunepoulsen.timelog.ui.control.WeekNavigationPane?>
+<?import dk.sunepoulsen.timelog.ui.topcomponents.timelogs.TimeLogsChartPane?>
 <?import dk.sunepoulsen.timelog.ui.topcomponents.timelogs.TimeLogsViewerPane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.SplitPane?>
@@ -22,11 +23,16 @@
                         <Insets left="10.0" top="10.0" right="10.0" bottom="10.0" />
                     </padding>
                 </TimeLogsViewerPane>
-                <SelectProjectAccountsPane fx:id="selectProjectAccountsPane">
-                    <padding>
-                        <Insets left="10.0" top="10.0" right="10.0" bottom="10.0" />
-                    </padding>
-                </SelectProjectAccountsPane>
+                <SplitPane>
+                    <items>
+                        <SelectProjectAccountsPane fx:id="selectProjectAccountsPane">
+                            <padding>
+                                <Insets left="10.0" top="10.0" right="10.0" bottom="10.0" />
+                            </padding>
+                        </SelectProjectAccountsPane>
+                        <TimeLogsChartPane fx:id="chartPane"/>
+                    </items>
+                </SplitPane>
             </items>
         </SplitPane>
     </center>

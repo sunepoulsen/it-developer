@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 
 @Data
@@ -112,5 +113,37 @@ public class AgreementModel implements AbstractModel {
         }
 
         return result;
+    }
+
+    public double weekDayNorm(DayOfWeek dayOfWeek) {
+        if (DayOfWeek.MONDAY.equals(dayOfWeek) && mondayNorm != null) {
+            return mondayNorm;
+        }
+
+        if (DayOfWeek.TUESDAY.equals(dayOfWeek) && tuesdayNorm != null) {
+            return tuesdayNorm;
+        }
+
+        if (DayOfWeek.WEDNESDAY.equals(dayOfWeek) && wednesdayNorm != null) {
+            return wednesdayNorm;
+        }
+
+        if (DayOfWeek.THURSDAY.equals(dayOfWeek) && thursdayNorm != null) {
+            return thursdayNorm;
+        }
+
+        if (DayOfWeek.FRIDAY.equals(dayOfWeek) && fridayNorm != null) {
+            return fridayNorm;
+        }
+
+        if (DayOfWeek.SATURDAY.equals(dayOfWeek) && saturdayNorm != null) {
+            return saturdayNorm;
+        }
+
+        if (DayOfWeek.SUNDAY.equals(dayOfWeek) && sundayNorm != null) {
+            return sundayNorm;
+        }
+
+        return 0.0;
     }
 }
