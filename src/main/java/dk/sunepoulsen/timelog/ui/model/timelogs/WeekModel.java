@@ -40,6 +40,10 @@ public class WeekModel {
         return new WeekModel(this.firstDate.minusWeeks(1));
     }
 
+    public boolean containsDate(LocalDate date) {
+        return !(date.isBefore(firstDate()) || date.isAfter(lastDate()));
+    }
+
     public static WeekModel now() {
         return now(Clock.systemUTC());
     }
