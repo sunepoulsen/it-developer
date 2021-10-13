@@ -17,6 +17,14 @@ For release-dates, use date-format: YYYY-MM-DD
 
 ### Features
 
+### Fixed
+
+### Security
+
+## 1.0.0
+
+### Features
+
 - [TIM-10](https://sunepoulsen.atlassian.net/browse/TIM-10): Select project accounts to a timelog.
 - [TIM-16](https://sunepoulsen.atlassian.net/browse/TIM-16): Reporting of time spent peer project account
 - [TIM-14](https://sunepoulsen.atlassian.net/browse/TIM-14): Integrate the select project accounts view with the timelog dialog

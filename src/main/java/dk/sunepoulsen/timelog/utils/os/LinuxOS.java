@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class LinuxOS implements OperatingSystem {
-    private static final String APP_DATA_DIR_PATTERN = "%s/.timelog/%s/%s";
+    private static final String APP_DATA_DIR_PATTERN = "%s/.%s/%s";
 
     private Properties settings;
 
