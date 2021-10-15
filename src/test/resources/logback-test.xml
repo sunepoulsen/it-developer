@@ -9,7 +9,7 @@
         </encoder>
     </appender>
 
-    <logger name="dk.sunepoulsen.timelog" level="DEBUG">
+    <logger name="dk.sunepoulsen.itdeveloper" level="DEBUG">
         <appender-ref ref="PRODUCTION"/>
     </logger>
 

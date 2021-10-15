@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import dk.sunepoulsen.itdeveloper.ui.topcomponents.clientpane.ClientPane?>
+<?import dk.sunepoulsen.itdeveloper.ui.topcomponents.navigator.TreeNavigator?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import org.controlsfx.control.StatusBar?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="dk.sunepoulsen.itdeveloper.ui.mainwindow.MainWindow">
+    <center>
+        <SplitPane fx:id="splitPane">
+            <items>
+                <TreeNavigator fx:id="navigator" />
+                <ClientPane fx:id="clientPane" />
+            </items>
+        </SplitPane>
+    </center>
+
+    <bottom>
+        <StatusBar fx:id="statusBar" />
+    </bottom>
+
+</BorderPane>

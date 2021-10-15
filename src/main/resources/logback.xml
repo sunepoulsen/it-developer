@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration debug="true" scan="true" scanPeriod="1 minutes">
+    <property name="LOG_DIR" value="logs" />
+    <property name="LOG_FILE_BASE_NAME" value="it-developer" />
+
     <appender name="PRODUCTION" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <append>true</append>
-        <file>logs/timelog.log</file>
+        <file>${LOG_DIR}/${LOG_FILE_BASE_NAME}.log</file>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- rollover daily -->
-            <fileNamePattern>logs/timelog-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <fileNamePattern>${LOG_DIR}/${LOG_FILE_BASE_NAME}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
             <!-- each file should be at most 256MB, keep 90 days worth of history, but at most 20GB -->
             <maxFileSize>256MB</maxFileSize>
             <maxHistory>90</maxHistory>
@@ -18,7 +21,7 @@
         </encoder>
     </appender>
 
-    <logger name="dk.sunepoulsen.timelog" level="DEBUG">
+    <logger name="dk.sunepoulsen.itdeveloper" level="DEBUG">
         <appender-ref ref="PRODUCTION"/>
     </logger>
 

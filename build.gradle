@@ -63,8 +63,8 @@ dependencies {
 }
 
 run {
-    systemProperty "timelog.os.name", System.getProperty("timelog.os.name")
-    systemProperty "timelog.local.directory", System.getProperty("timelog.local.directory")
+    systemProperty "app.os.name", System.getProperty("app.os.name")
+    systemProperty "app.local.directory", System.getProperty("app.local.directory")
 }
 
-mainClassName = 'dk.sunepoulsen.timelog.application.TimelogApplication'
+mainClassName = 'dk.sunepoulsen.itdeveloper.application.ITDeveloperApplication'
