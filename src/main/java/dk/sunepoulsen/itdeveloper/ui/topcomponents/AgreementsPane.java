@@ -30,6 +30,8 @@ import lombok.extern.slf4j.Slf4j;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
+import static dk.sunepoulsen.itdeveloper.ui.styles.StyleClasses.FLEX_ZERO_VALUE_CLASS_NAME;
+
 @Slf4j
 public class AgreementsPane extends BorderPane {
     private Registry registry;
@@ -96,13 +98,13 @@ public class AgreementsPane extends BorderPane {
         startDateColumn.setCellFactory(param -> new LocalDateTableCell<>(this.registry.getSettings().getModel().getCalendar().shortDateFormatter()));
         endDateColumn.setCellFactory(param -> new LocalDateTableCell<>(this.registry.getSettings().getModel().getCalendar().shortDateFormatter()));
 
-        mondayColumn.setCellFactory(param -> DoubleTableCell.of(this.registry.getLocale(), Color.BLACK));
-        tuesdayColumn.setCellFactory(param -> DoubleTableCell.of(this.registry.getLocale(), Color.BLACK));
-        wednesdayColumn.setCellFactory(param -> DoubleTableCell.of(this.registry.getLocale(), Color.BLACK));
-        thursdayColumn.setCellFactory(param -> DoubleTableCell.of(this.registry.getLocale(), Color.BLACK));
-        fridayColumn.setCellFactory(param -> DoubleTableCell.of(this.registry.getLocale(), Color.BLACK));
-        saturdayColumn.setCellFactory(param -> DoubleTableCell.of(this.registry.getLocale(), Color.BLACK));
-        sundayColumn.setCellFactory(param -> DoubleTableCell.of(this.registry.getLocale(), Color.BLACK));
+        mondayColumn.setCellFactory(param -> DoubleTableCell.of(this.registry.getLocale(), FLEX_ZERO_VALUE_CLASS_NAME));
+        tuesdayColumn.setCellFactory(param -> DoubleTableCell.of(this.registry.getLocale(), FLEX_ZERO_VALUE_CLASS_NAME));
+        wednesdayColumn.setCellFactory(param -> DoubleTableCell.of(this.registry.getLocale(), FLEX_ZERO_VALUE_CLASS_NAME));
+        thursdayColumn.setCellFactory(param -> DoubleTableCell.of(this.registry.getLocale(), FLEX_ZERO_VALUE_CLASS_NAME));
+        fridayColumn.setCellFactory(param -> DoubleTableCell.of(this.registry.getLocale(), FLEX_ZERO_VALUE_CLASS_NAME));
+        saturdayColumn.setCellFactory(param -> DoubleTableCell.of(this.registry.getLocale(), FLEX_ZERO_VALUE_CLASS_NAME));
+        sundayColumn.setCellFactory(param -> DoubleTableCell.of(this.registry.getLocale(), FLEX_ZERO_VALUE_CLASS_NAME));
 
         reload();
     }

@@ -24,6 +24,7 @@ public class ITDeveloperApplication extends Application {
         MainWindow mainWindow = loader.getController();
 
         Scene scene = new Scene( root );
+        scene.getStylesheets().add("/styles/app.css");
 
         primaryStage.setTitle( "TimeLog" );
         primaryStage.setScene( scene );

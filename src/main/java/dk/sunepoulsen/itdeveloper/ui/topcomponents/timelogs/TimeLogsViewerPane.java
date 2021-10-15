@@ -128,7 +128,7 @@ public class TimeLogsViewerPane extends BorderPane {
         workedHoursTableColumn.setCellValueFactory(new TreeTableValueFactory<>(TimeRegistration::workedHours));
         workedHoursTableColumn.setCellFactory(param -> {
             DoubleTreeTableCell<TimeRegistration> cell = new DoubleTreeTableCell<>(Registry.getDefault().getLocale());
-            cell.setPositiveColor(Color.BLACK);
+            cell.setPositiveValueStyleClass(cell.getZeroValueStyleClass());
 
             return cell;
         });

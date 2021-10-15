@@ -14,6 +14,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
 
+import static dk.sunepoulsen.itdeveloper.ui.styles.StyleClasses.FLEX_NEGATIVE_VALUE_CLASS_NAME;
+import static dk.sunepoulsen.itdeveloper.ui.styles.StyleClasses.FLEX_POSITIVE_VALUE_CLASS_NAME;
+import static dk.sunepoulsen.itdeveloper.ui.styles.StyleClasses.FLEX_ZERO_VALUE_CLASS_NAME;
+
 /**
  * Created by sunepoulsen on 14/06/2017.
  */
@@ -51,12 +55,12 @@ public class ControlUtils {
 
     public static void fillTextColor(Label control, double value) {
         if (value > 0.0) {
-            control.setTextFill(Color.GREEN);
+            control.getStyleClass().add(FLEX_POSITIVE_VALUE_CLASS_NAME);
         } else if (value < 0.0) {
-            control.setTextFill(Color.RED);
+            control.getStyleClass().add(FLEX_NEGATIVE_VALUE_CLASS_NAME);
         }
         else {
-            control.setTextFill(Color.BLACK);
+            control.getStyleClass().add(FLEX_ZERO_VALUE_CLASS_NAME);
         }
     }
 

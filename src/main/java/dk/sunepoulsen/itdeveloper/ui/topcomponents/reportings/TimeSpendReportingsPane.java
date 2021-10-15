@@ -24,6 +24,8 @@ import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.ResourceBundle;
 
+import static dk.sunepoulsen.itdeveloper.ui.styles.StyleClasses.FLEX_ZERO_VALUE_CLASS_NAME;
+
 @Slf4j
 public class TimeSpendReportingsPane extends BorderPane {
     private Registry registry;
@@ -72,7 +74,7 @@ public class TimeSpendReportingsPane extends BorderPane {
             }));
             column.setCellFactory(param -> {
                 DoubleTableCell<TimeSpendReporting> cell = new DoubleTableCell<>(this.registry.getLocale());
-                cell.setPositiveColor(Color.BLACK);
+                cell.setPositiveValueStyleClass(FLEX_ZERO_VALUE_CLASS_NAME);
 
                 return cell;
             });

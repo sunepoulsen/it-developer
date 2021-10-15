@@ -18,6 +18,7 @@ For release-dates, use date-format: YYYY-MM-DD
 ### Features
 
 - [ITDEV-31](https://sunepoulsen.atlassian.net/browse/ITDEV-31): Rename solution to it-developer
+- [ITDEV-20](https://sunepoulsen.atlassian.net/browse/ITDEV-20): Improved styling of the UI
 
 ### Fixed
 

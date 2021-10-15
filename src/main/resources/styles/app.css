@@ -1,0 +1,13 @@
+/* IT Developer application style sheet */
+
+.zero-flex-value {
+    -fx-text-fill: black;
+}
+
+.positive-flex-value {
+    -fx-text-fill: green;
+}
+
+.negative-flex-value {
+    -fx-text-fill: red;
+}
