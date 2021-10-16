@@ -1,39 +1,39 @@
 package dk.sunepoulsen.itdeveloper.ui.topcomponents.navigator;
 
+import dk.sunepoulsen.itdeveloper.registry.Registry;
 import dk.sunepoulsen.itdeveloper.ui.model.NodeNavigationModel;
 import dk.sunepoulsen.itdeveloper.ui.model.TreeNavigatorModel;
+import dk.sunepoulsen.itdeveloper.ui.topcomponents.AgreementsPane;
+import dk.sunepoulsen.itdeveloper.ui.topcomponents.ProjectAccountsPane;
 import dk.sunepoulsen.itdeveloper.ui.topcomponents.registration.types.RegistrationTypesPane;
 import dk.sunepoulsen.itdeveloper.ui.topcomponents.reportings.ReportingsPane;
 import dk.sunepoulsen.itdeveloper.ui.topcomponents.timelogs.TimeLogsPane;
-import dk.sunepoulsen.itdeveloper.ui.topcomponents.AgreementsPane;
-import dk.sunepoulsen.itdeveloper.ui.topcomponents.ProjectAccountsPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TreeItem;
 
-/**
- * Created by sunepoulsen on 13/05/2017.
- */
+import java.util.ResourceBundle;
+
 public class RootNode extends TreeItem<TreeNavigatorModel> {
     public RootNode() {
         super();
 
-        createAndAddRootItem(new NodeNavigationModel("Time Logs", new TimeLogsPane()));
-        createAndAddRootItem(new NodeNavigationModel("Reportings", new ReportingsPane()));
+        ResourceBundle bundle = Registry.getDefault().getBundle(TreeNavigator.class);
 
-        TreeItem<TreeNavigatorModel> adminItem = createParentItem("Admin");
-        createAndAddChildItem(adminItem, new NodeNavigationModel( "Agreements", new AgreementsPane() ));
-        createAndAddChildItem(adminItem, new NodeNavigationModel( "Registration Types", new RegistrationTypesPane() ));
-        createAndAddChildItem(adminItem, new NodeNavigationModel( "Project Accounts", new ProjectAccountsPane() ));
+        TreeItem<TreeNavigatorModel> timeRegistrationItem = createParentItem(bundle.getString("navigator.time.registration.group.label"));
+        createAndAddChildItem(timeRegistrationItem, new NodeNavigationModel(bundle.getString("navigator.time.registration.timelogs.label"), new TimeLogsPane()));
+        createAndAddChildItem(timeRegistrationItem, new NodeNavigationModel(bundle.getString("navigator.time.registration.reporting.label"), new ReportingsPane()));
+        addRootItem(timeRegistrationItem);
+
+        TreeItem<TreeNavigatorModel> adminItem = createParentItem(bundle.getString("navigator.admin.group.label"));
+        createAndAddChildItem(adminItem, new NodeNavigationModel( bundle.getString("navigator.admin.agreements.label"), new AgreementsPane() ));
+        createAndAddChildItem(adminItem, new NodeNavigationModel( bundle.getString("navigator.admin.registration.types.label"), new RegistrationTypesPane() ));
+        createAndAddChildItem(adminItem, new NodeNavigationModel( bundle.getString("navigator.admin.project.accounts.label"), new ProjectAccountsPane() ));
         addRootItem(adminItem);
     }
 
     private void addRootItem(TreeItem<TreeNavigatorModel> treeItem ) {
         this.getChildren().add( treeItem );
         treeItem.setExpanded(true);
-    }
-
-    private void createAndAddRootItem(TreeNavigatorModel model ) {
-        addRootItem(new TreeItem<>( model ) );
     }
 
     private TreeItem<TreeNavigatorModel> createParentItem(String displayText) {
