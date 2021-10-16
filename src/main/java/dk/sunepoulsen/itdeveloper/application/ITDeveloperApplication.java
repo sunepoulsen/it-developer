@@ -26,7 +26,7 @@ public class ITDeveloperApplication extends Application {
         Scene scene = new Scene( root );
         scene.getStylesheets().add("/styles/app.css");
 
-        primaryStage.setTitle( "TimeLog" );
+        primaryStage.setTitle( "IT Developer" );
         primaryStage.setScene( scene );
         scene.windowProperty().getValue().setOnShown( mainWindow::initializeSplitPaneDividerPosition );
         scene.windowProperty().getValue().setOnCloseRequest( mainWindow::storeSplitPaneDividerPosition );
