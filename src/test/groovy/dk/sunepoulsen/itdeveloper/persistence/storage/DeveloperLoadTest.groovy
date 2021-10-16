@@ -1,11 +1,14 @@
 package dk.sunepoulsen.itdeveloper.persistence.storage
 
-
 import dk.sunepoulsen.itdeveloper.testutils.persistence.TestDataHelper
 import dk.sunepoulsen.itdeveloper.ui.model.AgreementModel
 import dk.sunepoulsen.itdeveloper.ui.model.ProjectAccountModel
 import dk.sunepoulsen.itdeveloper.ui.model.registration.types.RegistrationTypeModel
-import org.junit.*
+import org.junit.After
+import org.junit.Before
+import org.junit.BeforeClass
+import org.junit.Ignore
+import org.junit.Test
 
 import java.time.DayOfWeek
 import java.time.LocalDate
@@ -41,7 +44,7 @@ class DeveloperLoadTest {
     }
 
     @Test
-    //@Ignore
+    @Ignore
     void "Load test data"() {
         createAgreements()
         createRegistrationTypes()
