@@ -19,6 +19,7 @@ For release-dates, use date-format: YYYY-MM-DD
 
 - [ITDEV-31](https://sunepoulsen.atlassian.net/browse/ITDEV-31): Rename solution to it-developer
 - [ITDEV-20](https://sunepoulsen.atlassian.net/browse/ITDEV-20): Improved styling of the UI
+- [ITDEV-25](https://sunepoulsen.atlassian.net/browse/ITDEV-25): Overview page for the flex balance
 
 ### Fixed
 
