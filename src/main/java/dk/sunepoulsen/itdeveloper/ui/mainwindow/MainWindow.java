@@ -4,14 +4,18 @@ import com.google.common.primitives.Doubles;
 import dk.sunepoulsen.itdeveloper.ui.topcomponents.clientpane.ClientPane;
 import dk.sunepoulsen.itdeveloper.ui.topcomponents.navigator.TreeNavigator;
 import dk.sunepoulsen.itdeveloper.registry.Registry;
+import dk.sunepoulsen.itdeveloper.utils.ApplicationConfig;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.control.SplitPane;
 import javafx.stage.WindowEvent;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URL;
 import java.util.List;
+import java.util.Properties;
 import java.util.ResourceBundle;
 
 @Slf4j
@@ -25,11 +29,15 @@ public class MainWindow implements Initializable {
     @FXML
     private ClientPane clientPane;
 
+    @FXML
+    private Label appVersionLabel;
+
     boolean splitPaneInitialized = false;
 
     @Override
     public void initialize( final URL location, final ResourceBundle resources ) {
         clientPane.getCurrentPaneProperty().bind( navigator.getSelectedProperty() );
+        appVersionLabel.setText(ApplicationConfig.loadConfig().getProperty("application.version"));
     }
 
     public void initializeSplitPaneDividerPosition( WindowEvent windowEvent ) {

@@ -5,9 +5,19 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import org.controlsfx.control.StatusBar?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.Region?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="dk.sunepoulsen.itdeveloper.ui.mainwindow.MainWindow">
+    <top>
+        <HBox styleClass="app-header">
+            <Label text="IT Developer" styleClass="app-header-name"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="appVersionLabel" styleClass="app-header-version"/>
+        </HBox>
+    </top>
     <center>
         <SplitPane fx:id="splitPane">
             <items>

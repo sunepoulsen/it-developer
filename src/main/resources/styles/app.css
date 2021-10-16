@@ -1,5 +1,24 @@
 /* IT Developer application style sheet */
 
+.app-header {
+    -fx-alignment: center-left;
+    -fx-background-color: bisque;
+}
+
+.app-header-name {
+    -fx-font-style: normal;
+    -fx-font-size: 16pt;
+
+    -fx-label-padding: 5 0 5 10; /* top, right, bottom, left */
+}
+
+.app-header-version {
+    -fx-font-style: normal;
+    -fx-font-size: 8pt;
+
+    -fx-label-padding: 5 10 5 0; /* top, right, bottom, left */
+}
+
 .zero-flex-value {
     -fx-text-fill: black;
 }
