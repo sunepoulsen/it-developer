@@ -5,6 +5,7 @@ import dk.sunepoulsen.itdeveloper.ui.model.NodeNavigationModel;
 import dk.sunepoulsen.itdeveloper.ui.model.TreeNavigatorModel;
 import dk.sunepoulsen.itdeveloper.ui.topcomponents.AgreementsPane;
 import dk.sunepoulsen.itdeveloper.ui.topcomponents.ProjectAccountsPane;
+import dk.sunepoulsen.itdeveloper.ui.topcomponents.overview.FlexOverviewPane;
 import dk.sunepoulsen.itdeveloper.ui.topcomponents.registration.types.RegistrationTypesPane;
 import dk.sunepoulsen.itdeveloper.ui.topcomponents.reportings.ReportingsPane;
 import dk.sunepoulsen.itdeveloper.ui.topcomponents.timelogs.TimeLogsPane;
@@ -22,6 +23,7 @@ public class RootNode extends TreeItem<TreeNavigatorModel> {
         TreeItem<TreeNavigatorModel> timeRegistrationItem = createParentItem(bundle.getString("navigator.time.registration.group.label"));
         createAndAddChildItem(timeRegistrationItem, new NodeNavigationModel(bundle.getString("navigator.time.registration.timelogs.label"), new TimeLogsPane()));
         createAndAddChildItem(timeRegistrationItem, new NodeNavigationModel(bundle.getString("navigator.time.registration.reporting.label"), new ReportingsPane()));
+        createAndAddChildItem(timeRegistrationItem, new NodeNavigationModel(bundle.getString("navigator.time.registration.flex.overview.label"), new FlexOverviewPane()));
         addRootItem(timeRegistrationItem);
 
         TreeItem<TreeNavigatorModel> adminItem = createParentItem(bundle.getString("navigator.admin.group.label"));
