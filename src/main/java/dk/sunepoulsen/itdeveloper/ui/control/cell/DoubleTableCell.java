@@ -1,7 +1,6 @@
 package dk.sunepoulsen.itdeveloper.ui.control.cell;
 
 import javafx.scene.control.TableCell;
-import javafx.scene.paint.Color;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -55,6 +54,7 @@ public class DoubleTableCell<S> extends TableCell<S, Double> {
         if (!empty && item != null) {
             setText(numberFormat.format(item));
 
+            getStyleClass().clear();
             if (item == 0.0) {
                 getStyleClass().add(zeroValueStyleClass);
             } else if (item < 0.0) {
