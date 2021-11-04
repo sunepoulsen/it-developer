@@ -4,7 +4,6 @@ import dk.sunepoulsen.itdeveloper.formatter.FlexFormatter;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.paint.Color;
 import lombok.extern.slf4j.Slf4j;
 
 import java.text.NumberFormat;
@@ -54,6 +53,8 @@ public class ControlUtils {
     }
 
     public static void fillTextColor(Label control, double value) {
+        control.getStyleClass().clear();
+
         if (value > 0.0) {
             control.getStyleClass().add(FLEX_POSITIVE_VALUE_CLASS_NAME);
         } else if (value < 0.0) {

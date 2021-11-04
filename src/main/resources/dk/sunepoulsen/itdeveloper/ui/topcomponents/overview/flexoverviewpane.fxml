@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import dk.sunepoulsen.itdeveloper.ui.control.YearNavigationPane?>
+<?import dk.sunepoulsen.itdeveloper.ui.topcomponents.overview.FlexOverviewChartPane?>
+<?import dk.sunepoulsen.itdeveloper.ui.topcomponents.overview.YearViewerPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.layout.BorderPane?>
+<fx:root type="javafx.scene.layout.BorderPane" xmlns:fx="http://javafx.com/fxml">
+    <top>
+        <YearNavigationPane fx:id="yearNavigationPane">
+            <padding>
+                <Insets bottom="10.0"/>
+            </padding>
+        </YearNavigationPane>
+    </top>
+    <center>
+        <SplitPane orientation="VERTICAL">
+            <items>
+                <YearViewerPane fx:id="yearViewerPane"/>
+                <FlexOverviewChartPane fx:id="flexOverviewChartPane"/>
+            </items>
+        </SplitPane>
+    </center>
+</fx:root>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<fx:root type="javafx.scene.layout.AnchorPane" xmlns:fx="http://javafx.com/fxml">
+    <TableView fx:id="viewer" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
+        <columns>
+            <TableColumn fx:id="weekTableColumn" text="%table.column.week.title" prefWidth="300">
+            </TableColumn>
+            <TableColumn fx:id="openingBalanceTableColumn" text="%table.column.opening-balance.title" prefWidth="300">
+            </TableColumn>
+            <TableColumn fx:id="workedHoursTableColumn" text="%table.column.worked-hours.title" prefWidth="300">
+            </TableColumn>
+            <TableColumn fx:id="workingNormTableColumn" text="%table.column.working-norm.title" prefWidth="300">
+            </TableColumn>
+            <TableColumn fx:id="ultimateBalanceTableColumn" text="%table.column.ultimate-balance.title" prefWidth="300">
+            </TableColumn>
+        </columns>
+    </TableView>
+</fx:root>
