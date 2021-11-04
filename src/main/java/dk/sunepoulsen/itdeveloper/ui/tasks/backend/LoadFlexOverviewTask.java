@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import lombok.extern.slf4j.Slf4j;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,13 +43,28 @@ public class LoadFlexOverviewTask extends BackendConnectionTask<ObservableList<F
                 FlexOverviewModel model = new FlexOverviewModel();
                 model.setWeek(currentWeekModel);
                 model.setOpeningBalance(openingBalance);
-                model.setWorkingNorm(agreementService.workingNorm(currentWeekModel.firstDate(), currentWeekModel.lastDate()));
-                model.setWorkedHours(timeLogsService.workingTimeByDates(currentWeekModel.firstDate(), currentWeekModel.lastDate()));
-                if (model.getWorkedHours() == null ) {
+
+                LocalDate fromDate = currentWeekModel.firstDate();
+                LocalDate toDate = currentWeekModel.lastDate();
+                if (fromDate.isAfter(LocalDate.now())) {
+                    model.setWorkingNorm(agreementService.workingNorm(fromDate, toDate));
+                    model.setWorkedHours(agreementService.workingNorm(fromDate, toDate));
+                }
+                else {
+                    if (toDate.isAfter(LocalDate.now())) {
+                        toDate = LocalDate.now();
+                    }
+
+                    model.setWorkingNorm(agreementService.workingNorm(fromDate, toDate));
+                    model.setWorkedHours(timeLogsService.workingTimeByDates(fromDate, toDate));
+                }
+
+                result.add(model);
+
+                if (model.getWorkedHours() == null) {
                     model.setWorkingNorm(0.0);
                     model.setWorkedHours(0.0);
                 }
-                result.add(model);
 
                 currentWeekModel = currentWeekModel.nextWeek();
                 openingBalance = openingBalance + model.getWorkedHours() - model.getWorkingNorm();
