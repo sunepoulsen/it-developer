@@ -17,6 +17,14 @@ For release-dates, use date-format: YYYY-MM-DD
 
 ### Features
 
+### Fixed
+
+### Security
+
+## 1.2.0
+
+### Features
+
 - [ITDEV-32](https://sunepoulsen.atlassian.net/browse/ITDEV-32): Sum of worked hours
 
 ### Fixed
