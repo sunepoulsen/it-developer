@@ -43,8 +43,10 @@ import lombok.extern.slf4j.Slf4j;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -79,6 +81,12 @@ public class TimeLogsViewerPane extends BorderPane {
 
     @FXML
     private ProgressIndicator progressIndicator = null;
+
+    @FXML
+    private Label weekWorkedField = null;
+
+    @FXML
+    private Label weekNormField = null;
 
     @FXML
     private Label openingBalanceField = null;
@@ -202,17 +210,20 @@ public class TimeLogsViewerPane extends BorderPane {
             flexTask.setOnSucceeded(flexEvent -> {
                 loadAgreementTask.getValue().stream().findFirst().ifPresent(agreement -> {
                     // Update labels
-                    double flexHours = timeRegistrations.stream()
-                        .filter(timeRegistration -> timeRegistration instanceof DayRegistration)
-                        .filter(timeRegistration -> !((DayRegistration)timeRegistration).getDate().isAfter(LocalDate.now()))
-                        .mapToDouble(value -> value.flex() != null ? value.flex() : 0.0)
-                        .sum();
+                    double weekWorkedHours = sumTimeRegistrations(timeRegistrations, TimeRegistration::workedHours);
+                    double weekNormHours = sumTimeRegistrations(timeRegistrations, timeRegistration -> ((DayRegistration)timeRegistration).getWorkingNorm());
+                    double flexHours = weekWorkedHours - weekNormHours;
 
-                    FlexFormatter flexFormatter = new FlexFormatter(agreement.weeklyNorm(), agreement.weeklyNorm() / agreement.numberOfWorkingDays());
+                    FlexFormatter weekFormatter = new FlexFormatter(agreement.weeklyNorm(), agreement.weeklyNorm() / agreement.numberOfWorkingDays());
+                    weekFormatter.setFormatWeeks(false);
+                    weekFormatter.setFormatDays(false);
+                    ControlUtils.setFlexText(weekWorkedField, weekWorkedHours, weekFormatter);
+                    ControlUtils.setFlexText(weekNormField, weekNormHours, weekFormatter);
 
-                    ControlUtils.setFlexText(openingBalanceField, flexTask.getValue(), flexFormatter);
-                    ControlUtils.setFlexText(flexHoursField, flexHours, flexFormatter);
-                    ControlUtils.setFlexText(ultimateBalanceField,flexTask.getValue() + flexHours, flexFormatter);
+                    FlexFormatter balanceFormatter = new FlexFormatter(agreement.weeklyNorm(), agreement.weeklyNorm() / agreement.numberOfWorkingDays());
+                    ControlUtils.setFlexText(openingBalanceField, flexTask.getValue(), balanceFormatter);
+                    ControlUtils.setFlexText(flexHoursField, flexHours, balanceFormatter);
+                    ControlUtils.setFlexText(ultimateBalanceField,flexTask.getValue() + flexHours, balanceFormatter);
                 });
             });
 
@@ -321,5 +332,15 @@ public class TimeLogsViewerPane extends BorderPane {
         model.setStartTime(LocalTime.now());
 
         return model;
+    }
+
+    private Double sumTimeRegistrations(List<TimeRegistration> timeRegistrations, Function<TimeRegistration, Double> valueExtractor) {
+        return timeRegistrations.stream()
+            .filter(timeRegistration -> timeRegistration instanceof DayRegistration)
+            .filter(timeRegistration -> !((DayRegistration)timeRegistration).getDate().isAfter(LocalDate.now()))
+            .map(valueExtractor)
+            .filter(Objects::nonNull)
+            .mapToDouble(value -> value)
+            .sum();
     }
 }

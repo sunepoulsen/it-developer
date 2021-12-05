@@ -1,12 +1,23 @@
 package dk.sunepoulsen.itdeveloper.formatter;
 
+import lombok.Data;
+
+@Data
 public class FlexFormatter {
     private final double weeklyNorm;
     private final double dailyNorm;
+    private boolean formatWeeks;
+    private boolean formatDays;
+    private boolean formatHours;
+    private boolean formatMinutes;
 
     public FlexFormatter(double weeklyNorm, double dailyNorm) {
         this.weeklyNorm = weeklyNorm;
         this.dailyNorm = dailyNorm;
+        this.formatWeeks = true;
+        this.formatDays = true;
+        this.formatHours = true;
+        this.formatMinutes = true;
     }
 
     public String format(double balance) {
@@ -17,7 +28,7 @@ public class FlexFormatter {
             result.append("-");
         }
 
-        if (remainBalance >= weeklyNorm) {
+        if (formatWeeks && remainBalance >= weeklyNorm) {
             int weeks = Double.valueOf(Math.floor(remainBalance / weeklyNorm)).intValue();
             result.append(weeks);
             result.append("w ");
@@ -25,7 +36,7 @@ public class FlexFormatter {
             remainBalance = remainBalance - (weeks * weeklyNorm);
         }
 
-        if (remainBalance >= dailyNorm) {
+        if (formatDays && remainBalance >= dailyNorm) {
             int days = Double.valueOf(Math.floor(remainBalance / dailyNorm)).intValue();
             result.append(days);
             result.append("d ");
@@ -33,7 +44,7 @@ public class FlexFormatter {
             remainBalance = remainBalance - (days * dailyNorm);
         }
 
-        if (remainBalance >= 1.0) {
+        if (formatHours && remainBalance >= 1.0) {
             int hours = Double.valueOf(Math.floor(remainBalance)).intValue();
             result.append(hours);
             result.append("h ");
@@ -41,9 +52,11 @@ public class FlexFormatter {
             remainBalance = remainBalance - Math.floor(remainBalance);
         }
 
-        int minutes = Double.valueOf(remainBalance * 60.0).intValue();
-        result.append(minutes);
-        result.append("m");
+        if (formatMinutes) {
+            int minutes = Double.valueOf(remainBalance * 60.0).intValue();
+            result.append(minutes);
+            result.append("m");
+        }
 
         return result.toString().trim();
     }

@@ -45,7 +45,29 @@
                     <Insets top="10.0" />
                 </padding>
 
+                <Label text="Worked:">
+                    <padding>
+                        <Insets right="5.0" />
+                    </padding>
+                </Label>
+                <Label fx:id="weekWorkedField" textAlignment="RIGHT">
+                    <padding>
+                        <Insets right="5.0" />
+                    </padding>
+                </Label>
+                <Label text="Norm:">
+                    <padding>
+                        <Insets right="5.0" />
+                    </padding>
+                </Label>
+                <Label fx:id="weekNormField" textAlignment="RIGHT">
+                    <padding>
+                        <Insets right="5.0" />
+                    </padding>
+                </Label>
+
                 <Region HBox.hgrow="ALWAYS"/>
+
                 <Label text="Primo balance:">
                     <padding>
                         <Insets right="5.0" />
@@ -78,18 +100,6 @@
                         <Insets right="5.0" />
                     </padding>
                 </Label>
-                <!--
-                <GridPane hgap="10" vgap="10">
-                    <Label text="Primo balance:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                    <Label fx:id="openingBalanceField" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" textAlignment="RIGHT"/>
-
-                    <Label text="Flex:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                    <Label fx:id="flexHoursField" GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.halignment="RIGHT" GridPane.valignment="CENTER"  textAlignment="RIGHT"/>
-
-                    <Label text="Ultimate balance:" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
-                    <Label fx:id="ultimateBalanceField" GridPane.columnIndex="4" GridPane.rowIndex="0" GridPane.halignment="RIGHT" GridPane.valignment="CENTER"  textAlignment="RIGHT"/>
-                </GridPane>
-                -->
             </HBox>
         </VBox>
     </center>
