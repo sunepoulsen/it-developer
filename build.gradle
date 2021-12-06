@@ -10,7 +10,7 @@ plugins {
 }
 
 group 'dk.sunepoulsen.it-developer'
-version "${project.property('it-developer.version')}"
+version "${project.property('version')}"
 
 repositories {
     mavenCentral()
@@ -67,7 +67,7 @@ dependencies {
 }
 
 changelog {
-    version = "${project.property('it-developer.version')}"
+    version = "${project.property('version')}"
     path = "${project.projectDir}/CHANGELOG.md"
     header = "${-> version.get()} - ${new SimpleDateFormat("yyyy-MM-dd").format(new Date())}"
     headerParserRegex = ~/(\d+\.\d+\.\d+.*)/
