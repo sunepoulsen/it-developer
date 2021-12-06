@@ -5,8 +5,8 @@ plugins {
     id 'org.openjfx.javafxplugin' version '0.0.10'
 }
 
-group 'dk.sunepoulsen.timelog'
-version "${project.property('app.version')}"
+group 'dk.sunepoulsen.it-developer'
+version "${project.property('it-developer.version')}"
 
 repositories {
     mavenCentral()

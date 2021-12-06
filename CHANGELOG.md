@@ -19,6 +19,8 @@ For release-dates, use date-format: YYYY-MM-DD
 
 ### Fixed
 
+- [ITDEV-33](https://sunepoulsen.atlassian.net/browse/ITDEV-33): Add Gradle plugins to manage the changelog and new releases
+
 ### Security
 
 ## 1.2.0
