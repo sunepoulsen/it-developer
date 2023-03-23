@@ -17,6 +17,8 @@ For release-dates, use date-format: YYYY-MM-DD
 
 ### Features
 
+- [ITDEV-34](https://sunepoulsen.atlassian.net/browse/ITDEV-34): Upgrade to Gradle 8 and Java 17
+
 ### Fixed
 
 - [ITDEV-33](https://sunepoulsen.atlassian.net/browse/ITDEV-33): Add Gradle plugins to manage the changelog and new releases
