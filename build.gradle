@@ -29,47 +29,45 @@ javafx {
 
 dependencies {
     // Lombok
-    compileOnly "org.projectlombok:lombok:${project.property('lombok.version')}"
-    annotationProcessor "org.projectlombok:lombok:${project.property('lombok.version')}"
+    compileOnly 'org.projectlombok:lombok:1.18.20'
+    annotationProcessor 'org.projectlombok:lombok:1.18.20'
 
     // JavaFX
-    implementation "org.controlsfx:controlsfx:${project.property('controlsfx.version')}"
-    implementation "commons-io:commons-io:${project.property('commons-io.version')}"
+    implementation 'org.controlsfx:controlsfx:11.1.0'
+    implementation 'commons-io:commons-io:2.10.0'
 
     // JPA
-    implementation "org.liquibase:liquibase-core:${project.property('liquibase-core.version')}"
-    implementation "org.hibernate:hibernate-core:${project.property('hibernate-core.version')}"
-    implementation "com.h2database:h2:${project.property('h2.version')}"
-    implementation "net.bytebuddy:byte-buddy:${project.property('byte-buddy.version')}"
-    implementation "net.bytebuddy:byte-buddy-agent:${project.property('byte-buddy.version')}"
+    implementation 'org.liquibase:liquibase-core:4.4.0'
+    implementation 'org.hibernate:hibernate-core:5.5.3.Final'
+    implementation 'com.h2database:h2:1.4.200'
+    implementation 'net.bytebuddy:byte-buddy:1.11.6'
+    implementation 'net.bytebuddy:byte-buddy-agent:1.11.6'
 
     // JAX-B dependencies for JDK 9+
-    implementation "jakarta.xml.bind:jakarta.xml.bind-api:${project.property('jakarta-xml-bind-api.version')}"
-    implementation "org.glassfish.jaxb:jaxb-runtime:${project.property('jaxb-runtime.version')}"
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:3.0.1'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:3.0.1'
 
     // JSON
-    implementation "com.fasterxml.jackson.core:jackson-core:${project.property('jackson.version')}"
-    implementation "com.fasterxml.jackson.core:jackson-annotations:${project.property('jackson.version')}"
-    implementation "com.fasterxml.jackson.core:jackson-databind:${project.property('jackson.version')}"
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.12.3'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.3'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.3'
 
     // Validation
-    implementation "org.hibernate.validator:hibernate-validator:${project.property('hibernate-validator.version')}"
-    implementation "org.hibernate.validator:hibernate-validator-cdi:${project.property('hibernate-validator.version')}"
-    implementation "javax.validation:validation-api:${project.property('javax-validation-api.version')}"
-    implementation "org.glassfish:javax.el:3.0.0"
+    implementation 'org.hibernate.validator:hibernate-validator:6.2.0.Final'
+    implementation 'org.hibernate.validator:hibernate-validator-cdi:6.2.0.Final'
+    implementation 'javax.validation:validation-api:2.0.1.Final'
+    implementation 'org.glassfish:javax.el:3.0.0'
 
     // Utilities
-    implementation "org.slf4j:log4j-over-slf4j:${project.property('log4j-over-slf4j.version')}"
-    implementation "ch.qos.logback:logback-core:${project.property('logback-core.version')}"
-    implementation "ch.qos.logback:logback-classic:${project.property('logback-classic.version')}"
-    implementation "com.google.guava:guava:${project.property('guava.version')}"
-    implementation "org.perf4j:perf4j:${project.property('perf4j.version')}"
+    implementation 'org.slf4j:log4j-over-slf4j:1.7.31'
+    implementation 'ch.qos.logback:logback-core:1.2.3'
+    implementation 'ch.qos.logback:logback-classic:1.2.3'
+    implementation 'com.google.guava:guava:30.1.1-jre'
+    implementation 'org.perf4j:perf4j:0.9.16'
 
-    // JUnit
-    testImplementation "junit:junit:${project.property('junit.version')}"
-
-    // Groovy
-    testImplementation localGroovy() // Note: using the groovy implementation shipped with gradle
+    // Tests
+    testImplementation localGroovy()
+    testImplementation 'junit:junit:4.13.2'
 }
 
 changelog {
