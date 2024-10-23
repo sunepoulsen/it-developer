@@ -23,28 +23,28 @@ javafx {
 
 dependencies {
     // Lombok
-    compileOnly 'org.projectlombok:lombok:1.18.30'
-    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    compileOnly 'org.projectlombok:lombok:1.18.34'
+    annotationProcessor 'org.projectlombok:lombok:1.18.34'
 
     // JavaFX
-    implementation 'org.controlsfx:controlsfx:11.2.0'
-    implementation 'commons-io:commons-io:2.15.1'
+    implementation 'org.controlsfx:controlsfx:11.2.1'
+    implementation 'commons-io:commons-io:2.17.0'
 
     // JPA
-    implementation 'org.liquibase:liquibase-core:4.25.1'
+    implementation 'org.liquibase:liquibase-core:4.29.2'
     implementation 'org.hibernate:hibernate-core:5.5.6'
-    implementation 'com.h2database:h2:2.2.224'
-    implementation 'net.bytebuddy:byte-buddy:1.14.11'
-    implementation 'net.bytebuddy:byte-buddy-agent:1.14.11'
+    implementation 'com.h2database:h2:2.3.232'
+    implementation 'net.bytebuddy:byte-buddy:1.15.5'
+    implementation 'net.bytebuddy:byte-buddy-agent:1.15.5'
 
     // JAX-B dependencies for JDK 9+
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:3.0.1'
-    implementation 'org.glassfish.jaxb:jaxb-runtime:4.0.4'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:4.0.5'
 
     // JSON
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.16.1'
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.16.1'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.16.1'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.18.0'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.18.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.18.0'
 
     // Validation
     implementation 'org.hibernate.validator:hibernate-validator:6.2.0.Final'
@@ -53,10 +53,10 @@ dependencies {
     implementation 'org.glassfish:javax.el:3.0.0'
 
     // Utilities
-    implementation 'org.slf4j:log4j-over-slf4j:2.0.11'
-    implementation 'ch.qos.logback:logback-core:1.4.14'
-    implementation 'ch.qos.logback:logback-classic:1.4.14'
-    implementation 'com.google.guava:guava:33.0.0-jre'
+    implementation 'org.slf4j:log4j-over-slf4j:2.0.16'
+    implementation 'ch.qos.logback:logback-core:1.5.11'
+    implementation 'ch.qos.logback:logback-classic:1.5.11'
+    implementation 'com.google.guava:guava:33.3.1-jre'
     implementation 'org.perf4j:perf4j:0.9.16'
 
     // Tests
