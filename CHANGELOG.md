@@ -25,6 +25,8 @@ For release-dates, use date-format: YYYY-MM-DD
 
 ### Security
 
+- [ITDEV-35](https://sunepoulsen.atlassian.net/browse/ITDEV-35): Upgrade Gradle and dependencies.
+
 ## 1.2.0
 
 ### Features
